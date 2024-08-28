@@ -1,4 +1,4 @@
-import { Tab, TabContent, TabPane, Tabs } from "@/components/tab";
+import { Field, Fieldset, Input, Label, Legend, Select, Tab, TabGroup, TabList, TabPanel, TabPanels, Textarea } from "@headlessui/react";
 import { PropsWithChildren } from "react";
 
 
@@ -6,37 +6,66 @@ import { PropsWithChildren } from "react";
 
 function Header() {
     return (<div className="text-center lg:text-left">
-        <h1 className="text-5xl font-bold">Login now!</h1>
+        <h1 className="text-5xl font-bold">Profile & Settings Page!</h1>
         <p className="py-6">
-            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-            quasi. In deleniti eaque aut repudiandae et a id nisi.
+            View and update the profile and settings with the panel on the left.
         </p>
     </div>)
 }
 
+function ProfileInformation() {
+    return (
+        <Fieldset className="space-y-8 p-4">
+            <Legend className="text-lg font-bold">Information About You</Legend>
+            <Field>
+                <Label>Name:</Label>
+                <Label className="input input-bordered flex items-center gap-2">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 16 16"
+                        fill="currentColor"
+                        className="h-4 w-4 opacity-70">
+                        <path
+                            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+                    </svg>
+                    <Input type="text" className="grow" placeholder="Enter your name" />
+                </Label>
+            </Field>
+            <Field>
+                <Label>Country:</Label>
+                <Select className="select select-bordered w-full" name="country">
+                    <option disabled selected>Select a country</option>
+                    <option>Canada</option>
+                    <option>Mexico</option>
+                    <option>United States</option>
+                </Select>
+            </Field>
+            <Field>
+                <Label className="block">Delivery notes</Label>
+                <Textarea className="textarea textarea-bordered w-full" name="notes" />
+            </Field>
+        </Fieldset>
+    );
+}
 
 export default function ProfilePage() {
     return (<div className="flex-1 flex bg-base-300">
         <div className="my-10 mx-40 p-10 flex-1 bg-base-200 hero drop-shadow-md rounded-lg">
             <Content>
                 <Header />
-                <div className="card bg-base-100 w-full h-full max-w-sm shrink-0 shadow-2xl">
-                    <TabPane>
-                        <Tabs>
-                            <Tab title="Tab 1" checked={true} tab={0}></Tab>
-                            <Tab title="Tab 2" tab={1}></Tab>
-                            <Tab title="Tab 3" tab={2}></Tab>
-                        </Tabs>
-                        <TabContent tab={0}>
-                            Hello from tab 1
-                        </TabContent>
-                        <TabContent tab={1}>
-                            Hello from tab 2
-                        </TabContent>
-                        <TabContent tab={2}>
-                            Hello from tab 3
-                        </TabContent>
-                    </TabPane>
+                <div className="card bg-base-100 w-full h-full max-w-2xl shrink-0 shadow-2xl">
+                    <TabGroup className="h-full">
+                        <TabList className="tabs tabs-lifted">
+                            <Tab className="tab">Profile Information</Tab>
+                            <Tab className="tab">Settings</Tab>
+                            <Tab className="tab">Experience</Tab>
+                        </TabList>
+                        <TabPanels className="h-full">
+                            <TabPanel><ProfileInformation /></TabPanel>
+                            <TabPanel>Content 2</TabPanel>
+                            <TabPanel>Content 3</TabPanel>
+                        </TabPanels>
+                    </TabGroup>
                 </div>
             </Content>
         </div>
@@ -44,7 +73,7 @@ export default function ProfilePage() {
 }
 
 function Content(props: PropsWithChildren<{}>) {
-    return (<div className="hero-content flex-col lg:flex-row-reverse h-full">
+    return (<div className="hero-content flex-col lg:flex-row-reverse h-full w-full">
         {props.children}
     </div>)
 }
