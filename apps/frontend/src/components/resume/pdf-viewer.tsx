@@ -1,6 +1,6 @@
 "use client"
 import dynamic from "next/dynamic";
-import { ResumeDocument } from "./resume";
+import { ResumeDocument } from "./pdf/resume";
 import { useEffect, useState } from "react";
 import { Button } from "@headlessui/react";
 

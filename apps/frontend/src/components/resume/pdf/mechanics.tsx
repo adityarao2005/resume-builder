@@ -1,4 +1,4 @@
-import { Text, View } from '@/lib/react-pdf';
+import { Text, View } from '@react-pdf/renderer';
 
 export function CenterHorizontal({ children }: React.PropsWithChildren<{}>) {
     return (
