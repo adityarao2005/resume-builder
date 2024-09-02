@@ -56,6 +56,7 @@ export const styles = StyleSheet.create({
         fontFamily: 'Times-New-Roman',
         textAlign: 'center',
         flexWrap: 'wrap',
+        marginBottom: 2
     },
     sectionTitle: {
         fontSize: 20,
@@ -63,7 +64,8 @@ export const styles = StyleSheet.create({
         marginBottom: -5
     },
     section: {
-        marginHorizontal: 10
+        marginHorizontal: 10,
+        marginTop: 1
     },
     splitSection: {
         flexDirection: 'row'
@@ -71,10 +73,8 @@ export const styles = StyleSheet.create({
     leftSection: {
         flex: 1
     },
-    entryTitle: {
-        fontSize: 15,
-        fontFamily: 'Times-New-Roman',
-        fontWeight: 'bold'
-    },
-    
+    rightSection: {
+        flexDirection: 'column',
+        alignItems: 'flex-end'
+    }
 });

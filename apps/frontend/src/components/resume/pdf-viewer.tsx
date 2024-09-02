@@ -1,8 +1,7 @@
 "use client"
 import dynamic from "next/dynamic";
-import { ResumeDocument } from "./pdf/resume";
-import { useEffect, useState } from "react";
-import { Button } from "@headlessui/react";
+import { resume } from "./pdf/resume";
+import RenderResumeDocument from "./pdf/resume.rendering";
 
 const PDFViewer = dynamic(
     () => import("@react-pdf/renderer").then((mod) => mod.PDFViewer),
@@ -15,7 +14,8 @@ const PDFViewer = dynamic(
 export default function ResumeViewer() {
     return (
         <>
-            <PDFViewer className='flex-1' children={ResumeDocument}>
+            <PDFViewer className='flex-1'>
+                <RenderResumeDocument document={resume} />
             </PDFViewer>
         </>
     );

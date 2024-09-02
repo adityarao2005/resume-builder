@@ -1,122 +1,125 @@
 "use client"
-import React from 'react';
-import { Document, Page, View, Text, Font, Line, Link, Svg, Path, Image } from '@react-pdf/renderer';
-import { styles } from './resume.style';
-import { PhoneIcon, MailIcon, LinkedInIcon, GithubIcon, UserIcon } from './resume.icons';
+import { Resume as namespace } from '@/models/types';
 
-function PDFLink(props: { src: string }) {
-    return (<Link src={props.src}>{props.src}</Link>)
-}
+const languages = ['Java', 'Python', 'SQL', '.NET Framework', 'C/C++', 'JavaScript/TypeScript']
+const frameworks = ['Spring Boot', 'Hibernate', 'React', 'Express', 'Next.js', 'Flask', 'UWP', 'Mongoose', 'Django', 'ASP.NET Core']
+const tools = ['Eclipse', 'VS Code', 'Visual Studio', 'Git', 'Github', 'Android Studio', 'Figma', 'Unity', 'MongoDB']
+const libraries = ['Google Cloud Platform', 'Pandas', 'TensorFlow', 'SciKit Learn', 'JQuery', 'Bootstrap', 'TailwindCSS']
+const hobbies = ['Sketching', 'Painting', 'Violin (Western and Carnatic)', 'Badminton', 'Swimming', 'Chess']
+const certifications = ['AWS Cloud Practitioner', 'Docker & Kubernetes']
 
-function LineBreak() {
-    return (<View style={{ flexDirection: 'row' }}>
-        <Svg height={5} style={{ flexGrow: 1 }}>
-            <Line x1="0" y1="5" x2="600" y2="5" strokeWidth={1} stroke="rgb(0,0,0)" />
-        </Svg>
-    </View>);
-}
-
-const data = {
+export const resume: namespace.ResumeDetails = {
     name: "Aditya Rao",
     contactInfo: {
         phone: "647-978-3730",
         email: "raoa32@mcmaster.ca",
-        linkedin: "https://www.linkedin.com/in/aditya-g-rao",
-        github: "https://github.com/adityarao2005",
-        portfolio: "https://adityarao-portfolio.vercel.app"
+        mediaProfiles: [
+            ["LinkedIn", "https://www.linkedin.com/in/aditya-g-rao"],
+            ["Github", "https://github.com/adityarao2005"],
+            ["Website", "https://adityarao-portfolio.vercel.app"]
+        ]
     },
     education: [
         {
+            degree: "Bachelors",
+            discipline: "Engineering",
             institution: "McMaster University",
-            school: "McMaster University, Hamilton, ON",
-            degree: "Bachelor of Engineering CO-OP",
-            major: "Majoring in Software Engineering",
-            date: "Sept 2023 - April 2028"
+            location: { city: "Hamilton", country: "Canada" },
+            courses: ["Software Engineering", "Computer Science", "Electrical Engineering"],
+            awards: [{ title: "Dean's Honour List", date: new Date(2021, 4) }],
+            duration: { start: new Date(2019, 8), end: new Date(2023, 4) },
+            description: { lines: ["First Year GPA: 4.0/4.0", "Majoring in Software Engineering", "Expected Graduation: April 2023"] }
         }
-    ]
+    ],
+    highlights: {
+        lines: [
+            "Strong foundation in software engineering principles",
+            "Proficient in full-stack development",
+            "Experience with cloud technologies",
+            "Strong problem-solving skills",
+            "Excellent communication and teamwork skills"
+        ]
+    },
+    experiences: [
+        {
+            title: "Full-stack Developer Part-Time Intern",
+            company: "Medium AI",
+            location: { city: "Toronto", country: "Canada" },
+            duration: { start: new Date(2024, 5), end: new Date(2024, 8) },
+            description: {
+                lines: [
+                    "Medium AI is a startup company created by McMaster students which is being incubated and supported by the McMaster Forge Startup Survivor Program",
+                    "The product being developed at Medium AI is a tool which helps doctors create a transcript of their doctor-patient conversation and also provides doctors with some potential diagnoses as well as some solutions to address the patient’s issue",
+                    "My role as a Full-stack developer part-time intern was to create mock servers, handle online webm to wav conversion with ffmpeg, migrate from Flask to aiohttp, and migrate from older frameworks to newer and more robust frameworks which allow for transcription and diagnosis in real-time"
+                ]
+            }
+        }
+    ],
+    projects: [
+        {
+            title: "Portfolio Website",
+            description: {
+                lines: [
+                    "Developed a personal portfolio which hosts both my projects, artwork, and professional portfolio",
+                    "Developed a dashboard to manage the projects, artwork, and messages sent to me",
+                    "Automated the creation of projects and artworks and developed a messaging system which saved around 50% of development time",
+                    "Used Next.js and TailwindCSS for frontend and Express, MongoDB, Node.js, and Vercel Cloud for Backend"
+                ]
+            },
+            duration: { start: new Date(2023, 12), end: new Date(2024, 3) }
+        },
+        {
+            title: "QuakeGuard",
+            description: {
+                lines: [
+                    "Developed an earthquake prediction tool for DeltaHacks X, a hackathon hosted by McMaster University",
+                    "Used Machine Learning libraries such as TensorFlow to train the prediction model, resulting in an 89% accuracy in predicting earthquakes at different locations and timestamps",
+                    "Used AdamW optimizer to speed up the process of training and testing by 47%",
+                    "Used Maps Geocoding API to highlight high-risk areas and implemented Google Pay for donations",
+                    "Invited to GDSC McMaster's Solutions Challenge Hackathon to refine and present our product"
+                ]
+            },
+            duration: { start: new Date(2024, 1), end: new Date(2024, 1) }
+        },
+        {
+            title: "Task Management and Scheduling App",
+            description: {
+                lines: [
+                    "Developed an enterprise-grade calendar tailored for efficient task management and daily organization",
+                    "Features include being able to schedule events or tasks, manage Google Classroom events, manage alarms and reminders, and get work done with our Pomodoro work mode",
+                    "Implemented a calendar view for scheduling tasks and a Kanban board for managing tasks",
+                    "Built using JavaFX and Google Classroom API and stored data using MySQL database"
+                ]
+            },
+            duration: { start: new Date(2023, 5), end: new Date(2023, 6) }
+        }
+    ],
+    extraCurriculars: [
+        {
+            title: "Software Team Lead",
+            company: "FIRST Robotics Team 9113",
+            location: { city: 'Markham', country: 'Canada' },
+            duration: { start: new Date(2023, 1), end: new Date(2023, 5) },
+            description: {
+                lines: [
+                    "FIRST Robotics is a robotics competition in which many high schools across North America participate in",
+                    "Led my high school's robotics team as the software team lead at the 2023 competition",
+                    "Utilized Java & WPLib to develop a fully functional robot capable of driving, picking up cones and cubes, and balancing on a moving platform using a gyroscope using embedded programming principles",
+                    "Participated in competitions hosted at Newmarket Arena and Western University and secured the Rookie All-Star and Rookie Inspiration Award respectively"
+                ]
+            }
+        }
+    ],
+    skills: [
+        ...languages.map(name => ({ name, type: "Languages" })),
+        ...frameworks.map(name => ({ name, type: "Frameworks" })),
+        ...tools.map(name => ({ name, type: "Tools" })),
+        ...libraries.map(name => ({ name, type: "Libraries" })),
+        ...certifications.map(name => ({ name, type: "Udemy Certifications (in progress)" }))
+    ],
+    version: 1,
+    template: "",
+    awards: [{ title: "Dean's Honour List", date: new Date(2021, 4) }],
+    hobbies: hobbies
 }
 
-// Create Document Component
-export const ResumeDocument = (
-    <Document>
-        <Page size="A4" style={styles.page}>
-            <View style={styles.title}>
-                <Text>{data.name}</Text>
-            </View>
-            <View style={styles.contactInfo}>
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    <PhoneIcon />
-                    <Text>&nbsp; {data.contactInfo.phone} | </Text>
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    <MailIcon />
-                    <Text>&nbsp;
-                        <PDFLink src={data.contactInfo.email} /> | &nbsp;
-                    </Text>
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    <LinkedInIcon />
-                    <Text>&nbsp;
-                        <PDFLink src="https://www.linkedin.com/in/aditya-g-rao" /> | &nbsp;
-                    </Text>
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    <GithubIcon />
-                    <Text>&nbsp;
-                        <PDFLink src="https://github.com/adityarao2005" /> | &nbsp;
-                    </Text>
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    <UserIcon />
-                    <Text>&nbsp;
-                        <PDFLink src="https://adityarao-portfolio.vercel.app" />
-                    </Text>
-                </View>
-            </View>
-            <View style={styles.section}>
-                <View>
-                    <Text style={styles.sectionTitle}>Education</Text>
-                    <LineBreak />
-                </View>
-                <View style={{ padding: 5 }}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={{ flexGrow: 1 }}>
-                            <Text style={styles.text}>McMaster University, Hamilton, ON</Text>
-                            <Text style={styles.text}>Bachelor of Engineering CO-OP, GPA: 4.0 first year</Text>
-                            <Text style={styles.text}>Majoring in Software Engineering</Text>
-                        </View>
-                        <Text style={styles.text}>Sept 2023 - April 2028</Text>
-                    </View>
-                </View>
-            </View>
-            <View style={styles.section}>
-                <View>
-                    <Text style={styles.sectionTitle}>Experience</Text>
-                    <LineBreak />
-                </View>
-                <View style={{ padding: 5 }}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={{ flexGrow: 1 }}>
-                            <Text style={{ ...styles.text, fontWeight: 'bold' }}>Medium AI</Text>
-                            <Text style={styles.text}>Full-stack Developer Part-Time Intern (unpaid)</Text>
-                        </View>
-                        <Text style={styles.text}>May 2024 – Aug 2024</Text>
-                    </View>
-                    <View style={{ flexDirection: 'column', marginTop: 5 }}>
-                        <View style={{ flexDirection: "row", marginBottom: 0, fontSize: 14 }}>
-                            <Text style={{ marginHorizontal: 8 }}>•</Text>
-                            <Text style={{ ...styles.text, marginRight: 10, paddingRight: 10 }}>Medium AI is a startup company created by McMaster students which is being incubated and supported by the McMaster Forge Startup Survivor Program</Text>
-                        </View>
-                        <View style={{ flexDirection: "row", marginBottom: 0, fontSize: 14 }}>
-                            <Text style={{ marginHorizontal: 8 }}>•</Text>
-                            <Text style={{ ...styles.text, marginRight: 10, paddingRight: 10 }}>The product being developed at Medium AI is a tool which helps doctors create a transcript of their doctor-patient conversation and also provides doctors with some potential diagnoses as well as some solutions to address the patient’s issue</Text>
-                        </View>
-                        <View style={{ flexDirection: "row", marginBottom: 0, fontSize: 14 }}>
-                            <Text style={{ marginHorizontal: 8 }}>•</Text>
-                            <Text style={{ ...styles.text, marginRight: 10, paddingRight: 10 }}>My role as a Full-stack developer part-time intern was to create mock servers, handle online webm to wav conversion with ffmpeg, migrate from Flask to aiohttp, and migrate from older frameworks to newer and more robust frameworks which allow for transcription and diagnosis in real-time</Text>
-                        </View>
-                    </View>
-                </View>
-            </View>
-        </Page>
-    </Document>)

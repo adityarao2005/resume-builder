@@ -1,5 +1,5 @@
 import { Resume, Common } from "@/models/types";
-import { Document, Page, View, Text } from "@react-pdf/renderer";
+import { Document, Page, View, Text, Link } from "@react-pdf/renderer";
 import { styles } from "./resume.style";
 import { Components } from './resume.components';
 import { MediaIcon } from './resume.icons';
@@ -13,24 +13,35 @@ function Name({ name }: { name: string }) {
 function ContactInfoEntry(props: { type: Resume.MediaProfile | 'Phone' | 'Email', data: string, last?: boolean }) {
     return (<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
         <MediaIcon type={props.type} />
-        <Text>&nbsp; {props.data} {!props.last && "|"}</Text>
+        <Text>{props.data} {!props.last && "|"} &nbsp;</Text>
     </View>);
 }
 
 function ContactInfo({ contactInfo }: { contactInfo: Resume.IContactInfo }) {
     return (<View style={styles.contactInfo}>
-        <ContactInfoEntry type="Phone" data={contactInfo.phone} />
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <MediaIcon type='Phone' />
+            <Text>&nbsp; {contactInfo.phone} |&nbsp;</Text>
+        </View>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <MediaIcon type="Email" />
+            <Text>&nbsp;
+                <Link src={"mailto:" + contactInfo.email}>{contactInfo.email}</Link> | &nbsp;
+            </Text>
+        </View>
+
         {
-            contactInfo.mediaProfiles.map(([type, data]) => (
+            contactInfo.mediaProfiles.map(([type, data], index, array) => (
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                     <MediaIcon type={type} />
+
                     <Text>&nbsp;
-                        <Components.PDFLink src={data} /> | &nbsp;
+                        <Components.PDFLink src={data} /> {index != array.length - 1 && "|"} &nbsp;
                     </Text>
                 </View>
             ))
         }
-        <ContactInfoEntry type="Email" data={contactInfo.email} last={true} />
     </View>)
 }
 
@@ -53,12 +64,12 @@ function Education({ education }: { education: Resume.IEducationEntry[] }) {
                 <View>
                     <View style={styles.splitSection}>
                         <View style={styles.leftSection}>
-                            <Text style={styles.entryTitle}>{entry.institution}</Text>
-                            <Text>{entry.degree} of {entry.discipline}</Text>
+                            <Text style={{ ...styles.text, fontWeight: 'bold' }}>{entry.institution}</Text>
+                            <Text style={styles.text}>{entry.degree} of {entry.discipline}</Text>
                         </View>
-                        <View>
-                            <Text>{entry.location.city}, {entry.location.country}</Text>
-                            <Text>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
+                        <View style={styles.rightSection}>
+                            <Text style={styles.text}>{entry.location.city}, {entry.location.country}</Text>
+                            <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
                         </View>
                     </View>
                     <Components.List type={"bullet"} items={entry.description.lines} />
@@ -75,12 +86,12 @@ function Experience({ experience }: { experience: Resume.IExperience[] }) {
                 <View>
                     <View style={styles.splitSection}>
                         <View style={styles.leftSection}>
-                            <Text style={styles.entryTitle}>{entry.title}</Text>
-                            <Text>{entry.company}</Text>
+                            <Text style={{ ...styles.text, fontWeight: 'bold' }}>{entry.title}</Text>
+                            <Text style={styles.text}>{entry.company}</Text>
                         </View>
-                        <View>
-                            <Text>{entry.location.city}, {entry.location.country}</Text>
-                            <Text>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
+                        <View style={styles.rightSection}>
+                            <Text style={styles.text}>{entry.location.city}, {entry.location.country}</Text>
+                            <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
                         </View>
                     </View>
                     <Components.List type={"bullet"} items={entry.description.lines} />
@@ -97,10 +108,10 @@ function Projects({ projects }: { projects: Resume.IProject[] }) {
                 <View>
                     <View style={styles.splitSection}>
                         <View style={styles.leftSection}>
-                            <Text style={styles.entryTitle}>{entry.title}</Text>
+                            <Text style={{ ...styles.text, fontWeight: 'bold' }}>{entry.title}</Text>
                         </View>
-                        <View>
-                            <Text>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
+                        <View style={styles.rightSection}>
+                            <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
                         </View>
                     </View>
                     <Components.List type={"bullet"} items={entry.description.lines} />
@@ -123,9 +134,9 @@ function Skills({ skills }: { skills: Resume.ISkill[] }) {
     return (
         <Components.Section title="Skills">
             {Array.from(map.entries()).map(entry => (
-                <View>
+                <View style={{ flexDirection: 'row' }}>
                     <Text style={{ ...styles.text, fontWeight: 'bold' }}>{entry[0]}:</Text>
-                    <Text style={styles.text}>{entry[1].join(',')}</Text>
+                    <Text style={styles.text}>&nbsp;{entry[1].join(',')}</Text>
                 </View>
             ), [])}
         </Components.Section>
@@ -139,10 +150,10 @@ function Awards({ awards }: { awards: Common.IAward[] }) {
                 {awards.map(award => (
                     <View style={styles.splitSection}>
                         <View style={{ ...styles.leftSection, fontWeight: 'bold' }}>
-                            <Text style={styles.entryTitle}>{award.title}</Text>
+                            <Text style={{ ...styles.text, fontWeight: 'bold' }}>{award.title}</Text>
                         </View>
-                        <View>
-                            <Text>{formatDate(award.date)}</Text>
+                        <View style={styles.rightSection}>
+                            <Text style={styles.text}>{formatDate(award.date)}</Text>
                         </View>
                     </View>
                 ))}
@@ -154,12 +165,12 @@ function Awards({ awards }: { awards: Common.IAward[] }) {
 function Hobbies({ hobbies }: { hobbies: string[] }) {
     return (
         <Components.Section title="Hobbies">
-            <View><Text>{hobbies.join(', ')}</Text></View>
+            <View><Text style={styles.text}>{hobbies.join(', ')}</Text></View>
         </Components.Section>
     )
 }
 
-export default function RenderResumeDocument(document: Resume.ResumeDetails) {
+export default function RenderResumeDocument({ document }: { document: Resume.ResumeDetails }) {
     return (
         <Document>
             <Page size="A4" style={styles.page}>
