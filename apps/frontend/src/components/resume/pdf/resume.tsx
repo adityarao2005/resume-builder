@@ -119,7 +119,7 @@ export const resume: namespace.ResumeDetails = {
     ],
     version: 1,
     template: "",
-    awards: [{ title: "Dean's Honour List", date: new Date(2021, 4) }],
+    awards: [{ title: "Dean's Honour List", date: new Date(2024, 4) }],
     hobbies: hobbies
 }
 

@@ -4,6 +4,11 @@ import { styles } from "./resume.style";
 import { Components } from './resume.components';
 import { MediaIcon } from './resume.icons';
 
+// TODO: Replace the styles from resume.style.ts with the styles provided from the user
+// ALlow the user to customize the styles of the resume including whether they want to wrap the sub section or not
+// and line spacing, font size, font family, background color, formatting of the text, etc.
+
+
 function Name({ name }: { name: string }) {
     return (<View style={styles.title}>
         <Text>{name}</Text>
@@ -58,6 +63,7 @@ function EducationEntry({ entry }: { entry: Resume.IEducationEntry }) {
     list.push(...entry.description.lines);
 
     return (
+        // 
         <View wrap={false}>
             <View style={styles.splitSection}>
                 <View style={styles.leftSection}>
@@ -149,7 +155,7 @@ function Skills({ skills }: { skills: Resume.ISkill[] }) {
             {Array.from(map.entries()).map(entry => (
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ ...styles.text, fontWeight: 'bold' }}>{entry[0]}:</Text>
-                    <Text style={styles.text}>&nbsp;{entry[1].join(',')}</Text>
+                    <Text style={styles.text}>&nbsp;{entry[1].join(', ')}</Text>
                 </View>
             ), [])}
         </Components.Section>
