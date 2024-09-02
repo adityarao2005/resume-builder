@@ -64,8 +64,17 @@ export const styles = StyleSheet.create({
     },
     section: {
         marginHorizontal: 10
-    }
-
-    //centerVertical: { flexDirection: 'column', alignItems: 'center' },
-    //centerHorizontal: { flexDirection: 'row', justifyContent: 'center' }
+    },
+    splitSection: {
+        flexDirection: 'row'
+    },
+    leftSection: {
+        flex: 1
+    },
+    entryTitle: {
+        fontSize: 15,
+        fontFamily: 'Times-New-Roman',
+        fontWeight: 'bold'
+    },
+    
 });

@@ -37,11 +37,11 @@ export namespace Components {
         return (
             <View style={{ flexDirection: 'column', marginTop: 5 }}>
                 {props.items.map((item, index) => (
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        {props.type === 'bullet' && <Text style={{ fontSize: 10, marginRight: 5 }}>•</Text>}
-                        {props.type === 'ordered' && <Text style={{ fontSize: 10, marginRight: 5 }}>{index + 1}.</Text>}
-                        {props.type === 'dashed' && <Text style={{ fontSize: 10, marginRight: 5 }}>-</Text>}
-                        <Text style={{ fontSize: 10 }}>{item}</Text>
+                    <View style={{ flexDirection: "row", marginBottom: 0, fontSize: 14 }}>
+                        {props.type === 'bullet' && <Text style={{ marginHorizontal: 8 }}>•</Text>}
+                        {props.type === 'ordered' && <Text style={{ marginHorizontal: 8 }}>{index + 1}.</Text>}
+                        {props.type === 'dashed' && <Text style={{ marginHorizontal: 8 }}>-</Text>}
+                        <Text style={{ ...styles.text, marginRight: 10, paddingRight: 10 }}>{item}</Text>
                     </View>
                 ))}
             </View>
