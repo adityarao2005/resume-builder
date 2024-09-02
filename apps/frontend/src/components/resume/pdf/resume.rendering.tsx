@@ -10,13 +10,6 @@ function Name({ name }: { name: string }) {
     </View>);
 }
 
-function ContactInfoEntry(props: { type: Resume.MediaProfile | 'Phone' | 'Email', data: string, last?: boolean }) {
-    return (<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-        <MediaIcon type={props.type} />
-        <Text>{props.data} {!props.last && "|"} &nbsp;</Text>
-    </View>);
-}
-
 function ContactInfo({ contactInfo }: { contactInfo: Resume.IContactInfo }) {
     return (<View style={styles.contactInfo}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -57,46 +50,58 @@ function formatDate(date: Date) {
     return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 }
 
+function EducationEntry({ entry }: { entry: Resume.IEducationEntry }) {
+    // Create the list of items to be displayed
+    const list = [];
+    entry.courses.length > 0 && list.push("Relavent Courses: " + entry.courses.join(", "));
+    entry.awards.length > 0 && list.push("Awards: " + entry.awards.map(award => award.title).join(", "));
+    list.push(...entry.description.lines);
+
+    return (
+        <View wrap={false}>
+            <View style={styles.splitSection}>
+                <View style={styles.leftSection}>
+                    <Text style={{ ...styles.text, fontWeight: 'bold' }}>{entry.institution}</Text>
+                    <Text style={styles.text}>{entry.degree} of {entry.discipline}</Text>
+                </View>
+                <View style={styles.rightSection}>
+                    <Text style={styles.text}>{entry.location.city}, {entry.location.country}</Text>
+                    <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
+                </View>
+            </View>
+            <Components.List type={"bullet"} items={list} />
+        </View>
+    )
+}
+
 function Education({ education }: { education: Resume.IEducationEntry[] }) {
     return (
         <Components.Section title="Education">
-            {education.map(entry => (
-                <View>
-                    <View style={styles.splitSection}>
-                        <View style={styles.leftSection}>
-                            <Text style={{ ...styles.text, fontWeight: 'bold' }}>{entry.institution}</Text>
-                            <Text style={styles.text}>{entry.degree} of {entry.discipline}</Text>
-                        </View>
-                        <View style={styles.rightSection}>
-                            <Text style={styles.text}>{entry.location.city}, {entry.location.country}</Text>
-                            <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
-                        </View>
-                    </View>
-                    <Components.List type={"bullet"} items={entry.description.lines} />
-                </View>
-            ))}
+            {education.map(entry => <EducationEntry entry={entry} />)}
         </Components.Section>
     )
+}
+
+function ExperienceEntry({ entry }: { entry: Resume.IExperience }) {
+    return (<View wrap={false}>
+        <View style={styles.splitSection}>
+            <View style={styles.leftSection}>
+                <Text style={{ ...styles.text, fontWeight: 'bold' }}>{entry.title}</Text>
+                <Text style={styles.text}>{entry.company}</Text>
+            </View>
+            <View style={styles.rightSection}>
+                <Text style={styles.text}>{entry.location.city}, {entry.location.country}</Text>
+                <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
+            </View>
+        </View>
+        <Components.List type={"bullet"} items={entry.description.lines} />
+    </View>)
 }
 
 function Experience({ experience }: { experience: Resume.IExperience[] }) {
     return (
         <Components.Section title="Experience">
-            {experience.map(entry => (
-                <View>
-                    <View style={styles.splitSection}>
-                        <View style={styles.leftSection}>
-                            <Text style={{ ...styles.text, fontWeight: 'bold' }}>{entry.title}</Text>
-                            <Text style={styles.text}>{entry.company}</Text>
-                        </View>
-                        <View style={styles.rightSection}>
-                            <Text style={styles.text}>{entry.location.city}, {entry.location.country}</Text>
-                            <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
-                        </View>
-                    </View>
-                    <Components.List type={"bullet"} items={entry.description.lines} />
-                </View>
-            ))}
+            {experience.map(entry => <ExperienceEntry entry={entry} />)}
         </Components.Section>
     )
 }
@@ -105,7 +110,7 @@ function Projects({ projects }: { projects: Resume.IProject[] }) {
     return (
         <Components.Section title="Projects">
             {projects.map(entry => (
-                <View>
+                <View wrap={false}>
                     <View style={styles.splitSection}>
                         <View style={styles.leftSection}>
                             <Text style={{ ...styles.text, fontWeight: 'bold' }}>{entry.title}</Text>
@@ -117,6 +122,14 @@ function Projects({ projects }: { projects: Resume.IProject[] }) {
                     <Components.List type={"bullet"} items={entry.description.lines} />
                 </View>
             ))}
+        </Components.Section>
+    )
+}
+
+function ExtraCurricular({ experience }: { experience: Resume.IExperience[] }) {
+    return (
+        <Components.Section title="Extra Curricular">
+            {experience.map(entry => <ExperienceEntry entry={entry} />)}
         </Components.Section>
     )
 }
@@ -180,7 +193,7 @@ export default function RenderResumeDocument({ document }: { document: Resume.Re
                 <Education education={document.education} />
                 {document.experiences && <Experience experience={document.experiences} />}
                 {document.projects && <Projects projects={document.projects} />}
-                {document.extraCurriculars && <Experience experience={document.extraCurriculars} />}
+                {document.extraCurriculars && <ExtraCurricular experience={document.extraCurriculars} />}
                 {document.skills && <Skills skills={document.skills} />}
                 {document.awards && <Awards awards={document.awards} />}
                 {document.hobbies && <Hobbies hobbies={document.hobbies} />}
