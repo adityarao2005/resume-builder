@@ -46,8 +46,6 @@ export function UserIcon() {
     </Svg>)
 }
 
-
-
 const icons = new Map<string, React.FC>([
     ['LinkedIn', LinkedInIcon],
     ['Github', GithubIcon],
