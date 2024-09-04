@@ -6,8 +6,8 @@ import ReduxProvider from "@/state/redux-provider"
 
 function Sidebar() {
     return (
-        <div className="flex flex-col min-h-full max-h-full">
-            <div className="flex flex-col flex-1 bg-base-300 overflow-auto w-96 space-y-2 p-4">
+        <div className="w-96 h-full relative bg-base-300">
+            <div className="absolute inset-0 overflow-auto p-4 space-y-2">
                 <NameFragment />
                 <ContactInfoFragment />
                 <HoQFragment />
@@ -21,6 +21,14 @@ function Sidebar() {
                 <div className="text-xl font-bold">
                     Achievements
                 </div>
+                <div className="text-xl font-bold">
+                    Hobbies
+                </div>
+
+                <div className="text-xl font-bold">
+                    Hobbies
+                </div>
+
                 <div className="text-xl font-bold">
                     Hobbies
                 </div>

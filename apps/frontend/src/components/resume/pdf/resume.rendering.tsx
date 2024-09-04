@@ -3,6 +3,8 @@ import { Document, Page, View, Text, Link } from "@react-pdf/renderer";
 import { styles } from "./resume.style";
 import { Components } from './resume.components';
 import { MediaIcon } from './resume.icons';
+import { defaultCountries, parseCountry } from 'react-international-phone';
+import { convertISOAddressToName } from "@/components/addressEditor";
 
 // TODO: Replace the styles from resume.style.ts with the styles provided from the user
 // ALlow the user to customize the styles of the resume including whether they want to wrap the sub section or not
@@ -16,31 +18,43 @@ function Name({ name }: { name: string }) {
 }
 
 function ContactInfo({ contactInfo }: { contactInfo: Resume.IContactInfo }) {
-    return (<View style={styles.contactInfo}>
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <MediaIcon type='Phone' />
-            <Text>&nbsp; {contactInfo.phone} |&nbsp;</Text>
-        </View>
+    const profiles = [...contactInfo.mediaProfiles.entries()].filter(([type, data]) => data.trim().length > 0);
+    const addressName = contactInfo.address ? convertISOAddressToName(contactInfo.address) : '';
 
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <MediaIcon type="Email" />
-            <Text>&nbsp;
-                <Link src={"mailto:" + contactInfo.email}>{contactInfo.email}</Link> | &nbsp;
-            </Text>
-        </View>
+    return (
+        <View style={styles.contactInfo}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                <MediaIcon type='Phone' />
+                <Text>&nbsp; {contactInfo.phone} |&nbsp;</Text>
+            </View>
 
-        {
-            contactInfo.mediaProfiles.map(([type, data], index, array) => (
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                <MediaIcon type="Email" />
+                <Text>&nbsp;
+                    <Link src={"mailto:" + contactInfo.email}>{contactInfo.email}</Link> | &nbsp;
+                </Text>
+            </View>
+
+            {
+                contactInfo.address &&
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    <MediaIcon type={type} />
-
-                    <Text>&nbsp;
-                        <Components.PDFLink src={data} /> {index != array.length - 1 && "|"} &nbsp;
-                    </Text>
+                    <MediaIcon type="Address" />
+                    <Text>&nbsp;{contactInfo.address.city}, {addressName} | &nbsp;</Text>
                 </View>
-            ))
-        }
-    </View>)
+            }
+
+            {
+                profiles.map(([type, data], index, array) => (
+                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                        <MediaIcon type={type} />
+
+                        <Text>&nbsp;
+                            <Components.PDFLink src={data} /> {index != array.length - 1 && "|"} &nbsp;
+                        </Text>
+                    </View>
+                ))
+            }
+        </View>)
 }
 
 function Highlights({ highlights }: { highlights: Common.IDescription }) {

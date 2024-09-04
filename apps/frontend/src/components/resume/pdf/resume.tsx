@@ -11,13 +11,13 @@ const certifications = ['AWS Cloud Practitioner', 'Docker & Kubernetes']
 export const resume: namespace.ResumeDetails = {
     name: "Aditya Rao",
     contactInfo: {
-        phone: "647-978-3730",
+        phone: "+1 (647)-978-3730",
         email: "raoa32@mcmaster.ca",
-        mediaProfiles: [
+        mediaProfiles: new Map([
             ["LinkedIn", "https://www.linkedin.com/in/aditya-g-rao"],
             ["Github", "https://github.com/adityarao2005"],
             ["Website", "https://adityarao-portfolio.vercel.app"]
-        ]
+        ])
     },
     education: [
         {

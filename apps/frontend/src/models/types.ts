@@ -63,7 +63,7 @@ export namespace Resume {
         email: string;
         phone: string;
         address?: Common.IAddress;
-        mediaProfiles: [MediaProfile, string][]; // e.g [["LinkedIn", "https://www.linkedin.com/in/username"]]
+        mediaProfiles: Map<MediaProfile, string>; // e.g [["LinkedIn", "https://www.linkedin.com/in/username"]]
     }
 
     export interface ResumeDetails {
