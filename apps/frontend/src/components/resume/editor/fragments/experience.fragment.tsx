@@ -1,8 +1,8 @@
-import PlusButton from "../../plusbutton";
+import PlusButton from "../../../plusbutton";
 
-export default function ProjectFragment() {
+export default function ExperienceFragment() {
     return (<div className="text-xl font-bold flex flex-row">
-        <div>Project</div>
+        <div>Experience</div>
         <div className="flex-1"></div>
         <PlusButton />
     </div>)

@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
 
+// Center component
 export default function Center({ children }: PropsWithChildren<{}>) {
     return (
         <div className="flex flex-1 flex-col">

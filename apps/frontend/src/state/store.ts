@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import ResumeReducer from '@/state/resumeSlice';
 
+// Create a redux store with the resume reducer
 export const store = configureStore({
     reducer: {
         resume: ResumeReducer
@@ -9,6 +10,7 @@ export const store = configureStore({
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
 });
 
+// Export the store and the hooks
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 

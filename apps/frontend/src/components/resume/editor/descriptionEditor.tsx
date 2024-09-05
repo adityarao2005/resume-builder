@@ -6,6 +6,8 @@ export interface IDescriptionEditorProps {
     setDescription: (description: Common.IDescription) => void
 }
 
+// TODO: Document all the made pages and components
+
 export function AddLineButton({ description, setDescription }: IDescriptionEditorProps) {
     return (
         <Field className="flex">

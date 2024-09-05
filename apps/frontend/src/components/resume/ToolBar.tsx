@@ -1,6 +1,7 @@
 import { NavMenu } from "@/components/navbar.components"
 import { Button, Field, Fieldset, Select, Tab, TabGroup, TabList, Label } from "@headlessui/react"
 
+// toolbar component
 export default function ToolBar() {
     return (<div className="navbar bg-base-100 drop-shadow">
         <TabGroup>

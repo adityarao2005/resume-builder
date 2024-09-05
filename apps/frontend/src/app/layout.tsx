@@ -18,8 +18,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        {
+          // This is a hack to make the page fit the screen
+        }
         <div className="flex flex-col h-screen">
+          {
+            // This is the navbar
+          }
           <Navbar />
+          {
+            // This is the main content
+          }
           {children}
         </div>
       </body>

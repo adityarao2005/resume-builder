@@ -1,8 +1,8 @@
-import PlusButton from "../../plusbutton";
+import PlusButton from "../../../plusbutton";
 
-export default function ECFragment() {
+export default function ProjectFragment() {
     return (<div className="text-xl font-bold flex flex-row">
-        <div>Extra Curriculars</div>
+        <div>Project</div>
         <div className="flex-1"></div>
         <PlusButton />
     </div>)

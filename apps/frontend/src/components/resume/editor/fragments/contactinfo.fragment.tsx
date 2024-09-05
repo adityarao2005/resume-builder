@@ -6,7 +6,7 @@ import 'react-international-phone/style.css';
 import { setContactInfo } from "@/state/resumeSlice";
 import { Resume, Common } from "@/models/types";
 import { parsePhoneNumber } from "libphonenumber-js";
-import AddressEditor from "@/components/editor/addressEditor";
+import AddressEditor from "@/components/resume/editor/addressEditor";
 
 export default function ContactInfoFragment() {
     const contactInfo = useAppSelector((state) => state.resume.contactInfo);

@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { NavHeader, NavLink, NavMenu } from "@/components/navbar.components";
 
+// Hook to check if user is authorized
 function useAuthorized() {
     const params = useSearchParams();
 

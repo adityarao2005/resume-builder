@@ -4,9 +4,12 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { resume as initialState } from '@/components/resume/pdf/resume';
 import { Resume as namespace, Common } from '@/models/types';
 
+// Create a slice for the resume
 export const resumeSlice = createSlice({
     name: 'resume',
+    // The initial state of the resume
     initialState,
+    // The reducers for the resume
     reducers: {
         updateResume: (state, action: PayloadAction<namespace.ResumeDetails>) => {
             return action.payload;
@@ -44,6 +47,7 @@ export const resumeSlice = createSlice({
     }
 });
 
+// Export the actions
 export const {
     updateResume,
     setName,

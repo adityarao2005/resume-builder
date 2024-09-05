@@ -1,5 +1,5 @@
 "use client"
-import DescriptionEditor from "@/components/editor/descriptionEditor";
+import DescriptionEditor from "@/components/resume/editor/descriptionEditor";
 import { Common } from "@/models/types";
 import { setHighlights } from "@/state/resumeSlice";
 import { useAppDispatch, useAppSelector } from "@/state/store";

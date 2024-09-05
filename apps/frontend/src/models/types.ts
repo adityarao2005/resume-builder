@@ -1,25 +1,30 @@
 // Path: src/models/types.ts
 export namespace Common {
+    // Address interface
     export interface IAddress {
         city: string;
         country: string;
     }
 
+    // Description interface
     export interface IDescription {
         lines: string[];
     }
 
+    // Duration interface
     export interface IDuration {
         start: Date;
         end: Date;
     }
 
+    // Award interface
     export interface IAward {
         title: string;
         date: Date;
         affiliatedTo?: string;
     }
 
+    // Job interface
     export interface IJob {
         title: string;
         company: string;
@@ -29,23 +34,28 @@ export namespace Common {
 
 }
 
+// Resume namespace
 export namespace Resume {
+    // Skill interface
     export interface ISkill {
         name: string;
         type: string;
         level?: string;
     }
 
+    // Experience interface
     export interface IExperience extends Common.IJob {
         location: Common.IAddress;
     }
 
+    // Project interface
     export interface IProject {
         title: string;
         duration: Common.IDuration;
         description: Common.IDescription;
     }
 
+    // Education entry interface
     export interface IEducationEntry {
         institution: string; // e.g McMaster University
         degree: string; // potential values: Bachelors, Masters, PhD
@@ -57,8 +67,10 @@ export namespace Resume {
         awards: Common.IAward[]; // e.g [{title: "Dean's Honour List", date: new Date("2018-04-30")}]
     }
 
+    // Media profile type
     export type MediaProfile = 'LinkedIn' | 'Github' | 'Website';
 
+    // Contact information interface
     export interface IContactInfo {
         email: string;
         phone: string;
@@ -66,6 +78,7 @@ export namespace Resume {
         mediaProfiles: Map<MediaProfile, string>; // e.g [["LinkedIn", "https://www.linkedin.com/in/username"]]
     }
 
+    // Resume details interface
     export interface ResumeDetails {
         name: string;
         contactInfo: IContactInfo;
@@ -81,22 +94,27 @@ export namespace Resume {
         template: string;
     }
 
+    // Resume interface
     export interface Resume {
         versions: ResumeDetails[];
         job: Common.IJob;
     }
 }
 
+// Profile namespace
 export namespace Profile {
 
+    // Profile experience interface
     export interface IProfileExperience extends Resume.IExperience {
         skills: Resume.ISkill[];
     }
 
+    // Profile project interface
     export interface IProfileProject extends Resume.IProject {
         skills: Resume.ISkill[];
     }
 
+    // Profile interface
     export interface IProfile {
         userID: string;
         name: string;

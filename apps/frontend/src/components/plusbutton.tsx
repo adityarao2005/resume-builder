@@ -1,5 +1,6 @@
 import { Button } from "@headlessui/react";
 
+// PlusButton component via svg button
 export default function PlusButton() {
     return (<Button className="btn btn-circle">
         <svg

@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import RenderResumeDocument from "./pdf/resume.rendering";
 import { useAppSelector } from "@/state/store";
 
+// Dynamic import of the PDFViewer component
 const PDFViewer = dynamic(
     () => import("@react-pdf/renderer").then((mod) => mod.PDFViewer),
     {
@@ -11,6 +12,7 @@ const PDFViewer = dynamic(
     },
 );
 
+// ResumeViewer component
 export default function ResumeViewer() {
     const resumeState = useAppSelector((state) => state.resume);
 
