@@ -26,7 +26,7 @@ export const resume: namespace.ResumeDetails = {
             degree: "Bachelors",
             discipline: "Engineering",
             institution: "McMaster University",
-            location: { city: "Hamilton", country: "Canada" },
+            location: { city: "Hamilton", country: "ca" },
             courses: ["Software Engineering", "Computer Science", "Electrical Engineering"],
             awards: [{ title: "Dean's Honour List", date: new Date(2021, 4) }],
             duration: { start: new Date(2019, 8), end: new Date(2023, 4) },

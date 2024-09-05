@@ -37,7 +37,7 @@ export namespace Components {
         return (
             <View style={{ flexDirection: 'column', marginTop: 5 }}>
                 {props.items.map((item, index) => (
-                    <View style={{ flexDirection: "row", marginBottom: 0, fontSize: 14 }}>
+                    <View key={index} style={{ flexDirection: "row", marginBottom: 0, fontSize: 14 }}>
                         {props.type === 'bullet' && <Text style={{ marginHorizontal: 8 }}>•</Text>}
                         {props.type === 'ordered' && <Text style={{ marginHorizontal: 8 }}>{index + 1}.</Text>}
                         {props.type === 'dashed' && <Text style={{ marginHorizontal: 8 }}>-</Text>}

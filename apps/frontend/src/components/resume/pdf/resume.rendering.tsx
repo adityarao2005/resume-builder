@@ -45,7 +45,7 @@ function ContactInfo({ contactInfo }: { contactInfo: Resume.IContactInfo }) {
 
             {
                 profiles.map(([type, data], index, array) => (
-                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                    <View key={data} style={{ flexDirection: 'row', justifyContent: 'center' }}>
                         <MediaIcon type={type} />
 
                         <Text>&nbsp;
@@ -73,7 +73,6 @@ function EducationEntry({ entry }: { entry: Resume.IEducationEntry }) {
     // Create the list of items to be displayed
     const list = [];
     entry.courses.length > 0 && list.push("Relavent Courses: " + entry.courses.join(", "));
-    entry.awards.length > 0 && list.push("Awards: " + entry.awards.map(award => award.title).join(", "));
     list.push(...entry.description.lines);
 
     return (
@@ -85,7 +84,7 @@ function EducationEntry({ entry }: { entry: Resume.IEducationEntry }) {
                     <Text style={styles.text}>{entry.degree} of {entry.discipline}</Text>
                 </View>
                 <View style={styles.rightSection}>
-                    <Text style={styles.text}>{entry.location.city}, {entry.location.country}</Text>
+                    <Text style={styles.text}>{entry.location.city}, {convertISOAddressToName(entry.location)}</Text>
                     <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
                 </View>
             </View>
@@ -97,7 +96,7 @@ function EducationEntry({ entry }: { entry: Resume.IEducationEntry }) {
 function Education({ education }: { education: Resume.IEducationEntry[] }) {
     return (
         <Components.Section title="Education">
-            {education.map(entry => <EducationEntry entry={entry} />)}
+            {education.map(entry => <EducationEntry key={entry.degree + entry.discipline} entry={entry} />)}
         </Components.Section>
     )
 }
@@ -121,7 +120,7 @@ function ExperienceEntry({ entry }: { entry: Resume.IExperience }) {
 function Experience({ experience }: { experience: Resume.IExperience[] }) {
     return (
         <Components.Section title="Experience">
-            {experience.map(entry => <ExperienceEntry entry={entry} />)}
+            {experience.map(entry => <ExperienceEntry key={entry.title + entry.company} entry={entry} />)}
         </Components.Section>
     )
 }
@@ -130,7 +129,7 @@ function Projects({ projects }: { projects: Resume.IProject[] }) {
     return (
         <Components.Section title="Projects">
             {projects.map(entry => (
-                <View wrap={false}>
+                <View key={entry.title} wrap={false}>
                     <View style={styles.splitSection}>
                         <View style={styles.leftSection}>
                             <Text style={{ ...styles.text, fontWeight: 'bold' }}>{entry.title}</Text>
@@ -149,7 +148,7 @@ function Projects({ projects }: { projects: Resume.IProject[] }) {
 function ExtraCurricular({ experience }: { experience: Resume.IExperience[] }) {
     return (
         <Components.Section title="Extra Curricular">
-            {experience.map(entry => <ExperienceEntry entry={entry} />)}
+            {experience.map(entry => <ExperienceEntry key={entry.title + entry.company} entry={entry} />)}
         </Components.Section>
     )
 }
@@ -167,7 +166,7 @@ function Skills({ skills }: { skills: Resume.ISkill[] }) {
     return (
         <Components.Section title="Skills">
             {Array.from(map.entries()).map(entry => (
-                <View style={{ flexDirection: 'row' }}>
+                <View key={entry[0]} style={{ flexDirection: 'row' }}>
                     <Text style={{ ...styles.text, fontWeight: 'bold' }}>{entry[0]}:</Text>
                     <Text style={styles.text}>&nbsp;{entry[1].join(', ')}</Text>
                 </View>
@@ -181,7 +180,7 @@ function Awards({ awards }: { awards: Common.IAward[] }) {
         <Components.Section title="Awards and Achievements">
             <View>
                 {awards.map(award => (
-                    <View style={styles.splitSection}>
+                    <View key={award.title} style={styles.splitSection}>
                         <View style={{ ...styles.leftSection, fontWeight: 'bold' }}>
                             <Text style={{ ...styles.text, fontWeight: 'bold' }}>{award.title}</Text>
                         </View>

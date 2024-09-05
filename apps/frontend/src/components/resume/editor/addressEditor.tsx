@@ -20,8 +20,8 @@ export default function AddressEditor(props: { address: Common.IAddress, setAddr
                 <Input
                     className="input input-bordered w-full"
                     type="text"
-                    value={props.address!.city}
-                    onChange={(source) => props.setAddress({ country: props.address!.country, city: source.target.value! })}
+                    value={props.address.city}
+                    onChange={(source) => props.setAddress({ country: props.address.country, city: source.target.value })}
                     placeholder="City" />
             </Field>
             <Field className="flex flex-col">
@@ -30,11 +30,11 @@ export default function AddressEditor(props: { address: Common.IAddress, setAddr
                     <CountrySelector
                         className="h-full"
                         selectedCountry={props.address!.country}
-                        onSelect={(country) => props.setAddress({ city: props.address!.city, country: country.iso2 })} />
+                        onSelect={(country) => props.setAddress({ city: props.address.city, country: country.iso2 })} />
                     <Input
                         className="input input-bordered rounded-l-none p-2 h-full flex-1"
                         contentEditable={false}
-                        value={addressName} />
+                        value={addressName} readOnly />
                 </div>
             </Field>
         </>

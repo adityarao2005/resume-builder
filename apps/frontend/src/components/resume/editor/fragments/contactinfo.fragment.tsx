@@ -1,7 +1,7 @@
 "use client"
 import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Field, Fieldset, Input, Label, Switch } from "@headlessui/react";
-import { CountrySelector, PhoneInput, defaultCountries, parseCountry } from 'react-international-phone';
+import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
 import { setContactInfo } from "@/state/resumeSlice";
 import { Resume, Common } from "@/models/types";

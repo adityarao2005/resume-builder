@@ -64,7 +64,6 @@ export namespace Resume {
         courses: string[]; // e.g ["Data Structures", "Algorithms"]
         duration: Common.IDuration; // e.g {start: new Date("2015-09-01"), end: new Date("2019-04-30")}
         description: Common.IDescription;
-        awards: Common.IAward[]; // e.g [{title: "Dean's Honour List", date: new Date("2018-04-30")}]
     }
 
     // Media profile type
