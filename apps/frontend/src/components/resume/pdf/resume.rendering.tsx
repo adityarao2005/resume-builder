@@ -209,14 +209,14 @@ export default function RenderResumeDocument({ document }: { document: Resume.Re
             <Page size="A4" style={styles.page}>
                 <Name name={document.name} />
                 <ContactInfo contactInfo={document.contactInfo} />
-                {document.highlights && <Highlights highlights={document.highlights} />}
+                {document.highlights.lines.length > 0 && <Highlights highlights={document.highlights} />}
                 <Education education={document.education} />
-                {document.experiences && document.experiences.length > 0 && <Experience experience={document.experiences} />}
-                {document.projects && <Projects projects={document.projects} />}
-                {document.extraCurriculars && <ExtraCurricular experience={document.extraCurriculars} />}
-                {document.skills && <Skills skills={document.skills} />}
-                {document.awards && <Awards awards={document.awards} />}
-                {document.hobbies && <Hobbies hobbies={document.hobbies} />}
+                {document.experiences.length > 0 && <Experience experience={document.experiences} />}
+                {document.projects.length > 0 && <Projects projects={document.projects} />}
+                {document.extraCurriculars.length > 0 && <ExtraCurricular experience={document.extraCurriculars} />}
+                {document.skills.length > 0 && <Skills skills={document.skills} />}
+                {document.awards.length > 0 && <Awards awards={document.awards} />}
+                {document.hobbies.length > 0 && <Hobbies hobbies={document.hobbies} />}
             </Page>
         </Document>
     );

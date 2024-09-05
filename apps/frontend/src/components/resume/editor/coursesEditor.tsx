@@ -1,5 +1,4 @@
-import { Common } from "@/models/types";
-import { Field, Label, Button, Input } from "@headlessui/react";
+import { Field, Button, Input } from "@headlessui/react";
 
 export interface IDescriptionEditorProps {
     courses: string[],

@@ -2,8 +2,6 @@ import { Field, Fieldset, Input, Label, Legend, Select, Tab, TabGroup, TabList, 
 import { PropsWithChildren } from "react";
 
 
-// TODO - Left off in creating the tab components no wto populate it with settings and profile information
-
 // Header component
 function Header() {
     return (<div className="text-center lg:text-left">

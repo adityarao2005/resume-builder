@@ -3,6 +3,7 @@ import { Button, Field, Fieldset, Select, Tab, TabGroup, TabList, Label } from "
 
 // toolbar component
 export default function ToolBar() {
+    // TODO: Add switch field for enabling auto-compile (in non autocompile mode, the compile button should be enabled & the editing would not happen immediately which means some delay in the UI must occur from context to cache)
     return (<div className="navbar bg-base-100 drop-shadow">
         <TabGroup>
             <TabList className="tabs tabs-boxed">

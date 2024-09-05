@@ -81,14 +81,14 @@ export namespace Resume {
     export interface ResumeDetails {
         name: string;
         contactInfo: IContactInfo;
-        highlights?: Common.IDescription;
+        highlights: Common.IDescription;
         education: IEducationEntry[];
-        experiences?: IExperience[];
-        projects?: IProject[];
-        extraCurriculars?: IExperience[];
-        skills?: ISkill[];
-        awards?: Common.IAward[];
-        hobbies?: string[];
+        experiences: IExperience[];
+        projects: IProject[];
+        extraCurriculars: IExperience[];
+        skills: ISkill[];
+        awards: Common.IAward[];
+        hobbies: string[];
         version: number;
         template: string;
     }

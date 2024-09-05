@@ -6,7 +6,6 @@ import 'react-international-phone/style.css';
 import AddressEditor from "@/components/resume/editor/addressEditor";
 import DescriptionEditor from "@/components/resume/editor/descriptionEditor";
 import { setExperiences } from "@/state/resumeSlice";
-import CourseEditor from "../coursesEditor";
 
 function ExperienceEntryFragment({ entry, index }: { entry: Resume.IExperience, index: number }) {
     const experiences = useAppSelector((state) => state.resume.experiences);
@@ -121,7 +120,7 @@ export default function ExperienceFragment() {
             <summary className="collapse-title text-xl font-bold">Experience</summary>
             <div className="collapse-content space-y-2">
                 <Button className="btn bg-base-100 shadow-md w-full" onClick={addExperience}>Add Experience</Button>
-                {experiences && experiences.map((entry, index) => <ExperienceEntryFragment key={index} entry={entry} index={index} />)}
+                {experiences.map((entry, index) => <ExperienceEntryFragment key={index} entry={entry} index={index} />)}
             </div>
         </details>
     )

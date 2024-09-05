@@ -1,6 +1,6 @@
 "use client";
 import ToolBar from "@/components/resume/ToolBar"
-import { NameFragment, ContactInfoFragment, HoQFragment, EducationFragment, ExperienceFragment, ProjectFragment, ECFragment } from "@/components/resume/editor/fragments/fragments"
+import { NameFragment, ContactInfoFragment, HoQFragment, EducationFragment, ExperienceFragment, ProjectFragment, ECFragment, SkillsFragment, HobbiesFragment, AwardsFragment } from "@/components/resume/editor/fragments/fragments"
 import ResumeViewer from "@/components/resume/pdf-viewer"
 import ReduxProvider from "@/state/redux-provider"
 
@@ -21,23 +21,9 @@ function Sidebar() {
                 <ExperienceFragment />
                 <ProjectFragment />
                 <ECFragment />
-                <div className="text-xl font-bold">
-                    Skills
-                </div>
-                <div className="text-xl font-bold">
-                    Achievements
-                </div>
-                <div className="text-xl font-bold">
-                    Hobbies
-                </div>
-
-                <div className="text-xl font-bold">
-                    Hobbies
-                </div>
-
-                <div className="text-xl font-bold">
-                    Hobbies
-                </div>
+                <SkillsFragment />
+                <AwardsFragment />
+                <HobbiesFragment />
             </div>
         </div>)
 }
