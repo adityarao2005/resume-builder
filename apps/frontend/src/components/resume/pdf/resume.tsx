@@ -28,7 +28,6 @@ export const resume: namespace.ResumeDetails = {
             institution: "McMaster University",
             location: { city: "Hamilton", country: "ca" },
             courses: ["Software Engineering", "Computer Science", "Electrical Engineering"],
-            awards: [{ title: "Dean's Honour List", date: new Date(2021, 4) }],
             duration: { start: new Date(2019, 8), end: new Date(2023, 4) },
             description: { lines: ["First Year GPA: 4.0/4.0", "Majoring in Software Engineering", "Expected Graduation: April 2023"] }
         }
@@ -46,7 +45,7 @@ export const resume: namespace.ResumeDetails = {
         {
             title: "Full-stack Developer Part-Time Intern",
             company: "Medium AI",
-            location: { city: "Toronto", country: "Canada" },
+            location: { city: "Toronto", country: "ca" },
             duration: { start: new Date(2024, 5), end: new Date(2024, 8) },
             description: {
                 lines: [
@@ -100,7 +99,7 @@ export const resume: namespace.ResumeDetails = {
         {
             title: "Software Team Lead",
             company: "FIRST Robotics Team 9113",
-            location: { city: 'Markham', country: 'Canada' },
+            location: { city: 'Markham', country: 'ca' },
             duration: { start: new Date(2023, 1), end: new Date(2023, 5) },
             description: {
                 lines: [

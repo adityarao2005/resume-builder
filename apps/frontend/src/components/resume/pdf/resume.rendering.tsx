@@ -102,6 +102,7 @@ function Education({ education }: { education: Resume.IEducationEntry[] }) {
 }
 
 function ExperienceEntry({ entry }: { entry: Resume.IExperience }) {
+    console.log(entry.location);
     return (<View wrap={false}>
         <View style={styles.splitSection}>
             <View style={styles.leftSection}>
@@ -109,7 +110,7 @@ function ExperienceEntry({ entry }: { entry: Resume.IExperience }) {
                 <Text style={styles.text}>{entry.company}</Text>
             </View>
             <View style={styles.rightSection}>
-                <Text style={styles.text}>{entry.location.city}, {entry.location.country}</Text>
+                <Text style={styles.text}>{entry.location.city}, {convertISOAddressToName(entry.location)}</Text>
                 <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
             </View>
         </View>
@@ -210,7 +211,7 @@ export default function RenderResumeDocument({ document }: { document: Resume.Re
                 <ContactInfo contactInfo={document.contactInfo} />
                 {document.highlights && <Highlights highlights={document.highlights} />}
                 <Education education={document.education} />
-                {document.experiences && <Experience experience={document.experiences} />}
+                {document.experiences && document.experiences.length > 0 && <Experience experience={document.experiences} />}
                 {document.projects && <Projects projects={document.projects} />}
                 {document.extraCurriculars && <ExtraCurricular experience={document.extraCurriculars} />}
                 {document.skills && <Skills skills={document.skills} />}
