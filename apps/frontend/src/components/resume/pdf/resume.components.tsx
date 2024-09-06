@@ -2,10 +2,8 @@ import { Line, Link, Svg, Text, View } from "@react-pdf/renderer";
 import { styles } from "./resume.style";
 import { PropsWithChildren } from "react";
 
-
-
 export namespace Components {
-
+    // Line break component
     export function LineBreak() {
         return (<View style={{ flexDirection: 'row' }}>
             <Svg height={5} style={{ flexGrow: 1 }}>
@@ -14,11 +12,12 @@ export namespace Components {
         </View>);
     }
 
-
+    // PDF link component
     export function PDFLink(props: { src: string }) {
         return (<Link src={props.src}>{props.src}</Link>)
     }
 
+    // Section component
     export function Section(props: PropsWithChildren<{ title: string }>) {
         return (
             <View style={styles.section}>
@@ -33,6 +32,7 @@ export namespace Components {
         )
     }
 
+    // Subsection component
     export function List(props: { items: string[], type: 'bullet' | 'ordered' | 'dashed' }) {
         return (
             <View style={{ flexDirection: 'column', marginTop: 5 }}>

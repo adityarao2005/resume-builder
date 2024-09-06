@@ -16,6 +16,9 @@ function ProfileInformation() {
     return (
         <Fieldset className="space-y-8 p-4">
             <Legend className="text-lg font-bold">Information About You</Legend>
+            {
+                // Name and country fields
+            }
             <Field>
                 <Label>Name:</Label>
                 <Label className="input input-bordered flex items-center gap-2">
@@ -37,7 +40,9 @@ function ProfileInformation() {
                 <Label>Country:</Label>
                 {
                     // Select field for the country
+                    // replace with a country selector component
                 }
+                
                 <Select className="select select-bordered w-full" name="country">
                     <option disabled selected>Select a country</option>
                     <option>Canada</option>

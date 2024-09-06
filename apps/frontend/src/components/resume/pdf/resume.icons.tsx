@@ -1,6 +1,7 @@
 import { Resume } from '@/models/types';
 import { Svg, Path } from '@react-pdf/renderer';
 
+// Phone icon
 export function PhoneIcon() {
     return (<Svg viewBox="0 0 512 512" width={10} height={10} >
         <Path
@@ -10,6 +11,7 @@ export function PhoneIcon() {
     </Svg>)
 }
 
+// Mail icon
 export function MailIcon() {
     return (<Svg viewBox="0 0 512 512" width={10} height={10} >
         <Path
@@ -19,6 +21,7 @@ export function MailIcon() {
     </Svg>)
 }
 
+// LinkedIn icon
 export function LinkedInIcon() {
     return (<Svg viewBox="0 0 512 512" width={10} height={10} >
         <Path
@@ -28,6 +31,7 @@ export function LinkedInIcon() {
     </Svg>)
 }
 
+// Github icon
 export function GithubIcon() {
     return (<Svg viewBox="0 0 512 512" width={10} height={10} >
         <Path
@@ -37,6 +41,7 @@ export function GithubIcon() {
     </Svg>)
 }
 
+// User icon
 export function UserIcon() {
     return (<Svg viewBox="0 0 512 512" width={10} height={10} >
         <Path
@@ -46,6 +51,7 @@ export function UserIcon() {
     </Svg>)
 }
 
+// Address icon
 export function AddressIcon() {
     return (
         <Svg width={10} height={10} viewBox="0 0 576 512">
@@ -55,6 +61,7 @@ export function AddressIcon() {
     )
 }
 
+// Map of media profile icons
 const icons = new Map<string, React.FC>([
     ['LinkedIn', LinkedInIcon],
     ['Github', GithubIcon],
@@ -64,6 +71,7 @@ const icons = new Map<string, React.FC>([
     ['Address', AddressIcon]
 ])
 
+// Media icon component
 export function MediaIcon(props: { type: Resume.MediaProfile | 'Phone' | 'Email' | 'Address' }) {
     const IconComponent = icons.get(props.type)!;
     return <IconComponent />;

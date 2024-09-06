@@ -23,25 +23,25 @@ export const resumeSlice = createSlice({
         setEducation: (state, action: PayloadAction<namespace.IEducationEntry[]>) => {
             state.education = action.payload;
         },
-        setHighlights: (state, action: PayloadAction<Common.IDescription | undefined>) => {
+        setHighlights: (state, action: PayloadAction<Common.IDescription>) => {
             state.highlights = action.payload;
         },
-        setExperiences: (state, action: PayloadAction<namespace.IExperience[] | undefined>) => {
+        setExperiences: (state, action: PayloadAction<namespace.IExperience[]>) => {
             state.experiences = action.payload;
         },
-        setProjects: (state, action: PayloadAction<namespace.IProject[] | undefined>) => {
+        setProjects: (state, action: PayloadAction<namespace.IProject[]>) => {
             state.projects = action.payload;
         },
-        setExtraCurriculars: (state, action: PayloadAction<namespace.IExperience[] | undefined>) => {
+        setExtraCurriculars: (state, action: PayloadAction<namespace.IExperience[]>) => {
             state.extraCurriculars = action.payload;
         },
-        setSkills: (state, action: PayloadAction<namespace.ISkill[] | undefined>) => {
+        setSkills: (state, action: PayloadAction<namespace.ISkill[]>) => {
             state.skills = action.payload;
         },
-        setAwards: (state, action: PayloadAction<Common.IAward[] | undefined>) => {
+        setAwards: (state, action: PayloadAction<Common.IAward[]>) => {
             state.awards = action.payload;
         },
-        setHobbies: (state, action: PayloadAction<string[] | undefined>) => {
+        setHobbies: (state, action: PayloadAction<string[]>) => {
             state.hobbies = action.payload;
         }
     }

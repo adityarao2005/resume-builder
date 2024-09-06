@@ -10,13 +10,14 @@ import { convertISOAddressToName } from "@/components/resume/editor/addressEdito
 // ALlow the user to customize the styles of the resume including whether they want to wrap the sub section or not
 // and line spacing, font size, font family, background color, formatting of the text, etc.
 
-
+// Name component of resume
 function Name({ name }: { name: string }) {
     return (<View style={styles.title}>
         <Text>{name}</Text>
     </View>);
 }
 
+// Contact information component of resume
 function ContactInfo({ contactInfo }: { contactInfo: Resume.IContactInfo }) {
     const profiles = [...contactInfo.mediaProfiles.entries()].filter(([type, data]) => data.trim().length > 0);
     const addressName = contactInfo.address ? convertISOAddressToName(contactInfo.address) : '';
@@ -57,6 +58,7 @@ function ContactInfo({ contactInfo }: { contactInfo: Resume.IContactInfo }) {
         </View>)
 }
 
+// Highlights component of resume
 function Highlights({ highlights }: { highlights: Common.IDescription }) {
     return (
         <Components.Section title="Highlights Of Qualification">
@@ -65,10 +67,12 @@ function Highlights({ highlights }: { highlights: Common.IDescription }) {
     )
 }
 
+// Format the date
 function formatDate(date: Date) {
     return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 }
 
+// Education entry component of resume
 function EducationEntry({ entry }: { entry: Resume.IEducationEntry }) {
     // Create the list of items to be displayed
     const list = [];
@@ -93,6 +97,7 @@ function EducationEntry({ entry }: { entry: Resume.IEducationEntry }) {
     )
 }
 
+// Education component of resume
 function Education({ education }: { education: Resume.IEducationEntry[] }) {
     return (
         <Components.Section title="Education">
@@ -101,6 +106,7 @@ function Education({ education }: { education: Resume.IEducationEntry[] }) {
     )
 }
 
+// Experience entry component of resume
 function ExperienceEntry({ entry }: { entry: Resume.IExperience }) {
     console.log(entry.location);
     return (<View wrap={false}>
@@ -118,6 +124,7 @@ function ExperienceEntry({ entry }: { entry: Resume.IExperience }) {
     </View>)
 }
 
+// Experience component of resume
 function Experience({ experience }: { experience: Resume.IExperience[] }) {
     return (
         <Components.Section title="Experience">
@@ -126,6 +133,7 @@ function Experience({ experience }: { experience: Resume.IExperience[] }) {
     )
 }
 
+// Projects component of resume
 function Projects({ projects }: { projects: Resume.IProject[] }) {
     return (
         <Components.Section title="Projects">
@@ -146,6 +154,7 @@ function Projects({ projects }: { projects: Resume.IProject[] }) {
     )
 }
 
+// Extra curricular component of resume
 function ExtraCurricular({ experience }: { experience: Resume.IExperience[] }) {
     return (
         <Components.Section title="Extra Curricular">
@@ -154,6 +163,7 @@ function ExtraCurricular({ experience }: { experience: Resume.IExperience[] }) {
     )
 }
 
+// Skills component of resume
 function Skills({ skills }: { skills: Resume.ISkill[] }) {
     const map = new Map<string, string[]>();
 
@@ -176,6 +186,7 @@ function Skills({ skills }: { skills: Resume.ISkill[] }) {
     )
 }
 
+// Awards component of resume
 function Awards({ awards }: { awards: Common.IAward[] }) {
     return (
         <Components.Section title="Awards and Achievements">
@@ -195,6 +206,7 @@ function Awards({ awards }: { awards: Common.IAward[] }) {
     );
 }
 
+// Hobbies component of resume
 function Hobbies({ hobbies }: { hobbies: string[] }) {
     return (
         <Components.Section title="Hobbies">
@@ -210,7 +222,7 @@ export default function RenderResumeDocument({ document }: { document: Resume.Re
                 <Name name={document.name} />
                 <ContactInfo contactInfo={document.contactInfo} />
                 {document.highlights.lines.length > 0 && <Highlights highlights={document.highlights} />}
-                <Education education={document.education} />
+                {document.education.length > 0 && <Education education={document.education} />}
                 {document.experiences.length > 0 && <Experience experience={document.experiences} />}
                 {document.projects.length > 0 && <Projects projects={document.projects} />}
                 {document.extraCurriculars.length > 0 && <ExtraCurricular experience={document.extraCurriculars} />}

@@ -3,25 +3,25 @@ import DescriptionEditor from "@/components/resume/editor/descriptionEditor";
 import { Common } from "@/models/types";
 import { setHighlights } from "@/state/resumeSlice";
 import { useAppDispatch, useAppSelector } from "@/state/store";
-import { Fieldset, Field, Switch, Label, Button, Input } from "@headlessui/react";
+import { Fieldset } from "@headlessui/react";
+import Collapsable from "@/components/resume/editor/collapsableContainer";
 
 
 export default function HoQFragment() {
     const description = useAppSelector((state) => state.resume.highlights);
     const dispatch = useAppDispatch();
 
+    // Set the description
     const setDescription = (description: Common.IDescription) => {
         dispatch(setHighlights(description));
     }
 
+    // Render the component
     return (
-        <details className="collapse collapse-arrow border-base-300 border bg-base-200 shadow-md">
-            <summary className="collapse-title text-xl font-bold">Highlights of Qualifications</summary>
-            <div className="collapse-content">
-                <Fieldset className="space-y-2 flex-1">
-                    {<DescriptionEditor description={description} setDescription={setDescription} />}
-                </Fieldset>
-            </div>
-        </details>
+        <Collapsable title="Highlights of Qualifications">
+            <Fieldset className="space-y-2 flex-1">
+                <DescriptionEditor description={description} setDescription={setDescription} />
+            </Fieldset>
+        </Collapsable>
     )
 }

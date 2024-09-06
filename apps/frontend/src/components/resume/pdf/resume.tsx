@@ -9,7 +9,7 @@ const hobbies = ['Sketching', 'Painting', 'Violin (Western and Carnatic)', 'Badm
 const certifications = ['AWS Cloud Practitioner', 'Docker & Kubernetes']
 
 // Resume details - hardcoded for now
-// This will be replaced with a database call in the future
+// TODO: This will be replaced with a database call in the future
 export const resume: namespace.ResumeDetails = {
     name: "Aditya Rao",
     contactInfo: {

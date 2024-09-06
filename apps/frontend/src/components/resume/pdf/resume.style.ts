@@ -1,5 +1,6 @@
 import { StyleSheet, Font } from "@react-pdf/renderer";
 
+// Register font
 Font.register({
     family: 'Times-New-Roman',
     fonts: [
@@ -30,7 +31,7 @@ Font.register({
 Font.registerHyphenationCallback(word => [word]);
 
 
-// Create styles
+// Create styles of resume
 export const styles = StyleSheet.create({
     page: {
         flexDirection: 'column',
