@@ -6,7 +6,7 @@ import 'react-international-phone/style.css';
 import DescriptionEditor from "@/components/resume/editor/descriptionEditor";
 import { setProjects } from "@/state/resumeSlice";
 import Collapsable from "@/components/resume/editor/collapsableContainer";
-import { formatDate } from "@/components/resume/editor/formatDate";
+import { formatDate } from "@/components/formatDate";
 
 function ProjectsEntryFragment({ entry, index }: { entry: Resume.IProject, index: number }) {
     const projects = useAppSelector((state) => state.resume.projects);

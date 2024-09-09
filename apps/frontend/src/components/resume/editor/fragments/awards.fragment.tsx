@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Field, Button, Input } from "@headlessui/react";
 import Collapsable from "@/components/resume/editor/collapsableContainer";
 import AddButton from "@/components/resume/editor/addbutton";
-import { formatDate } from "@/components/resume/editor/formatDate";
+import { formatDate } from "@/components/formatDate";
 
 // Award editor props
 export interface IAwardEditorProps {

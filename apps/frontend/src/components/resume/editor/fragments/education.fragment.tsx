@@ -8,7 +8,7 @@ import DescriptionEditor from "@/components/resume/editor/descriptionEditor";
 import { setEducation } from "@/state/resumeSlice";
 import CourseEditor from "../coursesEditor";
 import Collapsable from "@/components/resume/editor/collapsableContainer";
-import { formatDate } from "@/components/resume/editor/formatDate";
+import { formatDate } from "@/components/formatDate";
 
 function EducationEntryFragment({ entry, index }: { entry: Resume.IEducationEntry, index: number }) {
     const education = useAppSelector((state) => state.resume.education);

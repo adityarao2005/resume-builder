@@ -7,7 +7,7 @@ import AddressEditor from "@/components/resume/editor/addressEditor";
 import DescriptionEditor from "@/components/resume/editor/descriptionEditor";
 import { setExtraCurriculars } from "@/state/resumeSlice";
 import Collapsable from "@/components/resume/editor/collapsableContainer";
-import { formatDate } from "@/components/resume/editor/formatDate";
+import { formatDate } from "@/components/formatDate";
 
 // Extra Curriculars Entry Fragment
 function ExtraCurricularFragment({ entry, index }: { entry: Resume.IExperience, index: number }) {
