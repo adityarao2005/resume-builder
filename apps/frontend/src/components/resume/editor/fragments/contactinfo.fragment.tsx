@@ -14,8 +14,9 @@ export default function ContactInfoFragment() {
     const dispatch = useAppDispatch();
 
     // Set phone
-    const setPhone = (phone: string) => {
-        dispatch(setContactInfo({ ...contactInfo, phone: parsePhoneNumber(phone).formatInternational() }));
+    const setPhone = (phone?: string) => {
+        if (phone && phone.trim().length > 5)
+            dispatch(setContactInfo({ ...contactInfo, phone: parsePhoneNumber(phone).formatInternational() }));
     }
 
     // Set email
@@ -42,10 +43,12 @@ export default function ContactInfoFragment() {
                 {
                     // Phone number input
                 }
+
                 <Field>
                     <Label className="font-bold">Phone:</Label>
                     <PhoneInput defaultCountry="ua" className="w-full" value={contactInfo.phone} onChange={setPhone} />
                 </Field>
+
                 {
                     // Email input
                 }

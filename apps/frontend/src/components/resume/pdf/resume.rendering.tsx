@@ -24,17 +24,23 @@ function ContactInfo({ contactInfo }: { contactInfo: Resume.IContactInfo }) {
 
     return (
         <View style={styles.contactInfo}>
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                <MediaIcon type='Phone' />
-                <Text>&nbsp; {contactInfo.phone} |&nbsp;</Text>
-            </View>
+            {
+                contactInfo.phone && contactInfo.phone.length > 0 &&
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                    <MediaIcon type='Phone' />
+                    <Text>&nbsp; {contactInfo.phone} |&nbsp;</Text>
+                </View>
+            }
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                <MediaIcon type="Email" />
-                <Text>&nbsp;
-                    <Link src={"mailto:" + contactInfo.email}>{contactInfo.email}</Link> | &nbsp;
-                </Text>
-            </View>
+            {
+                contactInfo.email && contactInfo.email.length > 0 &&
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                    <MediaIcon type="Email" />
+                    <Text>&nbsp;
+                        <Link src={"mailto:" + contactInfo.email}>{contactInfo.email}</Link> | &nbsp;
+                    </Text>
+                </View>
+            }
 
             {
                 contactInfo.address &&

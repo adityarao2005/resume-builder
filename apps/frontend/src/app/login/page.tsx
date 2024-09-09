@@ -39,7 +39,7 @@ export default function LoginPage() {
                             </Label>
                             <Input type="password" placeholder="password" className="input input-bordered" required />
                             <Label className="label">
-                                <Link href="#" className="label-text-alt link">Forgot password?</Link>
+                                <Link href="/forgot-password" className="label-text-alt link">Forgot password?</Link>
                             </Label>
                             <Label className="label">
                                 <span className="label-text-alt">Don't have an account? &nbsp;

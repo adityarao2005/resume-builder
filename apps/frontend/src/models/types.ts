@@ -71,8 +71,8 @@ export namespace Resume {
 
     // Contact information interface
     export interface IContactInfo {
-        email: string;
-        phone: string;
+        email?: string;
+        phone?: string;
         address?: Common.IAddress;
         mediaProfiles: Map<MediaProfile, string>; // e.g [["LinkedIn", "https://www.linkedin.com/in/username"]]
     }

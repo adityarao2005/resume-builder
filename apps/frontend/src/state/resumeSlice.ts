@@ -1,8 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { resume as initialState } from '@/components/resume/pdf/resume';
+//import { resume as initialState } from '@/components/resume/pdf/resume';
 import { Resume as namespace, Common } from '@/models/types';
+
+const initialState: namespace.ResumeDetails = {
+    name: '',
+    contactInfo: {
+        mediaProfiles: new Map()
+    },
+    education: [],
+    highlights: { lines: [] },
+    experiences: [],
+    projects: [],
+    extraCurriculars: [],
+    skills: [],
+    awards: [],
+    hobbies: [],
+    version: 0,
+    template: ''
+};
+
 
 // Create a slice for the resume
 export const resumeSlice = createSlice({

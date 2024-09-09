@@ -14,41 +14,43 @@ function Container({ children }: PropsWithChildren<{}>) {
     )
 }
 
-export default function RegisterPage() {
+export default function ForgotPasswordPage() {
+
+    async function sendChangePasswordEmail() {
+        'use server'
+        
+        
+    }
+
     return (
         <Container>
             <div className="text-center lg:text-left">
-                <h1 className="text-5xl font-bold">Register now!</h1>
+                <h1 className="text-5xl font-bold">Forgot password?<br /> Enter your email!</h1>
                 <p className="py-6">
-                    Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-                    quasi. In deleniti eaque aut repudiandae et a id nisi.
+                    We will email a change password link to your email. Please check your email once submitted.
                 </p>
             </div>
             <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-                <form className="card-body">
+                <form className="card-body" action={sendChangePasswordEmail}>
                     <Fieldset>
                         <Field className="form-control">
                             <Label className="label">
                                 <span className="label-text">Email</span>
                             </Label>
                             <Input type="email" placeholder="email" className="input input-bordered" required />
-                        </Field>
-                        <Field className="form-control">
                             <Label className="label">
-                                <span className="label-text">Password</span>
-                            </Label>
-                            <Input type="password" placeholder="password" className="input input-bordered" required />
-                            <Label className="label">
-                                <Link href="#" className="label-text-alt link">Forgot password?</Link>
+                                <span className="label-text-alt">Remember your password? &nbsp;
+                                    <Link href="/login" className="link">Click me and login!</Link>
+                                </span>
                             </Label>
                             <Label className="label">
-                                <span className="label-text-alt">Have an account already? &nbsp;
-                                    <Link href="/login" className="link">Click me and login!</Link> Or:
+                                <span className="label-text-alt">Don't have an account? &nbsp;
+                                    <Link href="/register" className="link">Click me and register!</Link>
                                 </span>
                             </Label>
                         </Field>
                         <Field className="form-control mt-2 space-y-2">
-                            <Button className="btn btn-primary">Register</Button>
+                            <Button className="btn btn-primary" type="submit">Submit</Button>
                         </Field>
                     </Fieldset>
                 </form>
