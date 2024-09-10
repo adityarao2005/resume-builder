@@ -1,8 +1,8 @@
 "use client";
 import Modal, { showModal } from "@/components/modal";
-import { Input, Button, Field, Fieldset, Label } from "@headlessui/react";
+import { Input, Button, Field, Fieldset, Label, Select } from "@headlessui/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatDate } from "@/components/formatDate"
 
 interface ResumeEntry {
@@ -111,11 +111,11 @@ function FilterModal({ filterProps, setFilterProps }: { filterProps: FilterModal
     }
 
     const setBeforeState = (before: Date) => {
-        setFilterProps({...filterProps, before});
+        setFilterProps({ ...filterProps, before });
     }
-    
+
     const setAfterState = (after: Date) => {
-        setFilterProps({...filterProps, after});
+        setFilterProps({ ...filterProps, after });
     }
 
     return (<Modal name="filter_modal" title="Filter">
@@ -127,7 +127,7 @@ function FilterModal({ filterProps, setFilterProps }: { filterProps: FilterModal
             </Field>
             <Field>
                 <Label className="font-bold">After:&nbsp;</Label>
-                <Input className="input input-bordered" type="date" value={filterProps.after ? formatDate(filterProps.after): ''}
+                <Input className="input input-bordered" type="date" value={filterProps.after ? formatDate(filterProps.after) : ''}
                     onChange={(e) => setAfterState(new Date(e.target.value))} />
             </Field>
             <Field>
@@ -147,8 +147,64 @@ function FilterModal({ filterProps, setFilterProps }: { filterProps: FilterModal
     </Modal>)
 }
 
-function SortModal() {
+type SortBy = "title" | "createdAt";
+type SortOrder = "ascending" | "descending";
 
+interface SortModalProps {
+    by: SortBy;
+    order: SortOrder;
+}
+
+function SortModal({ sortProps, setSortProps }: { sortProps: SortModalProps, setSortProps: (props: SortModalProps) => void }) {
+    const [sortBy, setSortBy] = useState<SortBy>("title");
+    const [sortOrder, setSortOrder] = useState<SortOrder>("ascending");
+
+    const setSortByState = (by: SortBy) => {
+        setSortBy(by);
+        setSortProps({ ...sortProps, by });
+    }
+
+    const setSortOrderState = (order: SortOrder) => {
+        setSortOrder(order);
+        setSortProps({ ...sortProps, order });
+    }
+
+    return (<Modal name="sort_modal" title="Sort">
+        <Fieldset className="space-y-1">
+            <Field>
+                <Label className="font-bold">By: &nbsp;</Label>
+                <Select name="sort-by" className="select select-bordered w-full max-w-xs"
+                    aria-label="Sort by select"
+                    value={sortBy}
+                    onChange={e => setSortByState(e.target.value as SortBy)}>
+                    <option value="title">Title</option>
+                    <option value="createdAt">Created At</option>
+                </Select>
+            </Field>
+            <Field>
+                <Label className="font-bold">Order: &nbsp;</Label>
+                <Select name="sort-order" className="select select-bordered w-full max-w-xs"
+                    aria-label="Sort order select"
+                    value={sortOrder}
+                    onChange={e => setSortOrderState(e.target.value as SortOrder)}>
+                    <option value="ascending">Ascending</option>
+                    <option value="descending">Descending</option>
+                </Select>
+            </Field>
+        </Fieldset>
+    </Modal >)
+}
+
+function CreateModal() {
+    return (
+        <Modal name="create_modal" title="Create">
+            <div className="flex w-full flex-col lg:flex-row">
+                <div className="card bg-base-300 rounded-box grid h-32 flex-grow place-items-center">Create with AI</div>
+                <div className="divider lg:divider-horizontal">OR</div>
+                <div className="card bg-base-300 rounded-box grid h-32 flex-grow place-items-center">Create from scratch</div>
+            </div>
+        </Modal>
+    )
 }
 
 export default function Page() {
@@ -157,28 +213,24 @@ export default function Page() {
     const [entries, setEntries] = useState(initialState);
     const [searchValue, setSearchValue] = useState("");
     const [filterProps, setFilterProps] = useState<FilterModalProps>({ skills: [] });
+    const [sortProps, setSortProps] = useState<SortModalProps>({ by: "title", order: "ascending" });
 
     // Filter entries based on search query & filter queries & sort queries
-    const generateEntries = (query: string) => {
-        setEntries(initialState.filter(entry =>
-            entry.job.title.toLowerCase().includes(query.toLowerCase()) ||
-            entry.job.summary.toLowerCase().includes(query.toLowerCase()) ||
-            entry.job.description.toLowerCase().includes(query.toLowerCase()) ||
-            entry.skills.map((e) =>
-                e.toLowerCase().includes(query.toLowerCase())
-            ).reduce((a, b) => a || b)
-        ));
-    }
-
-    // Search for entries based on query
-    const search = (query: string) => {
-        setSearchValue(query);
-        generateEntries(query);
-    }
-
-    const filter = (filterProps: FilterModalProps) => {
-        setFilterProps(filterProps);
+    const generateEntries = () => {
         let entries = initialState;
+
+        // search
+        entries = entries
+            .filter(entry =>
+                entry.job.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+                entry.job.summary.toLowerCase().includes(searchValue.toLowerCase()) ||
+                entry.job.description.toLowerCase().includes(searchValue.toLowerCase()) ||
+                entry.skills.map((e) =>
+                    e.toLowerCase().includes(searchValue.toLowerCase())
+                ).reduce((a, b) => a || b)
+            )
+
+        // filter
         if (filterProps.before) {
             entries = entries.filter(entry => entry.createdAt < filterProps.before!);
         }
@@ -192,23 +244,67 @@ export default function Page() {
                 ).reduce((a, b) => a || b)
             );
         }
+
+        // sort
+        entries = entries.sort((a, b) => {
+            if (sortProps.by === 'title') {
+                return sortProps.order === 'ascending' ?
+                    a.job.title.localeCompare(b.job.title) :
+                    b.job.title.localeCompare(a.job.title);
+            } else {
+                return sortProps.order === 'ascending' ?
+                    a.createdAt.getTime() - b.createdAt.getTime() :
+                    b.createdAt.getTime() - a.createdAt.getTime();
+            }
+        })
+
         setEntries(entries);
     }
+
+    // Search for entries based on query
+    const search = (query: string) => {
+        setSearchValue(query);
+    }
+
+    const filter = (filterProps: FilterModalProps) => {
+        setFilterProps(filterProps);
+    }
+
+    const sort = (sortProps: SortModalProps) => {
+        setSortProps(sortProps);
+    }
+
+    useEffect(() => {
+        generateEntries();
+    }, [searchValue, filterProps, sortProps]);
 
     return (<div className="flex-1 flex px-52 bg-base-300">
         <div className="bg-base-100 flex-1 flex flex-col">
             <div className="w-full flex flex-row p-4 space-x-2">
                 <div className="flex flex-col h-full align-middle justify-center">Search:</div>
                 <SearchBar value={searchValue} onChange={search} />
+
                 <Button className="btn btn-primary" onClick={() => showModal('filter_modal')}>Filter</Button>
                 <FilterModal filterProps={filterProps} setFilterProps={filter} />
-                <Button className="btn btn-primary">Sort</Button>
-                <Button className="btn btn-primary">Create</Button>
+
+                <Button className="btn btn-primary" onClick={() => showModal('sort_modal')}>Sort</Button>
+                <SortModal sortProps={sortProps} setSortProps={sort} />
+
+                <Button className="btn btn-primary" onClick={() => showModal('create_modal')}>Create</Button>
+                <CreateModal />
             </div>
             <div className="w-full flex flex-row p-4 space-x-2">
                 {searchValue.length > 0 && <TabStopper text={searchValue} action={() => search("")} />}
-                {filterProps.before && <TabStopper text={`Before: ${formatDate(filterProps.before)}`} action={() => filter({ ...filterProps, before: undefined })} />}
-                {filterProps.after && <TabStopper text={`After: ${formatDate(filterProps.after)}`} action={() => filter({ ...filterProps, after: undefined })} />}
+                {filterProps.before &&
+                    <TabStopper
+                        text={`Before: ${formatDate(filterProps.before)}`}
+                        action={() => filter({ ...filterProps, before: undefined })} />
+                }
+                {filterProps.after &&
+                    <TabStopper
+                        text={`After: ${formatDate(filterProps.after)}`}
+                        action={() => filter({ ...filterProps, after: undefined })} />
+                }
                 {
                     filterProps.skills.map((skill, index) => {
                         const list = [...filterProps.skills];
@@ -216,6 +312,7 @@ export default function Page() {
                         return <TabStopper key={index} text={skill} action={() => filter({ ...filterProps, skills: list })} />
                     })
                 }
+                <TabStopper text={`Sort by: ${sortProps.by} (${sortProps.order})`} action={() => sort({ order: 'ascending', by: 'title' })} />
             </div>
             <div className="flex flex-wrap p-4">
                 {entries.map((entry, index) => <ResumeEntry key={index} {...entry} />)}
