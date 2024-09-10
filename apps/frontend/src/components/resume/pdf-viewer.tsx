@@ -2,6 +2,7 @@
 import dynamic from "next/dynamic";
 import RenderResumeDocument from "./pdf/resume.rendering";
 import { useAppSelector } from "@/state/store";
+import { useEffect, useRef, useState } from "react";
 
 // Dynamic import of the PDFViewer component
 const PDFViewer = dynamic(
@@ -15,11 +16,24 @@ const PDFViewer = dynamic(
 // ResumeViewer component
 export default function ResumeViewer() {
     const resumeState = useAppSelector((state) => state.resume);
+    const [state, setState] = useState(resumeState);
+    const ref = useRef<NodeJS.Timeout>();
+
+    // Add a delay/timeout to the state update to prevent iframe from reloading on every state change
+    useEffect(() => {
+        if (ref.current) {
+            clearTimeout(ref.current);
+        }
+
+        ref.current = setTimeout(() => {
+            setState(resumeState);
+        }, 1000)
+    }, [resumeState]);
 
     return (
         <>
             <PDFViewer className='flex-1'>
-                <RenderResumeDocument document={resumeState} />
+                <RenderResumeDocument document={state} />
             </PDFViewer>
         </>
     );
