@@ -1,5 +1,5 @@
 "use client"
-import { Fieldset, Legend, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import { Fieldset, Legend, Tab, TabGroup, TabList, TabPanel, TabPanels, Button } from "@headlessui/react";
 import { PropsWithChildren } from "react";
 import 'react-international-phone/style.css';
 import Name from "@/components/profile/fragments/name.fragment";
@@ -19,6 +19,10 @@ function Header() {
         <p className="py-6">
             View and update the profile and settings with the panel on the left.
         </p>
+        {
+            // TODO: Implement this as a server generated pdf from react
+        }
+        <Button className="btn btn-primary w-full">Generate CV</Button>
     </div>)
 }
 
