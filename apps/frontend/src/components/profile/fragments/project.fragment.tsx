@@ -7,6 +7,7 @@ import DescriptionEditor from "@/components/editor/descriptionEditor";
 import { setProjects } from "@/state/profileSlice";
 import { formatDate } from "@/components/formatDate";
 import { SkillsEditor } from "@/components/resume/fragments/skills.fragment";
+import { CollapsableField } from "@/components/editor/collapsableContainer";
 
 function ProjectsEntryFragment({ entry, index }: { entry: Profile.IProfileProject, index: number }) {
     const projects = useAppSelector((state) => state.profile.projects);
@@ -124,10 +125,9 @@ export default function ProjectFragment() {
     }
 
     return (
-        <div className="space-y-2 flex-1 drop-shadow-md bg-base-100 rounded-xl p-2">
-            <h1 className="text-lg font-bold">Projects</h1>
+        <CollapsableField title="Projects">
             <Button className="btn bg-base-100 shadow-md w-full" onClick={addProject}>Add Projects</Button>
             {projects.map((entry, index) => <ProjectsEntryFragment key={index} entry={entry} index={index} />)}
-        </div>
+        </CollapsableField>
     )
 }

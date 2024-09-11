@@ -8,6 +8,7 @@ import DescriptionEditor from "@/components/editor/descriptionEditor";
 import { setExtraCurriculars } from "@/state/profileSlice";
 import { formatDate } from "@/components/formatDate";
 import { SkillsEditor } from "@/components/resume/fragments/skills.fragment";
+import { CollapsableField } from "@/components/editor/collapsableContainer";
 
 function ExperienceEntryFragment({ entry, index }: { entry: Profile.IProfileExperience, index: number }) {
     const experiences = useAppSelector((state) => state.profile.extraCurriculars);
@@ -152,10 +153,9 @@ export default function ECFragment() {
     }
 
     return (
-        <div className="space-y-2 flex-1 drop-shadow-md bg-base-100 rounded-xl p-2">
-            <h1 className="text-lg font-bold">Extra Curriculars</h1>
+        <CollapsableField title="Extra Curriculars">
             <Button className="btn bg-base-100 shadow-md w-full" onClick={addExperience}>Add Extra Curricular Activity</Button>
             {experiences.map((entry, index) => <ExperienceEntryFragment key={index} entry={entry} index={index} />)}
-        </div>
+        </CollapsableField>
     )
 }

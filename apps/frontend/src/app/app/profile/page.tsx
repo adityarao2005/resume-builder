@@ -16,11 +16,10 @@ const PDFDownloadLink = dynamic(
     () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
     {
         ssr: false,
-        loading: () => <p>Loading...</p>,
+        loading: () => <Button className="btn btn-primary w-full" disabled>Generate CV</Button>,
     },
 );
 
-// TODO: finish this page
 // Reuse some components from the form fragments
 // Header component
 function Header() {
@@ -107,7 +106,6 @@ export default function ProfilePage() {
                         <TabList className="tabs tabs-lifted">
                             <Tab className="tab">Profile Information</Tab>
                             <Tab className="tab">Settings</Tab>
-                            <Tab className="tab">Experience</Tab>
                         </TabList>
                         <TabPanels className="h-full">
                             {
@@ -115,7 +113,6 @@ export default function ProfilePage() {
                             }
                             <TabPanel className="h-full relative"><ProfileInformation /></TabPanel>
                             <TabPanel>Content 2</TabPanel>
-                            <TabPanel>Content 3</TabPanel>
                         </TabPanels>
                     </TabGroup>
                 </div>

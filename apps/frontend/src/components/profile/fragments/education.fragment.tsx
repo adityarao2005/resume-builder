@@ -8,6 +8,7 @@ import DescriptionEditor from "@/components/editor/descriptionEditor";
 import { setEducation } from "@/state/profileSlice";
 import CourseEditor from "@/components/editor/coursesEditor";
 import { formatDate } from "@/components/formatDate";
+import { CollapsableField } from "@/components/editor/collapsableContainer";
 
 function EducationEntryFragment({ entry, index }: { entry: Resume.IEducationEntry, index: number }) {
     const education = useAppSelector((state) => state.profile.education);
@@ -170,10 +171,9 @@ export default function EducationFragment() {
     }
 
     return (
-        <div className="space-y-2 flex-1 drop-shadow-md bg-base-100 rounded-xl p-2">
-            <h1 className="text-lg font-bold">Education</h1>
+        <CollapsableField title="Education">
             <Button className="btn bg-base-100 shadow-md w-full" onClick={addEducation}>Add Education</Button>
             {education.map((entry, index) => <EducationEntryFragment key={index} entry={entry} index={index} />)}
-        </div>
+        </CollapsableField>
     )
 }

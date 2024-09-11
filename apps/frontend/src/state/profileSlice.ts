@@ -3,12 +3,13 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 //import { resume as initialState } from '@/components/resume/pdf/resume';
 import { Resume as namespace, Common, Profile } from '@/models/types';
+//import {profile as initialState} from '@/app/app/profile/profile';
 
 const initialState: Profile.IProfile = {
     userID: '',
     name: '',
     contactInfo: {
-        mediaProfiles: new Map()
+        mediaProfiles: new Map(),
     },
     education: [],
     experiences: [],
@@ -17,7 +18,7 @@ const initialState: Profile.IProfile = {
     otherSkills: [],
     otherAwards: [],
     hobbies: []
-};
+}
 
 // Create a slice for the profile
 export const profileSlice = createSlice({
