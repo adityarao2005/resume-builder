@@ -3,11 +3,11 @@ import { Common, Resume } from "@/models/types";
 import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Button, Field, Fieldset } from "@headlessui/react";
 import 'react-international-phone/style.css';
-import AddressEditor from "@/components/resume/editor/addressEditor";
-import DescriptionEditor from "@/components/resume/editor/descriptionEditor";
+import AddressEditor from "@/components/editor/addressEditor";
+import DescriptionEditor from "@/components/editor/descriptionEditor";
 import { setEducation } from "@/state/resumeSlice";
-import CourseEditor from "../coursesEditor";
-import Collapsable from "@/components/resume/editor/collapsableContainer";
+import CourseEditor from "../../editor/coursesEditor";
+import Collapsable from "@/components/editor/collapsableContainer";
 import { formatDate } from "@/components/formatDate";
 
 function EducationEntryFragment({ entry, index }: { entry: Resume.IEducationEntry, index: number }) {

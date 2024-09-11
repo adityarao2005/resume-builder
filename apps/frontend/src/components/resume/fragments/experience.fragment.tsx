@@ -3,10 +3,10 @@ import { Common, Resume } from "@/models/types";
 import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Button, Field, Fieldset } from "@headlessui/react";
 import 'react-international-phone/style.css';
-import AddressEditor from "@/components/resume/editor/addressEditor";
-import DescriptionEditor from "@/components/resume/editor/descriptionEditor";
+import AddressEditor from "@/components/editor/addressEditor";
+import DescriptionEditor from "@/components/editor/descriptionEditor";
 import { setExperiences } from "@/state/resumeSlice";
-import Collapsable from "@/components/resume/editor/collapsableContainer";
+import Collapsable from "@/components/editor/collapsableContainer";
 import { formatDate } from "@/components/formatDate";
 
 function ExperienceEntryFragment({ entry, index }: { entry: Resume.IExperience, index: number }) {

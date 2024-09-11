@@ -3,9 +3,9 @@ import { Common, Resume } from "@/models/types";
 import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Button, Field, Fieldset } from "@headlessui/react";
 import 'react-international-phone/style.css';
-import DescriptionEditor from "@/components/resume/editor/descriptionEditor";
+import DescriptionEditor from "@/components/editor/descriptionEditor";
 import { setProjects } from "@/state/resumeSlice";
-import Collapsable from "@/components/resume/editor/collapsableContainer";
+import Collapsable from "@/components/editor/collapsableContainer";
 import { formatDate } from "@/components/formatDate";
 
 function ProjectsEntryFragment({ entry, index }: { entry: Resume.IProject, index: number }) {

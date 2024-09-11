@@ -2,8 +2,8 @@
 import { setHobbies } from "@/state/resumeSlice";
 import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Fieldset, Field, Button, Label, Input } from "@headlessui/react";
-import Collapsable from "@/components/resume/editor/collapsableContainer";
-import AddButton from "@/components/resume/editor/addbutton";
+import Collapsable from "@/components/editor/collapsableContainer";
+import AddButton from "@/components/editor/addbutton";
 
 // Hobbies Fragment
 export interface IHobbiesEditorProps {

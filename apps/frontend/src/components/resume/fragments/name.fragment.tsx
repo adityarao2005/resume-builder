@@ -1,7 +1,7 @@
 "use client"
 import { useAppDispatch, useAppSelector } from "@/state/store";
 import { setName } from "@/state/resumeSlice";
-import Collapsable from "@/components/resume/editor/collapsableContainer";
+import Collapsable from "@/components/editor/collapsableContainer";
 
 export default function NameFragment() {
     const name = useAppSelector((state) => state.resume.name);

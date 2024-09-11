@@ -1,10 +1,10 @@
 "use client"
-import DescriptionEditor from "@/components/resume/editor/descriptionEditor";
+import DescriptionEditor from "@/components/editor/descriptionEditor";
 import { Common } from "@/models/types";
 import { setHighlights } from "@/state/resumeSlice";
 import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Fieldset } from "@headlessui/react";
-import Collapsable from "@/components/resume/editor/collapsableContainer";
+import Collapsable from "@/components/editor/collapsableContainer";
 
 
 export default function HoQFragment() {
