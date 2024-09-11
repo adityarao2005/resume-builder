@@ -1,17 +1,13 @@
 "use client"
-import { Field, Fieldset, Input, Label, Legend, Switch, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import { PropsWithChildren, useState } from "react";
-import { Common, Resume } from "@/models/types";
-import { PhoneInput } from "react-international-phone";
+import { Fieldset, Legend, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import { PropsWithChildren } from "react";
 import 'react-international-phone/style.css';
-import { parsePhoneNumber } from "libphonenumber-js";
-import AddressEditor from "@/components/editor/addressEditor";
-import { useAppDispatch, useAppSelector } from "@/state/store";
-import { setContactInfo, setName } from "@/state/profileSlice";
-import ReduxProvider from "@/state/redux-provider";
 import Name from "@/components/profile/fragments/name.fragment";
 import ContactInfoFragment from "@/components/profile/fragments/contactinfo.fragment";
 import EducationFragment from "@/components/profile/fragments/education.fragment";
+import ExperienceFragment from "@/components/profile/fragments/experience.fragment";
+import ProjectFragment from "@/components/profile/fragments/project.fragment";
+import ECFragment from "@/components/profile/fragments/ec.fragment";
 
 
 // TODO: finish this page
@@ -34,7 +30,9 @@ function ProfileInformation() {
             <Name />
             <ContactInfoFragment />
             <EducationFragment />
-
+            <ExperienceFragment />
+            <ProjectFragment />
+            <ECFragment />
         </Fieldset>
     );
 }

@@ -61,7 +61,7 @@ export function Skills({ skills, setSkills }: ISkillsEditorProps) {
 }
 
 // Skills editor
-function SkillsEditor({ skills, setSkills }: ISkillsEditorProps) {
+export function SkillsEditor({ skills, setSkills }: ISkillsEditorProps) {
     return (
         <>
             <AddButton<Resume.ISkill> data={skills} setData={setSkills} title="Skill" sample={{ type: '', name: '' }} />
