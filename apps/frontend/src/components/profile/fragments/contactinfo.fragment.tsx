@@ -3,14 +3,14 @@ import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Field, Fieldset, Input, Label, Switch } from "@headlessui/react";
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
-import { setContactInfo } from "@/state/resumeSlice";
+import { setContactInfo } from "@/state/profileSlice";
 import { Resume, Common } from "@/models/types";
 import { parsePhoneNumber } from "libphonenumber-js";
-import AddressEditor from "@/components/resume/editor/addressEditor";
-import Collapsable from "@/components/resume/editor/collapsableContainer";
+import AddressEditor from "@/components/editor/addressEditor";
+import { CollapsableField } from "@/components/editor/collapsableContainer";
 
 export default function ContactInfoFragment() {
-    const contactInfo = useAppSelector((state) => state.resume.contactInfo);
+    const contactInfo = useAppSelector((state) => state.profile.contactInfo);
     const dispatch = useAppDispatch();
 
     // Set phone
@@ -38,8 +38,8 @@ export default function ContactInfoFragment() {
     }
 
     return (
-        <Collapsable title="Contact Info">
-            <Fieldset className="space-y-2 flex-1">
+        <CollapsableField title="Contact Info">
+            <Fieldset>
                 {
                     // Phone number input
                 }
@@ -110,5 +110,6 @@ export default function ContactInfoFragment() {
                 }
                 {contactInfo.address && <AddressEditor address={contactInfo.address} setAddress={setAddress} />}
             </Fieldset>
-        </Collapsable>)
+        </CollapsableField>
+    )
 }

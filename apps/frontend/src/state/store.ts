@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import ResumeReducer from '@/state/resumeSlice';
+import ProfileReducer from '@/state/profileSlice';
 
 // Create a redux store with the resume reducer
 export const store = configureStore({
     reducer: {
-        resume: ResumeReducer
+        resume: ResumeReducer,
+        profile: ProfileReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
 });

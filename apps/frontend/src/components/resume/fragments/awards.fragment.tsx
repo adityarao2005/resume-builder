@@ -2,8 +2,8 @@ import { Common } from "@/models/types";
 import { setAwards } from "@/state/resumeSlice";
 import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Field, Button, Input } from "@headlessui/react";
-import Collapsable from "@/components/resume/editor/collapsableContainer";
-import AddButton from "@/components/resume/editor/addbutton";
+import Collapsable from "@/components/editor/collapsableContainer";
+import AddButton from "@/components/editor/addbutton";
 import { formatDate } from "@/components/formatDate";
 
 // Award editor props
@@ -71,7 +71,7 @@ export function Awards({ awards, setAwards }: IAwardEditorProps) {
     ))
 }
 
-function AwardsEditor({ awards, setAwards }: IAwardEditorProps) {
+export function AwardsEditor({ awards, setAwards }: IAwardEditorProps) {
     // Return a list of award view models
     return (
         <>

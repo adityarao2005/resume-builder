@@ -2,8 +2,8 @@ import { Resume } from "@/models/types";
 import { setSkills } from "@/state/resumeSlice";
 import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Field, Button, Input } from "@headlessui/react";
-import Collapsable from "@/components/resume/editor/collapsableContainer";
-import AddButton from "@/components/resume/editor/addbutton";
+import Collapsable from "@/components/editor/collapsableContainer";
+import AddButton from "@/components/editor/addbutton";
 
 // Skill editor props
 export interface ISkillsEditorProps {
@@ -61,7 +61,7 @@ export function Skills({ skills, setSkills }: ISkillsEditorProps) {
 }
 
 // Skills editor
-function SkillsEditor({ skills, setSkills }: ISkillsEditorProps) {
+export function SkillsEditor({ skills, setSkills }: ISkillsEditorProps) {
     return (
         <>
             <AddButton<Resume.ISkill> data={skills} setData={setSkills} title="Skill" sample={{ type: '', name: '' }} />

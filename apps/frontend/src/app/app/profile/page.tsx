@@ -1,60 +1,93 @@
-import { Field, Fieldset, Input, Label, Legend, Select, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import { PropsWithChildren } from "react";
+"use client"
+import { Fieldset, Legend, Tab, TabGroup, TabList, TabPanel, TabPanels, Button } from "@headlessui/react";
+import { PropsWithChildren, useEffect, useRef, useState } from "react";
+import 'react-international-phone/style.css';
+import { NameFragment, ContactInfoFragment, EducationFragment, ExperienceFragment, ProjectFragment, ECFragment, SkillsFragment, AwardsFragment, HobbiesFragment } from "@/components/profile/fragments";
+import { useAppSelector } from "@/state/store";
+import { Resume } from "@/models/types";
+import { initialState } from "@/state/resumeSlice";
+import RenderResumeDocument from "@/components/resume/pdf/resume.rendering";
+import dynamic from "next/dynamic";
 
 
+
+// Dynamic import of the PDFViewer component
+const PDFDownloadLink = dynamic(
+    () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
+    {
+        ssr: false,
+        loading: () => <Button className="btn btn-primary w-full" disabled>Generate CV</Button>,
+    },
+);
+
+// Reuse some components from the form fragments
 // Header component
 function Header() {
+    const profile = useAppSelector((state) => state.profile);
+    const [cv, setCV] = useState<Resume.ResumeDetails>(initialState);
+    const ref = useRef<NodeJS.Timeout>();
+
+    useEffect(() => {
+        if (ref.current) {
+            clearTimeout(ref.current);
+        }
+
+        // Add a delay/timeout to the state update to prevent document from reloading on every state change
+        ref.current = setTimeout(() => {
+            setCV({
+                name: profile.name,
+                contactInfo: profile.contactInfo,
+                education: profile.education,
+                highlights: { lines: [] },
+                experiences: profile.experiences,
+                projects: profile.projects,
+                extraCurriculars: profile.extraCurriculars,
+                skills: [
+                    ...profile.otherSkills,
+                    ...profile.experiences.flatMap((exp) => exp.skills),
+                    ...profile.projects.flatMap((exp) => exp.skills),
+                    ...profile.extraCurriculars.flatMap((exp) => exp.skills),
+                ],
+                awards: profile.otherAwards,
+                hobbies: profile.hobbies,
+                version: 0,
+                template: ''
+            });
+        }, 1000);
+    }, [profile]);
+
     return (<div className="text-center lg:text-left">
         <h1 className="text-5xl font-bold">Profile & Settings Page!</h1>
         <p className="py-6">
             View and update the profile and settings with the panel on the left.
         </p>
+        {
+            // TODO: Implement this as a server generated pdf from react
+        }
+        <PDFDownloadLink document={<RenderResumeDocument document={cv} />} fileName="cv.pdf" className="btn btn-primary w-full">Generate CV</PDFDownloadLink>
     </div>)
 }
 
 function ProfileInformation() {
+
     return (
-        <Fieldset className="space-y-8 p-4">
+        <Fieldset className="absolute inset-0 overflow-auto space-y-2 bg-base-200 rounded-b-xl p-4">
             <Legend className="text-lg font-bold">Information About You</Legend>
-            {
-                // Name and country fields
-            }
-            <Field>
-                <Label>Name:</Label>
-                <Label className="input input-bordered flex items-center gap-2">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
-                        fill="currentColor"
-                        className="h-4 w-4 opacity-70">
-                        <path
-                            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-                    </svg>
-                    {
-                        // Input field for the name
-                    }
-                    <Input type="text" className="grow" placeholder="Enter your name" />
-                </Label>
-            </Field>
-            <Field>
-                <Label>Country:</Label>
-                {
-                    // Select field for the country
-                    // replace with a country selector component
-                }
-                
-                <Select className="select select-bordered w-full" name="country">
-                    <option disabled selected>Select a country</option>
-                    <option>Canada</option>
-                    <option>Mexico</option>
-                    <option>United States</option>
-                </Select>
-            </Field>
+            <NameFragment />
+            <ContactInfoFragment />
+            <EducationFragment />
+            <ExperienceFragment />
+            <ProjectFragment />
+            <ECFragment />
+            <SkillsFragment />
+            <AwardsFragment />
+            <HobbiesFragment />
         </Fieldset>
     );
 }
 
 export default function ProfilePage() {
+
     return (<div className="flex-1 flex bg-base-300">
         <div className="my-10 mx-40 p-10 flex-1 bg-base-200 hero drop-shadow-md rounded-lg">
             {
@@ -68,21 +101,18 @@ export default function ProfilePage() {
                 <div className="card bg-base-100 w-full h-full max-w-2xl shrink-0 shadow-2xl">
                     {
                         // tabs and their content
-                        // TODO: Add actual content to the tabs (settings and profile information)
                     }
                     <TabGroup className="h-full">
                         <TabList className="tabs tabs-lifted">
                             <Tab className="tab">Profile Information</Tab>
                             <Tab className="tab">Settings</Tab>
-                            <Tab className="tab">Experience</Tab>
                         </TabList>
                         <TabPanels className="h-full">
                             {
                                 // Profile information tab
                             }
-                            <TabPanel><ProfileInformation /></TabPanel>
+                            <TabPanel className="h-full relative"><ProfileInformation /></TabPanel>
                             <TabPanel>Content 2</TabPanel>
-                            <TabPanel>Content 3</TabPanel>
                         </TabPanels>
                     </TabGroup>
                 </div>
@@ -92,8 +122,11 @@ export default function ProfilePage() {
 }
 
 function Content(props: PropsWithChildren<{}>) {
+
     // Content of the hero component
-    return (<div className="hero-content flex-col lg:flex-row-reverse h-full w-full">
-        {props.children}
-    </div>)
+    return (
+        <div className="hero-content flex-col lg:flex-row-reverse h-full w-full">
+            {props.children}
+        </div>
+    )
 }

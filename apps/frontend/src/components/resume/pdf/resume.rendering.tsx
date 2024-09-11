@@ -4,7 +4,7 @@ import { styles } from "./resume.style";
 import { Components } from './resume.components';
 import { MediaIcon } from './resume.icons';
 import { defaultCountries, parseCountry } from 'react-international-phone';
-import { convertISOAddressToName } from "@/components/resume/editor/addressEditor";
+import { convertISOAddressToName } from "@/components/editor/addressEditor";
 
 // TODO: Replace the styles from resume.style.ts with the styles provided from the user
 // ALlow the user to customize the styles of the resume including whether they want to wrap the sub section or not

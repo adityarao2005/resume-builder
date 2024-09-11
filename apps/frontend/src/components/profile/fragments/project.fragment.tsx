@@ -1,15 +1,16 @@
 "use client"
-import { Common, Resume } from "@/models/types";
+import { Common, Resume, Profile } from "@/models/types";
 import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Button, Field, Fieldset } from "@headlessui/react";
 import 'react-international-phone/style.css';
-import DescriptionEditor from "@/components/resume/editor/descriptionEditor";
-import { setProjects } from "@/state/resumeSlice";
-import Collapsable from "@/components/resume/editor/collapsableContainer";
+import DescriptionEditor from "@/components/editor/descriptionEditor";
+import { setProjects } from "@/state/profileSlice";
 import { formatDate } from "@/components/formatDate";
+import { SkillsEditor } from "@/components/resume/fragments/skills.fragment";
+import { CollapsableField } from "@/components/editor/collapsableContainer";
 
-function ProjectsEntryFragment({ entry, index }: { entry: Resume.IProject, index: number }) {
-    const projects = useAppSelector((state) => state.resume.projects);
+function ProjectsEntryFragment({ entry, index }: { entry: Profile.IProfileProject, index: number }) {
+    const projects = useAppSelector((state) => state.profile.projects);
     const dispatch = useAppDispatch();
 
     // Set start date
@@ -37,6 +38,13 @@ function ProjectsEntryFragment({ entry, index }: { entry: Resume.IProject, index
     const setDescription = (description: Common.IDescription) => {
         const copy = projects ? [...projects] : [];
         copy[index] = { ...copy[index], description: description };
+        dispatch(setProjects(copy));
+    }
+
+    // Set skills
+    const setSkills = (skills: Resume.ISkill[]) => {
+        const copy = projects ? [...projects] : [];
+        copy[index] = { ...copy[index], skills: skills };
         dispatch(setProjects(copy));
     }
 
@@ -86,6 +94,11 @@ function ProjectsEntryFragment({ entry, index }: { entry: Resume.IProject, index
             </div>
 
             {
+                // Skills input
+            }
+            <SkillsEditor skills={entry.skills} setSkills={setSkills} />
+
+            {
                 // Remove button
             }
             <div>
@@ -96,7 +109,7 @@ function ProjectsEntryFragment({ entry, index }: { entry: Resume.IProject, index
 }
 
 export default function ProjectFragment() {
-    const projects = useAppSelector((state) => state.resume.projects);
+    const projects = useAppSelector((state) => state.profile.projects);
     const dispatch = useAppDispatch();
 
     // Add project
@@ -106,14 +119,15 @@ export default function ProjectFragment() {
             title: '',
             description: { lines: [] },
             duration: { start: new Date(), end: new Date() },
+            skills: []
         });
         dispatch(setProjects(copy));
     }
 
     return (
-        <Collapsable title="Projects">
+        <CollapsableField title="Projects">
             <Button className="btn bg-base-100 shadow-md w-full" onClick={addProject}>Add Projects</Button>
             {projects.map((entry, index) => <ProjectsEntryFragment key={index} entry={entry} index={index} />)}
-        </Collapsable>
+        </CollapsableField>
     )
 }
