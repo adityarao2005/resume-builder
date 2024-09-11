@@ -1,14 +1,62 @@
 "use client"
 import { Fieldset, Legend, Tab, TabGroup, TabList, TabPanel, TabPanels, Button } from "@headlessui/react";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import 'react-international-phone/style.css';
 import { NameFragment, ContactInfoFragment, EducationFragment, ExperienceFragment, ProjectFragment, ECFragment, SkillsFragment, AwardsFragment, HobbiesFragment } from "@/components/profile/fragments";
+import { useAppSelector } from "@/state/store";
+import { Resume } from "@/models/types";
+import { initialState } from "@/state/resumeSlice";
+import RenderResumeDocument from "@/components/resume/pdf/resume.rendering";
+import dynamic from "next/dynamic";
 
+
+
+// Dynamic import of the PDFViewer component
+const PDFDownloadLink = dynamic(
+    () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
+    {
+        ssr: false,
+        loading: () => <p>Loading...</p>,
+    },
+);
 
 // TODO: finish this page
 // Reuse some components from the form fragments
 // Header component
 function Header() {
+    const profile = useAppSelector((state) => state.profile);
+    const [cv, setCV] = useState<Resume.ResumeDetails>(initialState);
+    const ref = useRef<NodeJS.Timeout>();
+
+    useEffect(() => {
+        if (ref.current) {
+            clearTimeout(ref.current);
+        }
+
+        // Add a delay/timeout to the state update to prevent document from reloading on every state change
+        ref.current = setTimeout(() => {
+            setCV({
+                name: profile.name,
+                contactInfo: profile.contactInfo,
+                education: profile.education,
+                highlights: { lines: [] },
+                experiences: profile.experiences,
+                projects: profile.projects,
+                extraCurriculars: profile.extraCurriculars,
+                skills: [
+                    ...profile.otherSkills,
+                    ...profile.experiences.flatMap((exp) => exp.skills),
+                    ...profile.projects.flatMap((exp) => exp.skills),
+                    ...profile.extraCurriculars.flatMap((exp) => exp.skills),
+                ],
+                awards: profile.otherAwards,
+                hobbies: profile.hobbies,
+                version: 0,
+                template: ''
+            });
+        }, 1000);
+    }, [profile]);
+
     return (<div className="text-center lg:text-left">
         <h1 className="text-5xl font-bold">Profile & Settings Page!</h1>
         <p className="py-6">
@@ -17,7 +65,7 @@ function Header() {
         {
             // TODO: Implement this as a server generated pdf from react
         }
-        <Button className="btn btn-primary w-full">Generate CV</Button>
+        <PDFDownloadLink document={<RenderResumeDocument document={cv} />} fileName="cv.pdf" className="btn btn-primary w-full">Generate CV</PDFDownloadLink>
     </div>)
 }
 

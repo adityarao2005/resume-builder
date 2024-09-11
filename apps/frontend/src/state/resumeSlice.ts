@@ -4,7 +4,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 //import { resume as initialState } from '@/components/resume/pdf/resume';
 import { Resume as namespace, Common } from '@/models/types';
 
-const initialState: namespace.ResumeDetails = {
+export const initialState: namespace.ResumeDetails = {
     name: '',
     contactInfo: {
         mediaProfiles: new Map()
