@@ -71,7 +71,7 @@ export function Awards({ awards, setAwards }: IAwardEditorProps) {
     ))
 }
 
-function AwardsEditor({ awards, setAwards }: IAwardEditorProps) {
+export function AwardsEditor({ awards, setAwards }: IAwardEditorProps) {
     // Return a list of award view models
     return (
         <>

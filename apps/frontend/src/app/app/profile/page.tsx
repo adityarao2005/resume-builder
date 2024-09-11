@@ -2,12 +2,7 @@
 import { Fieldset, Legend, Tab, TabGroup, TabList, TabPanel, TabPanels, Button } from "@headlessui/react";
 import { PropsWithChildren } from "react";
 import 'react-international-phone/style.css';
-import Name from "@/components/profile/fragments/name.fragment";
-import ContactInfoFragment from "@/components/profile/fragments/contactinfo.fragment";
-import EducationFragment from "@/components/profile/fragments/education.fragment";
-import ExperienceFragment from "@/components/profile/fragments/experience.fragment";
-import ProjectFragment from "@/components/profile/fragments/project.fragment";
-import ECFragment from "@/components/profile/fragments/ec.fragment";
+import { NameFragment, ContactInfoFragment, EducationFragment, ExperienceFragment, ProjectFragment, ECFragment, SkillsFragment, AwardsFragment, HobbiesFragment } from "@/components/profile/fragments";
 
 
 // TODO: finish this page
@@ -31,12 +26,15 @@ function ProfileInformation() {
     return (
         <Fieldset className="absolute inset-0 overflow-auto space-y-2 bg-base-200 rounded-b-xl p-4">
             <Legend className="text-lg font-bold">Information About You</Legend>
-            <Name />
+            <NameFragment />
             <ContactInfoFragment />
             <EducationFragment />
             <ExperienceFragment />
             <ProjectFragment />
             <ECFragment />
+            <SkillsFragment />
+            <AwardsFragment />
+            <HobbiesFragment />
         </Fieldset>
     );
 }
