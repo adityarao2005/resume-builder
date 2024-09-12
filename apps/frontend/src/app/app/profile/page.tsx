@@ -9,8 +9,6 @@ import { initialState } from "@/state/resumeSlice";
 import RenderResumeDocument from "@/components/resume/pdf/resume.rendering";
 import dynamic from "next/dynamic";
 
-
-
 // Dynamic import of the PDFViewer component
 const PDFDownloadLink = dynamic(
     () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
