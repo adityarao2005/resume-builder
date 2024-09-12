@@ -1,39 +1,26 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { NavHeader, NavLink, NavMenu } from "@/components/navbar.components";
-
-// Hook to check if user is authorized
-function useAuthorized() {
-    const params = useSearchParams();
-
-    const test = params.get("test");
-
-    if (test === "true") {
-        return true;
-    }
-
-    return false;
-}
+import { useAuthContext } from "@/components/context/AuthContext";
 
 export default function Navbar() {
     // TODO - Test hook for now, change later once authentication is created
-    const isAuthorized = useAuthorized();
+    const { user } = useAuthContext();
 
     return (<div className="navbar bg-base-100 drop-shadow-md">
         <NavHeader href="/">Resume Builder</NavHeader>
         <NavMenu>
             <NavLink href="/about">About</NavLink>
-            {isAuthorized ? (
+            {user ? (
                 <>
                     <NavLink href="/app">Dashboard</NavLink>
                     <NavLink href="/app/profile">Profile</NavLink>
-                    <NavLink href="/logout">Logout</NavLink>
+                    <NavLink href="/app/logout">Logout</NavLink>
                 </>
             ) : (
                 <>
-                    <NavLink href="/register">Register</NavLink>
-                    <NavLink href="/login">Login</NavLink>
+                    <NavLink href="/app/register">Register</NavLink>
+                    <NavLink href="/app/login">Login</NavLink>
                 </>
             )}
         </NavMenu>
