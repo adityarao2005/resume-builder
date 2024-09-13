@@ -8,6 +8,8 @@ import { Resume } from "@/models/types";
 import { initialState } from "@/state/resumeSlice";
 import RenderResumeDocument from "@/components/resume/pdf/resume.rendering";
 import dynamic from "next/dynamic";
+import { useAuthContext } from "@/components/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 // Dynamic import of the PDFViewer component
 const PDFDownloadLink = dynamic(
@@ -85,6 +87,13 @@ function ProfileInformation() {
 }
 
 export default function ProfilePage() {
+    const { user } = useAuthContext();
+    const router = useRouter();
+
+    if (!user) {
+        router.push("/app/login");
+        return;
+    }
 
     return (<div className="flex-1 flex bg-base-300">
         <div className="my-10 mx-40 p-10 flex-1 bg-base-200 hero drop-shadow-md rounded-lg">

@@ -1,6 +1,10 @@
+"use client"
+import { useAuthContext } from "@/components/context/AuthContext";
+import { signUp } from "@/lib/firebase/signUp";
 import { Button, Field, Fieldset, Input, Label } from "@headlessui/react";
 import Link from "next/link";
-import { PropsWithChildren } from "react";
+import { useRouter } from "next/navigation";
+import { PropsWithChildren, useState } from "react";
 
 function Container({ children }: PropsWithChildren<{}>) {
     return (
@@ -15,6 +19,32 @@ function Container({ children }: PropsWithChildren<{}>) {
 }
 
 export default function RegisterPage() {
+    const { user } = useAuthContext();
+    const router = useRouter();
+
+    if (user) {
+        router.push("/app");
+        return;
+    }
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+
+    const handleForm = async (event: React.FormEvent) => {
+        event.preventDefault()
+
+        const { result, error } = await signUp(email, password);
+
+        if (error) {
+            return console.log(error)
+        }
+
+        // else successful
+        console.log(result)
+        return router.push("/app")
+    }
+
     return (
         <Container>
             <div className="text-center lg:text-left">
@@ -25,19 +55,31 @@ export default function RegisterPage() {
                 </p>
             </div>
             <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-                <form className="card-body">
+                <form className="card-body" onSubmit={handleForm}>
                     <Fieldset>
                         <Field className="form-control">
                             <Label className="label">
                                 <span className="label-text">Email</span>
                             </Label>
-                            <Input type="email" placeholder="email" className="input input-bordered" required />
+                            <Input
+                                type="email"
+                                placeholder="email"
+                                className="input input-bordered"
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                                required />
                         </Field>
                         <Field className="form-control">
                             <Label className="label">
                                 <span className="label-text">Password</span>
                             </Label>
-                            <Input type="password" placeholder="password" className="input input-bordered" required />
+                            <Input
+                                type="password"
+                                placeholder="password"
+                                className="input input-bordered"
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                                required />
                             <Label className="label">
                                 <Link href="#" className="label-text-alt link">Forgot password?</Link>
                             </Label>
@@ -48,7 +90,7 @@ export default function RegisterPage() {
                             </Label>
                         </Field>
                         <Field className="form-control mt-2 space-y-2">
-                            <Button className="btn btn-primary">Register</Button>
+                            <Button className="btn btn-primary" type="submit">Register</Button>
                         </Field>
                     </Fieldset>
                 </form>

@@ -1,6 +1,11 @@
+
+'use client'
 import { Button, Field, Fieldset, Input, Label } from "@headlessui/react";
 import Link from "next/link";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
+import { useAuthContext } from "@/components/context/AuthContext";
+import { signInCredentials, signInGooglePopup } from "@/lib/firebase/signIn";
+import { useRouter } from "next/navigation";
 
 function Container({ children }: PropsWithChildren<{}>) {
     return (
@@ -15,6 +20,41 @@ function Container({ children }: PropsWithChildren<{}>) {
 }
 
 export default function LoginPage() {
+    const { user } = useAuthContext();
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const router = useRouter()
+
+    if (user) {
+        router.push("/app");
+        return;
+    }
+
+    const handleForm = async (event: React.FormEvent) => {
+        event.preventDefault()
+
+        const { result, error } = await signInCredentials(email, password);
+
+        if (error) {
+            return console.log(error)
+        }
+
+        // else successful
+        return router.push("/app")
+    }
+
+
+    const onGoogleClick = async () => {
+        const { result, error } = await signInGooglePopup();
+
+        if (error) {
+            return console.log(error)
+        }
+
+        // else successful
+        return router.push("/app")
+    }
+
     return (
         <Container>
             <div className="text-center lg:text-left">
@@ -25,19 +65,31 @@ export default function LoginPage() {
                 </p>
             </div>
             <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-                <form className="card-body">
+                <form className="card-body" onSubmit={handleForm}>
                     <Fieldset>
                         <Field className="form-control">
                             <Label className="label">
                                 <span className="label-text">Email</span>
                             </Label>
-                            <Input type="email" placeholder="email" className="input input-bordered" required />
+                            <Input
+                                type="email"
+                                placeholder="email"
+                                className="input input-bordered"
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                                required />
                         </Field>
                         <Field className="form-control">
                             <Label className="label">
                                 <span className="label-text">Password</span>
                             </Label>
-                            <Input type="password" placeholder="password" className="input input-bordered" required />
+                            <Input
+                                type="password"
+                                placeholder="password"
+                                className="input input-bordered"
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                                required />
                             <Label className="label">
                                 <Link href="/forgot-password" className="label-text-alt link">Forgot password?</Link>
                             </Label>
@@ -48,8 +100,8 @@ export default function LoginPage() {
                             </Label>
                         </Field>
                         <Field className="form-control mt-2 space-y-2">
-                            <Button className="btn btn-primary">Sign-in with Google</Button>
-                            <Button className="btn btn-primary">Login</Button>
+                            <Button className="btn btn-primary" onClick={onGoogleClick}>Sign-in with Google</Button>
+                            <Button className="btn btn-primary" type="submit">Login</Button>
                         </Field>
                     </Fieldset>
                 </form>
