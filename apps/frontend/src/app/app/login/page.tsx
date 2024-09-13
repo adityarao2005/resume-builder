@@ -4,7 +4,7 @@ import { Button, Field, Fieldset, Input, Label } from "@headlessui/react";
 import Link from "next/link";
 import { PropsWithChildren, useState } from "react";
 import { useAuthContext } from "@/components/context/AuthContext";
-import { signInCredentials, signInGooglePopup } from "@/lib/firebase/signIn";
+import { signInCredentials, signInGooglePopup, signInGoogleRedirect } from "@/lib/firebase/signIn";
 import { useRouter } from "next/navigation";
 
 function Container({ children }: PropsWithChildren<{}>) {

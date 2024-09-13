@@ -1,5 +1,5 @@
 import { app } from "@/lib/firebase";
-import { signInWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect } from "firebase/auth";
+import { signInWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, UserCredential } from "firebase/auth";
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
@@ -30,4 +30,8 @@ export async function signInGooglePopup() {
 
 export async function signInGoogleRedirect() {
     await signInWithRedirect(auth, provider);
+
+    const result = await getRedirectResult(auth);
+
+    return { result, error: result ? null : "Failed to sign in with Google" };
 }
