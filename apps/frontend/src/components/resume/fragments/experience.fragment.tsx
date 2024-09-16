@@ -9,6 +9,7 @@ import { setExperiences } from "@/state/resumeSlice";
 import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsableContainer";
 import { formatDate } from "@/components/formatDate";
 import { IDragAndDrop, useDragAndDrop } from "@/lib/dnd";
+import Editor from "@/components/editor/editor";
 
 function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: { entry: Resume.IExperience, index: number } & IDragAndDrop) {
     const experiences = useAppSelector((state) => state.resume.experiences);
@@ -63,8 +64,8 @@ function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }
         dispatch(setExperiences(copy));
     }
 
-    return (<DraggableCollapsable title={`${entry.title} at ${entry.company}`} color="bg-base-100"
-        dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart}>
+    return (<Editor title={`${entry.title} at ${entry.company}`}
+        dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart} destructor={removeExperience}>
         <Fieldset className="space-y-2">
             {
                 // Company input
@@ -120,7 +121,7 @@ function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }
                 <Button className="btn bg-base-100 shadow-md w-full" onClick={removeExperience}>Remove Experience</Button>
             </div>
         </Fieldset>
-    </DraggableCollapsable>)
+    </Editor>)
 }
 
 export default function ExperienceFragment() {

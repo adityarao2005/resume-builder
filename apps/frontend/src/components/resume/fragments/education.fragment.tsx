@@ -10,6 +10,7 @@ import CourseEditor from "../../editor/coursesEditor";
 import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsableContainer";
 import { formatDate } from "@/components/formatDate";
 import { IDragAndDrop, useDragAndDrop } from "@/lib/dnd";
+import Editor from "@/components/editor/editor";
 
 function EducationEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: { entry: Resume.IEducationEntry, index: number } & IDragAndDrop) {
     const education = useAppSelector((state) => state.resume.education);
@@ -71,8 +72,8 @@ function EducationEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }:
         dispatch(setEducation(copy));
     }
 
-    return (<DraggableCollapsable title={entry.qualification} color="bg-base-100"
-        dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart}>
+    return (<Editor title={entry.qualification} 
+        dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart} destructor={removeEducation}>
         <Fieldset className="space-y-2">
             {
                 // Set school input
@@ -136,7 +137,7 @@ function EducationEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }:
                 <Button className="btn bg-base-100 shadow-md w-full" onClick={removeEducation}>Remove Education</Button>
             </div>
         </Fieldset>
-    </DraggableCollapsable>)
+    </Editor>)
 }
 
 export default function EducationFragment() {

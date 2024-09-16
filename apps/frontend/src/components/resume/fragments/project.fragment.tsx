@@ -8,6 +8,7 @@ import { setProjects } from "@/state/resumeSlice";
 import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsableContainer";
 import { formatDate } from "@/components/formatDate";
 import { IDragAndDrop, useDragAndDrop } from "@/lib/dnd";
+import Editor from "@/components/editor/editor";
 
 function ProjectsEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: { entry: Resume.IProject, index: number } & IDragAndDrop) {
     const projects = useAppSelector((state) => state.resume.projects);
@@ -48,8 +49,8 @@ function ProjectsEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: 
         dispatch(setProjects(copy));
     }
 
-    return (<DraggableCollapsable title={entry.title} color="bg-base-100"
-        dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart}>
+    return (<Editor title={entry.title}
+        dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart} destructor={removeProject}>
         <Fieldset className="space-y-2">
             {
                 // Title input
@@ -94,7 +95,7 @@ function ProjectsEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: 
                 <Button className="btn bg-base-100 shadow-md w-full" onClick={removeProject}>Remove Projects</Button>
             </div>
         </Fieldset>
-    </DraggableCollapsable>)
+    </Editor>)
 }
 
 export default function ProjectFragment() {

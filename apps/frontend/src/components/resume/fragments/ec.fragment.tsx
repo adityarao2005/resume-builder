@@ -9,6 +9,7 @@ import { setExtraCurriculars } from "@/state/resumeSlice";
 import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsableContainer";
 import { formatDate } from "@/components/formatDate";
 import { IDragAndDrop, useDragAndDrop } from "@/lib/dnd";
+import Editor from "@/components/editor/editor";
 
 // Extra Curriculars Entry Fragment
 function ExtraCurricularFragment({ entry, index, dragEnd, dragEnter, dragStart }:
@@ -65,8 +66,8 @@ function ExtraCurricularFragment({ entry, index, dragEnd, dragEnter, dragStart }
         dispatch(setExtraCurriculars(copy));
     }
 
-    return (<DraggableCollapsable title={`${entry.title} at ${entry.company}`} color="bg-base-100"
-        dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart}>
+    return (<Editor title={`${entry.title} at ${entry.company}`}
+        dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart} destructor={removeExtraCurriculars}>
         <Fieldset className="space-y-2">
             {
                 // Company input
@@ -122,7 +123,7 @@ function ExtraCurricularFragment({ entry, index, dragEnd, dragEnter, dragStart }
                 <Button className="btn bg-base-100 shadow-md w-full" onClick={removeExtraCurriculars}>Remove Experience</Button>
             </div>
         </Fieldset>
-    </DraggableCollapsable>)
+    </Editor>)
 }
 
 export default function ECFragment() {

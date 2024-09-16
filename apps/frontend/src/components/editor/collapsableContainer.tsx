@@ -15,8 +15,8 @@ export default function Collapsable({ title, children, color = "bg-base-200" }: 
 
 // Collapsable container
 export function DraggableCollapsable(
-    { title, children, color = "bg-base-200", dragStart, dragEnter, dragEnd }:
-        PropsWithChildren<{ title: string, color?: string } & IDragAndDrop>
+    { title, children, color = "bg-base-200", dragStart, dragEnter, dragEnd, deleteValue }:
+        PropsWithChildren<{ title: string, color?: string, deleteValue?: () => void } & IDragAndDrop>
 ) {
     return (
         <details className={`collapse collapse-arrow border-base-300 border ${color} shadow-md`}
@@ -27,7 +27,7 @@ export function DraggableCollapsable(
                     {
                         // Implement trash button
                     }
-                    <FontAwesomeIcon icon={faTrash} />
+                    <FontAwesomeIcon icon={faTrash} onClick={deleteValue} />
                 </div>
             </summary>
             <div className="collapse-content space-y-2">{children}</div>
