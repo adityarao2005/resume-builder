@@ -7,9 +7,12 @@ import DescriptionEditor from "@/components/editor/descriptionEditor";
 import { setProjects } from "@/state/profileSlice";
 import { formatDate } from "@/components/formatDate";
 import { SkillsEditor } from "@/components/resume/fragments/skills.fragment";
-import { CollapsableField } from "@/components/editor/collapsableContainer";
+import Collapsable, { CollapsableField, DraggableCollapsable } from "@/components/editor/collapsableContainer";
+import { IDragAndDrop, useDragAndDrop } from "@/lib/dnd";
 
-function ProjectsEntryFragment({ entry, index }: { entry: Profile.IProfileProject, index: number }) {
+function ProjectsEntryFragment(
+    { entry, index, dragEnd, dragEnter, dragStart }:
+        { entry: Profile.IProfileProject, index: number } & IDragAndDrop) {
     const projects = useAppSelector((state) => state.profile.projects);
     const dispatch = useAppDispatch();
 
@@ -55,7 +58,8 @@ function ProjectsEntryFragment({ entry, index }: { entry: Profile.IProfileProjec
         dispatch(setProjects(copy));
     }
 
-    return (<div className="border border-black rounded p-2">
+    return (<DraggableCollapsable title={entry.title} color="bg-base-100"
+        dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart}>
         <Fieldset className="space-y-2">
             {
                 // Title input
@@ -105,7 +109,7 @@ function ProjectsEntryFragment({ entry, index }: { entry: Profile.IProfileProjec
                 <Button className="btn bg-base-100 shadow-md w-full" onClick={removeProject}>Remove Projects</Button>
             </div>
         </Fieldset>
-    </div>)
+    </DraggableCollapsable>)
 }
 
 export default function ProjectFragment() {
@@ -124,10 +128,17 @@ export default function ProjectFragment() {
         dispatch(setProjects(copy));
     }
 
+    const { dragEnter, dragEnd, dragStart } = useDragAndDrop(projects, (e) => dispatch(setProjects(e)));
+
     return (
         <CollapsableField title="Projects">
             <Button className="btn bg-base-100 shadow-md w-full" onClick={addProject}>Add Projects</Button>
-            {projects.map((entry, index) => <ProjectsEntryFragment key={index} entry={entry} index={index} />)}
+            {projects.map((entry, index) =>
+                <ProjectsEntryFragment key={index} entry={entry} index={index}
+                    dragEnter={e => dragEnter(e, index)}
+                    dragEnd={dragEnd}
+                    dragStart={e => dragStart(e, index)} />)
+            }
         </CollapsableField>
     )
 }

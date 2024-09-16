@@ -23,6 +23,7 @@ export default function LoginPage() {
     const { user } = useAuthContext();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState<string>()
     const router = useRouter()
 
     if (user) {
@@ -33,10 +34,14 @@ export default function LoginPage() {
     const handleForm = async (event: React.FormEvent) => {
         event.preventDefault()
 
+        if (!email || !password) {
+            return setError("Please fill in all fields")
+        }
+
         const { result, error } = await signInCredentials(email, password);
 
         if (error) {
-            return console.log(error)
+            return setError("Invalid credentials")
         }
 
         // else successful
@@ -48,7 +53,7 @@ export default function LoginPage() {
         const { result, error } = await signInGooglePopup();
 
         if (error) {
-            return console.log(error)
+            return setError("Invalid credentials")
         }
 
         // else successful
@@ -67,6 +72,13 @@ export default function LoginPage() {
             <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
                 <form className="card-body" onSubmit={handleForm}>
                     <Fieldset>
+                        {error &&
+                            <Field className="form-control ">
+                                <Label className="label">
+                                    <span className="label-text text-error">Error: {error}</span>
+                                </Label>
+                            </Field>
+                        }
                         <Field className="form-control">
                             <Label className="label">
                                 <span className="label-text">Email</span>
@@ -95,7 +107,7 @@ export default function LoginPage() {
                             </Label>
                             <Label className="label">
                                 <span className="label-text-alt">Don't have an account? &nbsp;
-                                    <Link href="/register" className="link">Click me and register!</Link> Or:
+                                    <Link href="/app/register" className="link">Click me and register!</Link> Or:
                                 </span>
                             </Label>
                         </Field>

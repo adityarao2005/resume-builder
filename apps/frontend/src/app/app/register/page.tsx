@@ -29,19 +29,23 @@ export default function RegisterPage() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState<string>()
 
 
     const handleForm = async (event: React.FormEvent) => {
         event.preventDefault()
 
+        if (!email || !password) {
+            return setError("Please fill in all fields")
+        }
+
         const { result, error } = await signUp(email, password);
 
         if (error) {
-            return console.log(error)
+            return setError("Email is already taken")
         }
 
         // else successful
-        console.log(result)
         return router.push("/app")
     }
 
@@ -57,6 +61,13 @@ export default function RegisterPage() {
             <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
                 <form className="card-body" onSubmit={handleForm}>
                     <Fieldset>
+                        {error &&
+                            <Field className="form-control ">
+                                <Label className="label">
+                                    <span className="label-text text-error">Error: {error}</span>
+                                </Label>
+                            </Field>
+                        }
                         <Field className="form-control">
                             <Label className="label">
                                 <span className="label-text">Email</span>
@@ -85,7 +96,7 @@ export default function RegisterPage() {
                             </Label>
                             <Label className="label">
                                 <span className="label-text-alt">Have an account already? &nbsp;
-                                    <Link href="/login" className="link">Click me and login!</Link> Or:
+                                    <Link href="/app/login" className="link">Click me and login!</Link> Or:
                                 </span>
                             </Label>
                         </Field>
