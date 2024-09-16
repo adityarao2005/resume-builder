@@ -160,7 +160,7 @@ export default function EducationFragment() {
     const { dragEnter, dragEnd, dragStart } = useDragAndDrop(education, (e) => dispatch(setEducation(e)));
 
     return (
-        <Collapsable title="Education">
+        <Collapsable title="Education" color="bg-base-100">
             <Button className="btn bg-base-100 shadow-md w-full" onClick={addEducation}>Add Education</Button>
             {education.map((entry, index) => <EducationEntryFragment key={index} entry={entry} index={index}
                 dragEnter={e => dragEnter(e, index)}
