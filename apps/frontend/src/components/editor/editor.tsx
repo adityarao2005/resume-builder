@@ -40,8 +40,6 @@ export function ModalEditor(props: IEditorProps & { id: string }) {
                 onDragStart={props.dragStart}
                 onDragOver={(e) => e.preventDefault()}
                 draggable>
-
-
                 <h3 className="text-xl font-bold flex-1">{props.title}</h3>
                 <div className="flex flex-col">
                     <div className="flex-1" />

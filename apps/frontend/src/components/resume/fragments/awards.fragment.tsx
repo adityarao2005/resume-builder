@@ -5,6 +5,7 @@ import { Field, Button, Input } from "@headlessui/react";
 import Collapsable from "@/components/editor/collapsableContainer";
 import AddButton from "@/components/editor/addbutton";
 import { formatDate } from "@/components/formatDate";
+import Modal, { showModal } from "@/components/modal";
 
 // Award editor props
 export interface IAwardEditorProps {
@@ -74,10 +75,16 @@ export function Awards({ awards, setAwards }: IAwardEditorProps) {
 export function AwardsEditor({ awards, setAwards }: IAwardEditorProps) {
     // Return a list of award view models
     return (
-        <>
-            <AddButton<Common.IAward> data={awards} setData={setAwards} title="Awards/Achievments" sample={{ date: new Date(), title: '' }} />
-            <Awards awards={awards} setAwards={setAwards} />
-        </>
+        <div>
+            <Button className="btn input-bordered w-full bg-base-300" onClick={() => showModal('award')}>Open Awards Editor</Button>
+
+            <Modal name="award" title="Awards/Achievements">
+                <AddButton<Common.IAward> data={awards} setData={setAwards} title="Awards/Achievments" sample={{ date: new Date(), title: '' }} />
+                <div className="grid grid-cols-3">
+                    <Awards awards={awards} setAwards={setAwards} />
+                </div>
+            </Modal>
+        </div>
     );
 }
 

@@ -115,13 +115,6 @@ function ExtraCurricularFragment({ entry, index, dragEnd, dragEnter, dragStart }
                 <label className="font-bold">Description:</label>
                 <DescriptionEditor description={entry.description} setDescription={setDescription} />
             </div>
-
-            {
-                // Remove button
-            }
-            <div>
-                <Button className="btn bg-base-100 shadow-md w-full" onClick={removeExtraCurriculars}>Remove Experience</Button>
-            </div>
         </Fieldset>
     </Editor>)
 }

@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Field, Button, Input } from "@headlessui/react";
 import Collapsable from "@/components/editor/collapsableContainer";
 import AddButton from "@/components/editor/addbutton";
+import Modal, { showModal } from "@/components/modal";
 
 // Skill editor props
 export interface ISkillsEditorProps {
@@ -15,7 +16,7 @@ export interface ISkillsEditorProps {
 export function Skills({ skills, setSkills }: ISkillsEditorProps) {
     // Return skills view model list
     return skills.map((skill, index) => (
-        <Field key={index} className="flex flex-col">
+        <Field key={index} className="flex flex-col p-2">
             <div className="flex flex-col border border-black rounded p-2 space-y-2">
                 {
                     // Name input
@@ -63,10 +64,16 @@ export function Skills({ skills, setSkills }: ISkillsEditorProps) {
 // Skills editor
 export function SkillsEditor({ skills, setSkills }: ISkillsEditorProps) {
     return (
-        <>
-            <AddButton<Resume.ISkill> data={skills} setData={setSkills} title="Skill" sample={{ type: '', name: '' }} />
-            <Skills skills={skills} setSkills={setSkills} />
-        </>
+        <div>
+            <Button className="btn input-bordered w-full bg-base-300" onClick={() => showModal('skill')}>Open Skill Editor</Button>
+
+            <Modal name="skill" title="Skills">
+                <AddButton<Resume.ISkill> data={skills} setData={setSkills} title="Skill" sample={{ type: '', name: '' }} />
+                <div className="grid grid-cols-3">
+                    <Skills skills={skills} setSkills={setSkills} />
+                </div>
+            </Modal>
+        </div>
     );
 }
 
