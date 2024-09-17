@@ -104,13 +104,6 @@ function ProjectsEntryFragment(
                     // Skills input
                 }
                 <SkillsEditor skills={entry.skills} setSkills={setSkills} />
-
-                {
-                    // Remove button
-                }
-                <div>
-                    <Button className="btn bg-base-100 shadow-md w-full" onClick={removeProject}>Remove Projects</Button>
-                </div>
             </Fieldset>
         </Editor>
     )

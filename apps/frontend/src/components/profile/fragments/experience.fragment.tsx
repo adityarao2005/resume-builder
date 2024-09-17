@@ -127,13 +127,6 @@ function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }
                 // Skills input
             }
             <SkillsEditor skills={entry.skills} setSkills={setSkills} />
-
-            {
-                // Remove button
-            }
-            <div>
-                <Button className="btn bg-base-100 shadow-md w-full" onClick={removeExperience}>Remove Experience</Button>
-            </div>
         </Fieldset>
     </Editor>)
 }

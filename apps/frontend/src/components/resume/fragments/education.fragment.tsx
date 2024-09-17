@@ -130,12 +130,6 @@ function EducationEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }:
                 <DescriptionEditor description={entry.description} setDescription={setDescription} />
             </div>
 
-            {
-                // Remove education button
-            }
-            <div>
-                <Button className="btn bg-base-100 shadow-md w-full" onClick={removeEducation}>Remove Education</Button>
-            </div>
         </Fieldset>
     </Editor>)
 }
