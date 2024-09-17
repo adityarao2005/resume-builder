@@ -2,7 +2,7 @@ import { IDragAndDrop } from "@/components/dnd";
 import { PropsWithChildren, useRef } from "react";
 import { DraggableCollapsable } from "./collapsableContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faGripVertical, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Modal, { showModal } from "../modal";
 import { randomBytes } from "crypto";
 
@@ -33,8 +33,8 @@ export function ModalEditor(props: IEditorProps & { id: string }) {
     }
 
     return (
-        <div className="relative p-7 cursor-move">
-            <div className="absolute border-base-300 border bg-base-100 shadow-md rounded-xl h-14 inset-0 flex flex-row p-3 space-x-2"
+        <div>
+            <div className="border-base-300 border bg-base-100 shadow-md rounded-xl flex flex-row p-3 space-x-2"
                 onDragEnd={props.dragEnd}
                 onDragEnter={props.dragEnter}
                 onDragStart={props.dragStart}
@@ -51,6 +51,11 @@ export function ModalEditor(props: IEditorProps & { id: string }) {
                 <div className="flex flex-col">
                     <div className="flex-1" />
                     <FontAwesomeIcon icon={faEdit} onClick={() => showModal(props.id!)} className="text-xl hover:cursor-pointer" />
+                    <div className="flex-1" />
+                </div>
+                <div className="flex flex-col">
+                    <div className="flex-1" />
+                    <FontAwesomeIcon icon={faGripVertical} className="text-xl hover:cursor-move" />
                     <div className="flex-1" />
                 </div>
             </div>
