@@ -8,12 +8,13 @@ import { setProjects } from "@/state/profileSlice";
 import { formatDate } from "@/components/formatDate";
 import { SkillsEditor } from "@/components/resume/fragments/skills.fragment";
 import Collapsable, { CollapsableField, DraggableCollapsable } from "@/components/editor/collapsableContainer";
-import { IDragAndDrop, useDragAndDrop } from "@/lib/dnd";
+import { IDragAndDrop, useDragAndDrop } from "@/components/dnd";
 import Editor from "@/components/editor/editor";
+import { Ref, useRef } from "react";
 
 function ProjectsEntryFragment(
-    { entry, index, dragEnd, dragEnter, dragStart }:
-        { entry: Profile.IProfileProject, index: number } & IDragAndDrop) {
+    { entry, index, dragEnd, dragEnter, dragStart, }:
+        { entry: Profile.IProfileProject, index: number, } & IDragAndDrop) {
     const projects = useAppSelector((state) => state.profile.projects);
     const dispatch = useAppDispatch();
 
@@ -59,58 +60,60 @@ function ProjectsEntryFragment(
         dispatch(setProjects(copy));
     }
 
-    return (<Editor title={entry.title}
-        dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart} destructor={removeProject}>
-        <Fieldset className="space-y-2">
-            {
-                // Title input
-            }
-            <Field>
-                <label className="font-bold">Title:</label>
-                <input className="input input-bordered w-full" value={entry.title} onChange={(source) => setTitle(source.target.value)} />
-            </Field>
-            {
-                // Start date input
-            }
-            <Field>
-                <label className="font-bold">Start Date:</label>
-                <input
-                    className="input input-bordered w-full"
-                    type="date"
-                    value={formatDate(entry.duration.start)} onChange={(source) => setStartDate(source.target.value)} />
-            </Field>
-            {
-                // End date input
-            }
-            <Field>
-                <label className="font-bold">End Date:</label>
-                <input
-                    className="input input-bordered w-full"
-                    type="date"
-                    value={formatDate(entry.duration.end)} onChange={(source) => setEndDate(source.target.value)} />
-            </Field>
+    return (
+        <Editor title={entry.title}
+            dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart} destructor={removeProject}>
+            <Fieldset className="space-y-2">
+                {
+                    // Title input
+                }
+                <Field>
+                    <label className="font-bold">Title:</label>
+                    <input className="input input-bordered w-full" value={entry.title} onChange={(source) => setTitle(source.target.value)} />
+                </Field>
+                {
+                    // Start date input
+                }
+                <Field>
+                    <label className="font-bold">Start Date:</label>
+                    <input
+                        className="input input-bordered w-full"
+                        type="date"
+                        value={formatDate(entry.duration.start)} onChange={(source) => setStartDate(source.target.value)} />
+                </Field>
+                {
+                    // End date input
+                }
+                <Field>
+                    <label className="font-bold">End Date:</label>
+                    <input
+                        className="input input-bordered w-full"
+                        type="date"
+                        value={formatDate(entry.duration.end)} onChange={(source) => setEndDate(source.target.value)} />
+                </Field>
 
-            {
-                // Description input
-            }
-            <div className="space-y-1">
-                <label className="font-bold">Description:</label>
-                <DescriptionEditor description={entry.description} setDescription={setDescription} />
-            </div>
+                {
+                    // Description input
+                }
+                <div className="space-y-1">
+                    <label className="font-bold">Description:</label>
+                    <DescriptionEditor description={entry.description} setDescription={setDescription} />
+                </div>
 
-            {
-                // Skills input
-            }
-            <SkillsEditor skills={entry.skills} setSkills={setSkills} />
+                {
+                    // Skills input
+                }
+                <SkillsEditor skills={entry.skills} setSkills={setSkills} />
 
-            {
-                // Remove button
-            }
-            <div>
-                <Button className="btn bg-base-100 shadow-md w-full" onClick={removeProject}>Remove Projects</Button>
-            </div>
-        </Fieldset>
-    </Editor>)
+                {
+                    // Remove button
+                }
+                <div>
+                    <Button className="btn bg-base-100 shadow-md w-full" onClick={removeProject}>Remove Projects</Button>
+                </div>
+            </Fieldset>
+        </Editor>
+    )
 }
 
 export default function ProjectFragment() {
@@ -131,6 +134,7 @@ export default function ProjectFragment() {
 
     const { dragEnter, dragEnd, dragStart } = useDragAndDrop(projects, (e) => dispatch(setProjects(e)));
 
+
     return (
         <CollapsableField title="Projects">
             <Button className="btn bg-base-100 shadow-md w-full" onClick={addProject}>Add Projects</Button>
@@ -138,8 +142,8 @@ export default function ProjectFragment() {
                 <ProjectsEntryFragment key={index} entry={entry} index={index}
                     dragEnter={e => dragEnter(e, index)}
                     dragEnd={dragEnd}
-                    dragStart={e => dragStart(e, index)} />)
-            }
+                    dragStart={e => dragStart(e, index)} />
+            )}
         </CollapsableField>
     )
 }

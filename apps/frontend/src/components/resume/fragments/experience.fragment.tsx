@@ -8,7 +8,7 @@ import DescriptionEditor from "@/components/editor/descriptionEditor";
 import { setExperiences } from "@/state/resumeSlice";
 import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsableContainer";
 import { formatDate } from "@/components/formatDate";
-import { IDragAndDrop, useDragAndDrop } from "@/lib/dnd";
+import { IDragAndDrop, useDragAndDrop } from "@/components/dnd";
 import Editor from "@/components/editor/editor";
 
 function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: { entry: Resume.IExperience, index: number } & IDragAndDrop) {

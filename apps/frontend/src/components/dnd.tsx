@@ -1,3 +1,5 @@
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { DragEvent, DragEventHandler, useRef } from "react";
 
 export interface IDragAndDropProxy {
@@ -17,10 +19,12 @@ export function useDragAndDrop(items: any[], setItems: (items: any[]) => void): 
     const dragOverItem = useRef<number | null>();
 
     const dragStart = (event: DragEvent, index: number) => {
+        event.dataTransfer.effectAllowed = 'move';
         dragItem.current = index;
     }
 
     const dragEnter = (event: DragEvent, index: number) => {
+        event.preventDefault();
         dragOverItem.current = index;
     }
 
@@ -34,6 +38,7 @@ export function useDragAndDrop(items: any[], setItems: (items: any[]) => void): 
         dragItem.current = null;
         dragOverItem.current = null;
         setItems(copy);
+
     }
 
     return { dragStart, dragEnter, dragEnd };

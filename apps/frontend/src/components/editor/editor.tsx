@@ -1,5 +1,5 @@
-import { IDragAndDrop } from "@/lib/dnd";
-import { PropsWithChildren } from "react";
+import { IDragAndDrop } from "@/components/dnd";
+import { PropsWithChildren, useRef } from "react";
 import { DraggableCollapsable } from "./collapsableContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -31,25 +31,34 @@ export function ModalEditor(props: IEditorProps & { id: string }) {
     {
         // TODO: make it draggable/look draggable
     }
-    return (<>
-        <div className="border-base-300 border bg-base-100 shadow-md rounded-xl p-3 flex flex-row space-x-2 cursor-grab active:cursor-grabbing "
-            onDragEnd={props.dragEnd} onDragEnter={props.dragEnter} onDragStart={props.dragStart} draggable>
-            <h3 className="text-xl font-bold flex-1">{props.title}</h3>
-            <div className="flex flex-col">
-                <div className="flex-1" />
-                <FontAwesomeIcon icon={faTrash} onClick={props.destructor} className="text-xl hover:cursor-pointer" />
-                <div className="flex-1" />
-            </div>
-            <div className="flex flex-col">
-                <div className="flex-1" />
-                <FontAwesomeIcon icon={faEdit} onClick={() => showModal(props.id!)} className="text-xl hover:cursor-pointer" />
-                <div className="flex-1" />
+
+    return (
+        <div className="relative p-7 cursor-move">
+            <div className="absolute border-base-300 border bg-base-100 shadow-md rounded-xl h-14 inset-0 flex flex-row p-3 space-x-2"
+                onDragEnd={props.dragEnd}
+                onDragEnter={props.dragEnter}
+                onDragStart={props.dragStart}
+                onDragOver={(e) => e.preventDefault()}
+                draggable>
+
+
+                <h3 className="text-xl font-bold flex-1">{props.title}</h3>
+                <div className="flex flex-col">
+                    <div className="flex-1" />
+                    <FontAwesomeIcon icon={faTrash} onClick={props.destructor} className="text-xl hover:cursor-pointer" />
+                    <div className="flex-1" />
+                </div>
+                <div className="flex flex-col">
+                    <div className="flex-1" />
+                    <FontAwesomeIcon icon={faEdit} onClick={() => showModal(props.id!)} className="text-xl hover:cursor-pointer" />
+                    <div className="flex-1" />
+                </div>
             </div>
             <Modal name={props.id!} title={props.title}>
                 {props.children}
             </Modal>
         </div>
-    </>);
+    );
 }
 
 export default function Editor(props: IEditorProps & { id?: string }) {

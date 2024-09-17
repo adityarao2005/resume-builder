@@ -9,7 +9,7 @@ import { setExperiences } from "@/state/profileSlice";
 import { formatDate } from "@/components/formatDate";
 import { SkillsEditor } from "@/components/resume/fragments/skills.fragment";
 import Collapsable, { CollapsableField, DraggableCollapsable } from "@/components/editor/collapsableContainer";
-import { IDragAndDrop, useDragAndDrop } from "@/lib/dnd";
+import { IDragAndDrop, useDragAndDrop } from "@/components/dnd";
 import Editor from "@/components/editor/editor";
 
 function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }:
@@ -73,7 +73,7 @@ function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }
         dispatch(setExperiences(copy));
     }
 
-    return (<Editor title={`${entry.title} at ${entry.company}`} 
+    return (<Editor title={`${entry.title} at ${entry.company}`}
         dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart} destructor={removeExperience}>
         <Fieldset className="space-y-2">
             {

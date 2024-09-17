@@ -9,7 +9,7 @@ import { setEducation } from "@/state/resumeSlice";
 import CourseEditor from "../../editor/coursesEditor";
 import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsableContainer";
 import { formatDate } from "@/components/formatDate";
-import { IDragAndDrop, useDragAndDrop } from "@/lib/dnd";
+import { IDragAndDrop, useDragAndDrop } from "@/components/dnd";
 import Editor from "@/components/editor/editor";
 
 function EducationEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: { entry: Resume.IEducationEntry, index: number } & IDragAndDrop) {
@@ -72,7 +72,7 @@ function EducationEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }:
         dispatch(setEducation(copy));
     }
 
-    return (<Editor title={entry.qualification} 
+    return (<Editor title={entry.qualification}
         dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart} destructor={removeEducation}>
         <Fieldset className="space-y-2">
             {

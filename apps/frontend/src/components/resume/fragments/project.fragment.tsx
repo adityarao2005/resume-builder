@@ -7,7 +7,7 @@ import DescriptionEditor from "@/components/editor/descriptionEditor";
 import { setProjects } from "@/state/resumeSlice";
 import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsableContainer";
 import { formatDate } from "@/components/formatDate";
-import { IDragAndDrop, useDragAndDrop } from "@/lib/dnd";
+import { IDragAndDrop, useDragAndDrop } from "@/components/dnd";
 import Editor from "@/components/editor/editor";
 
 function ProjectsEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: { entry: Resume.IProject, index: number } & IDragAndDrop) {

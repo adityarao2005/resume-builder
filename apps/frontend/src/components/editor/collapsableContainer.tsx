@@ -1,4 +1,4 @@
-import { IDragAndDrop } from "@/lib/dnd";
+import { IDragAndDrop } from "@/components/dnd";
 import { PropsWithChildren } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
