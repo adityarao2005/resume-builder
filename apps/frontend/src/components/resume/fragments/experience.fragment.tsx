@@ -6,10 +6,12 @@ import 'react-international-phone/style.css';
 import AddressEditor from "@/components/editor/addressEditor";
 import DescriptionEditor from "@/components/editor/descriptionEditor";
 import { setExperiences } from "@/state/resumeSlice";
-import Collapsable from "@/components/editor/collapsableContainer";
+import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsableContainer";
 import { formatDate } from "@/components/formatDate";
+import { IDragAndDrop, useDragAndDrop } from "@/components/dnd";
+import Editor from "@/components/editor/editor";
 
-function ExperienceEntryFragment({ entry, index }: { entry: Resume.IExperience, index: number }) {
+function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: { entry: Resume.IExperience, index: number } & IDragAndDrop) {
     const experiences = useAppSelector((state) => state.resume.experiences);
     const dispatch = useAppDispatch();
 
@@ -62,7 +64,8 @@ function ExperienceEntryFragment({ entry, index }: { entry: Resume.IExperience, 
         dispatch(setExperiences(copy));
     }
 
-    return (<div className="border border-black rounded p-2">
+    return (<Editor title={`${entry.title} at ${entry.company}`}
+        dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart} destructor={removeExperience}>
         <Fieldset className="space-y-2">
             {
                 // Company input
@@ -118,7 +121,7 @@ function ExperienceEntryFragment({ entry, index }: { entry: Resume.IExperience, 
                 <Button className="btn bg-base-100 shadow-md w-full" onClick={removeExperience}>Remove Experience</Button>
             </div>
         </Fieldset>
-    </div>)
+    </Editor>)
 }
 
 export default function ExperienceFragment() {
@@ -138,10 +141,15 @@ export default function ExperienceFragment() {
         dispatch(setExperiences(copy));
     }
 
+    const { dragEnter, dragEnd, dragStart } = useDragAndDrop(experiences, (e) => dispatch(setExperiences(e)));
+
     return (
         <Collapsable title="Experience">
             <Button className="btn bg-base-100 shadow-md w-full" onClick={addExperience}>Add Experience</Button>
-            {experiences.map((entry, index) => <ExperienceEntryFragment key={index} entry={entry} index={index} />)}
+            {experiences.map((entry, index) => <ExperienceEntryFragment key={index} entry={entry} index={index}
+                dragEnter={e => dragEnter(e, index)}
+                dragEnd={dragEnd}
+                dragStart={e => dragStart(e, index)} />)}
         </Collapsable>
     )
 }

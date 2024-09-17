@@ -91,7 +91,7 @@ function EducationEntry({ entry }: { entry: Resume.IEducationEntry }) {
             <View style={styles.splitSection}>
                 <View style={styles.leftSection}>
                     <Text style={{ ...styles.text, fontWeight: 'bold' }}>{entry.institution}</Text>
-                    <Text style={styles.text}>{entry.degree} of {entry.discipline}</Text>
+                    <Text style={styles.text}>{entry.qualification}</Text>
                 </View>
                 <View style={styles.rightSection}>
                     <Text style={styles.text}>{entry.location.city}, {convertISOAddressToName(entry.location)}</Text>
@@ -107,7 +107,7 @@ function EducationEntry({ entry }: { entry: Resume.IEducationEntry }) {
 function Education({ education }: { education: Resume.IEducationEntry[] }) {
     return (
         <Components.Section title="Education">
-            {education.map(entry => <EducationEntry key={entry.degree + entry.discipline} entry={entry} />)}
+            {education.map(entry => <EducationEntry key={entry.qualification} entry={entry} />)}
         </Components.Section>
     )
 }

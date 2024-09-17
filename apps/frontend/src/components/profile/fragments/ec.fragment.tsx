@@ -8,9 +8,12 @@ import DescriptionEditor from "@/components/editor/descriptionEditor";
 import { setExtraCurriculars } from "@/state/profileSlice";
 import { formatDate } from "@/components/formatDate";
 import { SkillsEditor } from "@/components/resume/fragments/skills.fragment";
-import { CollapsableField } from "@/components/editor/collapsableContainer";
+import Collapsable, { CollapsableField, DraggableCollapsable } from "@/components/editor/collapsableContainer";
+import { IDragAndDrop, useDragAndDrop } from "@/components/dnd";
+import Editor from "@/components/editor/editor";
 
-function ExperienceEntryFragment({ entry, index }: { entry: Profile.IProfileExperience, index: number }) {
+function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }:
+    { entry: Profile.IProfileExperience, index: number } & IDragAndDrop) {
     const experiences = useAppSelector((state) => state.profile.extraCurriculars);
     const dispatch = useAppDispatch();
 
@@ -70,7 +73,8 @@ function ExperienceEntryFragment({ entry, index }: { entry: Profile.IProfileExpe
         dispatch(setExtraCurriculars(copy));
     }
 
-    return (<div className="border border-black rounded p-2">
+    return (<Editor title={`${entry.title} at ${entry.company}`}
+        dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart} destructor={removeExperience}>
         <Fieldset className="space-y-2">
             {
                 // Company input
@@ -131,7 +135,7 @@ function ExperienceEntryFragment({ entry, index }: { entry: Profile.IProfileExpe
                 <Button className="btn bg-base-100 shadow-md w-full" onClick={removeExperience}>Remove Experience</Button>
             </div>
         </Fieldset>
-    </div>)
+    </Editor>)
 }
 
 export default function ECFragment() {
@@ -152,10 +156,15 @@ export default function ECFragment() {
         dispatch(setExtraCurriculars(copy));
     }
 
+    const { dragEnter, dragEnd, dragStart } = useDragAndDrop(experiences, (e) => dispatch(setExtraCurriculars(e)));
+
     return (
         <CollapsableField title="Extra Curriculars">
             <Button className="btn bg-base-100 shadow-md w-full" onClick={addExperience}>Add Extra Curricular Activity</Button>
-            {experiences.map((entry, index) => <ExperienceEntryFragment key={index} entry={entry} index={index} />)}
+            {experiences.map((entry, index) => <ExperienceEntryFragment key={index} entry={entry} index={index}
+                dragEnter={e => dragEnter(e, index)}
+                dragEnd={dragEnd}
+                dragStart={e => dragStart(e, index)} />)}
         </CollapsableField>
     )
 }

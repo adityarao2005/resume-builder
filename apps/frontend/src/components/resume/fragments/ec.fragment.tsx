@@ -6,11 +6,14 @@ import 'react-international-phone/style.css';
 import AddressEditor from "@/components/editor/addressEditor";
 import DescriptionEditor from "@/components/editor/descriptionEditor";
 import { setExtraCurriculars } from "@/state/resumeSlice";
-import Collapsable from "@/components/editor/collapsableContainer";
+import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsableContainer";
 import { formatDate } from "@/components/formatDate";
+import { IDragAndDrop, useDragAndDrop } from "@/components/dnd";
+import Editor from "@/components/editor/editor";
 
 // Extra Curriculars Entry Fragment
-function ExtraCurricularFragment({ entry, index }: { entry: Resume.IExperience, index: number }) {
+function ExtraCurricularFragment({ entry, index, dragEnd, dragEnter, dragStart }:
+    { entry: Resume.IExperience, index: number } & IDragAndDrop) {
     const extraCurriculars = useAppSelector((state) => state.resume.extraCurriculars);
     const dispatch = useAppDispatch();
 
@@ -63,7 +66,8 @@ function ExtraCurricularFragment({ entry, index }: { entry: Resume.IExperience, 
         dispatch(setExtraCurriculars(copy));
     }
 
-    return (<div className="border border-black rounded p-2">
+    return (<Editor title={`${entry.title} at ${entry.company}`}
+        dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart} destructor={removeExtraCurriculars}>
         <Fieldset className="space-y-2">
             {
                 // Company input
@@ -119,7 +123,7 @@ function ExtraCurricularFragment({ entry, index }: { entry: Resume.IExperience, 
                 <Button className="btn bg-base-100 shadow-md w-full" onClick={removeExtraCurriculars}>Remove Experience</Button>
             </div>
         </Fieldset>
-    </div>)
+    </Editor>)
 }
 
 export default function ECFragment() {
@@ -139,10 +143,17 @@ export default function ECFragment() {
         dispatch(setExtraCurriculars(copy));
     }
 
+    const { dragEnter, dragEnd, dragStart } = useDragAndDrop(extraCurriculars, (e) => dispatch(setExtraCurriculars(e)));
+
+
     return (
         <Collapsable title="Extra Curriculars">
             <Button className="btn bg-base-100 shadow-md w-full" onClick={addExtraCurriculars}>Add Extra Curriculars</Button>
-            {extraCurriculars && extraCurriculars.map((entry, index) => <ExtraCurricularFragment key={index} entry={entry} index={index} />)}
+            {extraCurriculars.map((entry, index) => <ExtraCurricularFragment key={index}
+                entry={entry} index={index}
+                dragEnter={e => dragEnter(e, index)}
+                dragEnd={dragEnd}
+                dragStart={e => dragStart(e, index)} />)}
         </Collapsable>
     )
 }

@@ -7,10 +7,12 @@ import AddressEditor from "@/components/editor/addressEditor";
 import DescriptionEditor from "@/components/editor/descriptionEditor";
 import { setEducation } from "@/state/resumeSlice";
 import CourseEditor from "../../editor/coursesEditor";
-import Collapsable from "@/components/editor/collapsableContainer";
+import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsableContainer";
 import { formatDate } from "@/components/formatDate";
+import { IDragAndDrop, useDragAndDrop } from "@/components/dnd";
+import Editor from "@/components/editor/editor";
 
-function EducationEntryFragment({ entry, index }: { entry: Resume.IEducationEntry, index: number }) {
+function EducationEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: { entry: Resume.IEducationEntry, index: number } & IDragAndDrop) {
     const education = useAppSelector((state) => state.resume.education);
     const dispatch = useAppDispatch();
 
@@ -42,17 +44,10 @@ function EducationEntryFragment({ entry, index }: { entry: Resume.IEducationEntr
         dispatch(setEducation(copy));
     }
 
-    // Set degree
-    const setDegree = (degree: string) => {
-        const copy = [...education];
-        copy[index] = { ...copy[index], degree: degree };
-        dispatch(setEducation(copy));
-    }
-
     // Set discipline
-    const setDiscipline = (discipline: string) => {
+    const setQualification = (qualification: string) => {
         const copy = [...education];
-        copy[index] = { ...copy[index], discipline: discipline };
+        copy[index] = { ...copy[index], qualification: qualification };
         dispatch(setEducation(copy));
     }
 
@@ -77,7 +72,8 @@ function EducationEntryFragment({ entry, index }: { entry: Resume.IEducationEntr
         dispatch(setEducation(copy));
     }
 
-    return (<div className="border border-black rounded p-2">
+    return (<Editor title={entry.qualification}
+        dragEnd={dragEnd} dragEnter={dragEnter} dragStart={dragStart} destructor={removeEducation}>
         <Fieldset className="space-y-2">
             {
                 // Set school input
@@ -90,15 +86,8 @@ function EducationEntryFragment({ entry, index }: { entry: Resume.IEducationEntr
                 // Set degree input
             }
             <Field>
-                <label className="font-bold">Degree:</label>
-                <input className="input input-bordered w-full" value={entry.degree} onChange={(source) => setDegree(source.target.value)} />
-            </Field>
-            {
-                // Set discipline input
-            }
-            <Field>
-                <label className="font-bold">Discipline:</label>
-                <input className="input input-bordered w-full" value={entry.discipline} onChange={(source) => setDiscipline(source.target.value)} />
+                <label className="font-bold">Qualification:</label>
+                <input className="input input-bordered w-full" value={entry.qualification} onChange={(source) => setQualification(source.target.value)} />
             </Field>
             {
                 // Set start date input
@@ -148,7 +137,7 @@ function EducationEntryFragment({ entry, index }: { entry: Resume.IEducationEntr
                 <Button className="btn bg-base-100 shadow-md w-full" onClick={removeEducation}>Remove Education</Button>
             </div>
         </Fieldset>
-    </div>)
+    </Editor>)
 }
 
 export default function EducationFragment() {
@@ -160,8 +149,7 @@ export default function EducationFragment() {
         const copy = [...education];
         copy.push({
             institution: '',
-            degree: '',
-            discipline: '',
+            qualification: '',
             duration: { start: new Date(), end: new Date() },
             location: { city: '', country: 'ca' },
             courses: [],
@@ -170,10 +158,15 @@ export default function EducationFragment() {
         dispatch(setEducation(copy));
     }
 
+    const { dragEnter, dragEnd, dragStart } = useDragAndDrop(education, (e) => dispatch(setEducation(e)));
+
     return (
         <Collapsable title="Education">
             <Button className="btn bg-base-100 shadow-md w-full" onClick={addEducation}>Add Education</Button>
-            {education.map((entry, index) => <EducationEntryFragment key={index} entry={entry} index={index} />)}
+            {education.map((entry, index) => <EducationEntryFragment key={index} entry={entry} index={index}
+                dragEnter={e => dragEnter(e, index)}
+                dragEnd={dragEnd}
+                dragStart={e => dragStart(e, index)} />)}
         </Collapsable>
     )
 }

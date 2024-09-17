@@ -58,8 +58,7 @@ export namespace Resume {
     // Education entry interface
     export interface IEducationEntry {
         institution: string; // e.g McMaster University
-        degree: string; // potential values: Bachelors, Masters, PhD
-        discipline: string; // e.g Computer Science
+        qualification: string; // e.g Bachelors of Computer Science
         location: Common.IAddress; // e.g Hamilton, ON
         courses: string[]; // e.g ["Data Structures", "Algorithms"]
         duration: Common.IDuration; // e.g {start: new Date("2015-09-01"), end: new Date("2019-04-30")}

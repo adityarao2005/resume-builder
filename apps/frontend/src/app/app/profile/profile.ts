@@ -17,8 +17,7 @@ export const profile: Profile.IProfile = {
     },
     education: [
         {
-            degree: "Bachelors",
-            discipline: "Engineering",
+            qualification: "Bachelors of Engineering",
             institution: "McMaster University",
             location: { city: "Hamilton", country: "ca" },
             courses: ["Software Engineering", "Computer Science", "Electrical Engineering"],

@@ -1,7 +1,9 @@
 "use client";
+import { useAuthContext } from "@/components/context/AuthContext";
 import ToolBar from "@/components/resume/ToolBar"
 import { NameFragment, ContactInfoFragment, HoQFragment, EducationFragment, ExperienceFragment, ProjectFragment, ECFragment, SkillsFragment, HobbiesFragment, AwardsFragment } from "@/components/resume/fragments"
 import ResumeViewer from "@/components/resume/pdf-viewer"
+import { useRouter } from "next/navigation";
 
 function Sidebar() {
     return (
@@ -37,6 +39,14 @@ function MainContent() {
 }
 
 export default function ResumePage() {
+    const { user } = useAuthContext();
+    const router = useRouter();
+
+    if (!user) {
+        router.push("/app/login");
+        return;
+    }
+
     return (<div className="flex flex-col flex-1">
         <ToolBar />
         {
