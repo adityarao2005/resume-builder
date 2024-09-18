@@ -21,6 +21,7 @@ export default function ResumeViewer() {
     const [key, setKey] = useState(0);
 
     // Add a delay/timeout to the state update to prevent iframe from reloading on every state change
+    // TODO: Change the idea of this when we manually compile this
     useEffect(() => {
         if (ref.current) {
             clearTimeout(ref.current);

@@ -17,20 +17,29 @@ export default function ToolBar() {
         <div className="flex-1"></div>
         <NavMenu>
             <li>
-                <Fieldset>
-                    <Field className="space-x-1 h-full">
-                        <Label>Auto-Compile:</Label>
-                        <Switch
-                            checked={autoCompile}
-                            onChange={setAutoCompile}
-                            className="group inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition data-[checked]:bg-blue-600"
-                        >
-                            <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-[checked]:translate-x-6" />
-                        </Switch>
+                <Fieldset className="h-full flex">
+                    {!autoCompile &&
+                        <Field>
+                            <Button className="btn btn-primary h-full">Compile</Button>
+                        </Field>
+                    }
+                    <Field className="h-full flex-1 flex flex-col align-middle">
+                        <div className="flex-1"></div>
+                        <div className="space-x-1">
+                            <Label>Auto-Compile:</Label>
+                            <Switch
+                                checked={autoCompile}
+                                onChange={setAutoCompile}
+                                className="group inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition data-[checked]:bg-blue-600"
+                            >
+                                <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-[checked]:translate-x-6" />
+                            </Switch>
+                        </div>
+                        <div className="flex-1"></div>
                     </Field>
                 </Fieldset>
             </li>
-            <li><Button className="btn mx-2 h-full">Score</Button></li>
+            <li><Button className="btn btn-primary m-2">Score</Button></li>
             <li>
                 <Fieldset>
                     <Field className="space-x-1">
