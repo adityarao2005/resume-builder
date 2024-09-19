@@ -77,7 +77,7 @@ export namespace Resume {
     }
 
     // Resume details interface
-    export interface ResumeDetails {
+    export interface ResumeData {
         name: string;
         contactInfo: IContactInfo;
         highlights: Common.IDescription;
@@ -88,13 +88,12 @@ export namespace Resume {
         skills: ISkill[];
         awards: Common.IAward[];
         hobbies: string[];
-        version: number;
-        template: string;
     }
 
     // Resume interface
     export interface Resume {
-        versions: ResumeDetails[];
+        // TODO: add a separate section for styling
+        versions: ResumeData[];
         job: Common.IJob;
     }
 }
@@ -114,7 +113,6 @@ export namespace Profile {
 
     // Profile interface
     export interface IProfile {
-        userID: string;
         name: string;
         contactInfo: Resume.IContactInfo;
         education: Resume.IEducationEntry[];

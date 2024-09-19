@@ -8,9 +8,15 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class WebSecurityConfiguration {
 
+    // Configures security settings for the application
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+
+        http
+                // Authorize HTTP requests where all requests must be authenticated
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                // Enable OAuth2 Resource Server with JWT support
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
+        // Return the configured SecurityFilterChain
         return http.build();
     }
 }
