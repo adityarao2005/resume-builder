@@ -14,6 +14,7 @@ import com.resumebuilder.backend.models.resume.Skill;
 public class Profile {
     @Id
     private String id;
+    private String userId;
     private String name;
     private ContactInfo contactInfo;
     private List<EducationEntry> education;
@@ -22,17 +23,18 @@ public class Profile {
     private List<ProfileExperience> extraCurriculars;
     private List<Skill> otherSkills;
     private List<Award> otherAwards;
-    private List<String> hobbies;   
+    private List<String> hobbies;
 
     // Constructors, getters, and setters
     public Profile() {
     }
 
-    public Profile(String id, String name, ContactInfo contactInfo, List<EducationEntry> education,
+    public Profile(String id, String userId, String name, ContactInfo contactInfo, List<EducationEntry> education,
             List<ProfileExperience> experience, List<ProfileProject> projects,
             List<ProfileExperience> extraCurriculars, List<Skill> otherSkills, List<Award> otherAwards,
             List<String> hobbies) {
         this.id = id;
+        this.userId = userId;
         this.name = name;
         this.contactInfo = contactInfo;
         this.education = education;
@@ -124,5 +126,12 @@ public class Profile {
         this.hobbies = hobbies;
     }
 
-    
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
 }
