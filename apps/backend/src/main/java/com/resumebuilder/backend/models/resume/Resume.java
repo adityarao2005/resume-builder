@@ -33,6 +33,15 @@ public class Resume {
         this.job = job;
     }
 
+    public Resume(Resume other) {
+        this.userId = other.userId;
+        this.documentId = other.documentId;
+        this.data = other.data;
+        this.version = other.version;
+        this.createdAt = other.createdAt;
+        this.job = other.job;
+    }
+
     public String getId() {
         return id;
     }

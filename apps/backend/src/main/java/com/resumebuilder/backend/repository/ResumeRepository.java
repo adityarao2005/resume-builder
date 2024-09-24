@@ -1,5 +1,6 @@
 package com.resumebuilder.backend.repository;
 
+import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,21 +13,26 @@ public interface ResumeRepository extends MongoRepository<Resume, String> {
     // Custom query methods can be defined here
     List<Resume> findByUserId(String userId);
 
+    @Aggregation(pipeline = {
+            "{ '$match': { 'userId': ?0 } }",
+            "{ '$sort': { 'documentId': 1, 'version': -1 } }",
+            "{ '$group': { '_id': '$documentId', 'latestResume': { '$first': '$$ROOT' } } }",
+            "{ '$replaceRoot': { 'newRoot': '$latestResume' } }"
+    })
+    List<Resume> findLatestVersionsByUserId(String userId);
+
     List<Resume> findByDocumentId(String documentId);
 
     Optional<Resume> findByIdAndUserId(String id, String userId);
 
     List<Resume> findByDocumentIdAndUserId(String documentId, String userId);
 
-    Optional<Resume> findTopByDocumentIdAndUserIdOrderByCreatedAtDesc(String documentId, String userId);
+    @Aggregation(pipeline = {
+            "{ '$match': { 'documentId': ?0, 'userId': ?1 } }",
+            "{ '$sort': { 'createdAt': -1 } }",
+            "{ '$limit': 1 }"
+    })
+    Optional<Resume> findLatestVersionOfResume(String documentId, String userId);
 
     void deleteByDocumentId(String documentId);
-
-    // TODO: Left off here with the ResumeRepository where we fixed the versioning
-    // and need to reflect the changes onto the service and controller
-    // Plan of action: when making changes to the resume by the client, the first
-    // change after websocket session has started will create a new version of the
-    // resume and the previous version will be archived.
-    // Previous versions can be restored but will not be deleted unless the resume
-    // "document" itself is deleted
 }
