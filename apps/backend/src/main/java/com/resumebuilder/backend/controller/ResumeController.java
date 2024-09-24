@@ -18,13 +18,19 @@ import com.resumebuilder.backend.models.resume.Experience;
 import com.resumebuilder.backend.models.resume.Project;
 import com.resumebuilder.backend.models.resume.Resume;
 import com.resumebuilder.backend.models.resume.Skill;
+import com.resumebuilder.backend.service.ResumeCompilationService;
 import com.resumebuilder.backend.service.WebSocketResumeService;
+import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationReport;
+import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationRequest;
 
 @Controller
 public class ResumeController {
 
     @Autowired
     private WebSocketResumeService resumeService;
+
+    @Autowired
+    private ResumeCompilationService compilationService;
 
     public record Ack(String action, boolean success, String message) {
     };
@@ -167,14 +173,23 @@ public class ResumeController {
     // a pdf back
     @MessageMapping("/resume/compile")
     @SendToUser("/queue/resume")
-    public Ack handleCompile(Resume resume) {
+    public ResumeCompilationReport handleCompile(ResumeCompilationRequest request) {
         // Handle the compile action here
-        // TODO: Handle compilation of resume here
-        return applyOperationOnResume("compile", applier -> {
-            // Set the useful values from the resume
-            applier.setData(resume.getData());
-            // TODO: soon apply styles and formatting
-            applier.setJob(resume.getJob());
-        });
+        if (!resumeService.isResumeAvailable()) {
+            return new ResumeCompilationReport(request.resume().getDocumentId(), true, "ERROR: Resume not available");
+        }
+
+        Resume resume = resumeService.aquireResume();
+        // TODO: set style and format
+        resume.setData(request.resume().getData());
+        resume.setJob(request.resume().getJob());
+
+        try {
+            return compilationService.compileResume(request);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResumeCompilationReport(request.resume().getDocumentId(), true, "ERROR: " + e.getMessage());
+        }
+
     }
 }
