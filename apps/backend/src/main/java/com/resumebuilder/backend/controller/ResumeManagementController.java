@@ -10,12 +10,14 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
 public class ResumeManagementController {
@@ -26,6 +28,7 @@ public class ResumeManagementController {
     private UserDetails userDetails;
 
     @DeleteMapping("/resume/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteResume(@PathVariable("id") String documentId) {
         // Delete the resume by ID
         service.deleteResume(documentId);
@@ -44,6 +47,7 @@ public class ResumeManagementController {
     }
 
     @PostMapping("/resume")
+    @ResponseStatus(HttpStatus.CREATED)
     public Resume createResume(@RequestBody Resume entity) {
         // Set defaults for resume then persist it
         entity.setDocumentId(UUID.randomUUID().toString());
