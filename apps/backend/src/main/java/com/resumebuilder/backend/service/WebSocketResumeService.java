@@ -6,8 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.resumebuilder.backend.models.resume.Resume;
@@ -17,19 +15,20 @@ import com.resumebuilder.backend.models.resume.Resume;
 public class WebSocketResumeService {
     @Autowired
     private ResumeService resumeService;
-    private UserDetails userDetails;
+    @Autowired
+    private WebSocketIdentityService identityService;
 
     private String documentId;
     private Resume version;
 
     public WebSocketResumeService() {
-        userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication();
     }
 
     // Get the resume: Only for read only purposes
     public Optional<Resume> getCurrentResume(String documentId) {
         // Get the latest resume
-        Optional<Resume> optionalResume = resumeService.getLatestResume(documentId, userDetails.getUsername());
+        Optional<Resume> optionalResume = resumeService.getLatestResume(documentId,
+                identityService.getIdentity().getUsername());
         // Store the document id if this exists
         if (optionalResume.isPresent()) {
             // Store document id
@@ -51,7 +50,8 @@ public class WebSocketResumeService {
 
         // If this is the first time we are creating a resume then get the latest
         // version
-        Resume prevVersion = resumeService.getLatestResume(documentId, userDetails.getUsername()).get();
+        Resume prevVersion = resumeService.getLatestResume(documentId, identityService.getIdentity().getUsername())
+                .get();
         if (prevVersion.getVersion() == ResumeService.INITIAL_VERSION) {
             this.version = prevVersion;
             this.version.setVersion(1);
