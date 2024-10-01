@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +17,13 @@ import com.resumebuilder.backend.models.resume.Resume;
 public class WebSocketResumeService {
     @Autowired
     private ResumeService resumeService;
-    @Autowired
     private UserDetails userDetails;
 
     private String documentId;
     private Resume version;
 
     public WebSocketResumeService() {
+        userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication();
     }
 
     // Get the resume: Only for read only purposes

@@ -14,6 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.resumebuilder.backend.BackendApplicationTestConfiguration.Identity;
 
+import jakarta.annotation.PostConstruct;
+
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Import(BackendApplicationTestConfiguration.class)
 class BackendApplicationTests {
@@ -57,4 +59,21 @@ class BackendApplicationTests {
 		assertThat(response.getBody()).isEqualTo("Hello, World!");
 	}
 
+	@Value("${spring.data.mongodb.uri}")
+	private String mongoUri;
+
+	@PostConstruct
+	void testMongoUri() {
+		System.out.printf("Mongo URI: %s%n", mongoUri);
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+	}
 }
