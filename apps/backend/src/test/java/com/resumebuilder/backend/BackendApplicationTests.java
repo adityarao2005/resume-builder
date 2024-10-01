@@ -37,7 +37,7 @@ class BackendApplicationTests {
 		// Test unauthenticated access
 		ResponseEntity<String> response = template.exchange(
 				RequestEntity
-						.post(rootUrl + "/sample")
+						.get(rootUrl + "/sample")
 						.build(),
 				String.class);
 		// Expecting 401 Unauthorized
@@ -47,14 +47,17 @@ class BackendApplicationTests {
 
 	@Test
 	void testSampleController() {
-		// Test unauthenticated access
+		// Test authenticated access
+		assertThat(identity.idToken()).isNotNull();
+
 		ResponseEntity<String> response = template.exchange(
 				RequestEntity
-						.post(rootUrl + "/sample")
+						.get(rootUrl + "/sample")
 						.header("Authorization", "Bearer " + identity.idToken())
 						.build(),
 				String.class);
 		// Expecting 401 Unauthorized
+		// System.out.println(response.getStatusCode());
 		assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
 		assertThat(response.getBody()).isEqualTo("Hello, World!");
 	}
@@ -62,18 +65,4 @@ class BackendApplicationTests {
 	@Value("${spring.data.mongodb.uri}")
 	private String mongoUri;
 
-	@PostConstruct
-	void testMongoUri() {
-		System.out.printf("Mongo URI: %s%n", mongoUri);
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println();
-	}
 }
