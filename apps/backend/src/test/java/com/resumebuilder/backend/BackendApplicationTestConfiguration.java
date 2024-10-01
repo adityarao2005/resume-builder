@@ -1,5 +1,6 @@
 package com.resumebuilder.backend;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
@@ -15,6 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @TestConfiguration
 public class BackendApplicationTestConfiguration {
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     // Identity record
     public static record Identity(String idToken) {
@@ -38,7 +42,6 @@ public class BackendApplicationTestConfiguration {
         HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
         // Parse response
-        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Identity> response = restTemplate.exchange(
                 UriComponentsBuilder.fromUriString(url).queryParam("key", "AIzaSyBR4j_w5BpP6UVYyqiT52C3gyyXbkN7amw")
                         .build().toUriString(),

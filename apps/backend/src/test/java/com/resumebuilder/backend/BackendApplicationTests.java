@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
 import com.resumebuilder.backend.BackendApplicationTestConfiguration.Identity;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -21,8 +24,19 @@ class BackendApplicationTests {
 	@Autowired
 	private Identity identity;
 
+	@Autowired
+	private RestTemplate template;
 
+	@Test
+	void testUnauthSampleController() {
+		// Test unauthenticated access
+		ResponseEntity<String> response = template.getForEntity("", String.class);
+		
+	}
 
+	@Test
+	void testSampleController() {
 
+	}
 
 }
