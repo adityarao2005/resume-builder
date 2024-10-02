@@ -106,6 +106,7 @@ public class ResumeManagementTests {
         assertThat(resumes.length).isEqualTo(TestResumes.resumes().length);
     }
 
+    @SuppressWarnings("null")
     @Test
     public void testUnauthDeleteResume() {
         assertThat(identity.idToken()).isNotNull();
@@ -127,6 +128,7 @@ public class ResumeManagementTests {
         assertThat(deleteResponse.getStatusCode().is4xxClientError()).isTrue();
     }
 
+    @SuppressWarnings("null")
     @Test
     public void testAuthDeleteResume() {
         assertThat(identity.idToken()).isNotNull();
