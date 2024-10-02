@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.resumebuilder.backend.models.Builder;
 import com.resumebuilder.backend.models.Job;
 
 @Document(collection = "resumes")
@@ -98,4 +99,51 @@ public class Resume {
         this.job = job;
     }
 
+    public static class ResumeBuilder implements Builder<Resume> {
+        private Resume resume;
+
+        public ResumeBuilder() {
+            resume = new Resume();
+        }
+
+        public ResumeBuilder withId(String id) {
+            resume.setId(id);
+            return this;
+        }
+
+        public ResumeBuilder withUserId(String userId) {
+            resume.setUserId(userId);
+            return this;
+        }
+
+        public ResumeBuilder withDocumentId(String documentId) {
+            resume.setDocumentId(documentId);
+            return this;
+        }
+
+        public ResumeBuilder withData(ResumeData data) {
+            resume.setData(data);
+            return this;
+        }
+
+        public ResumeBuilder withVersion(int version) {
+            resume.setVersion(version);
+            return this;
+        }
+
+        public ResumeBuilder withCreatedAt(LocalDate createdAt) {
+            resume.setCreatedAt(createdAt);
+            return this;
+        }
+
+        public ResumeBuilder withJob(Job job) {
+            resume.setJob(job);
+            return this;
+        }
+
+        @Override
+        public Resume build() {
+            return new Resume(resume);
+        }
+    }
 }

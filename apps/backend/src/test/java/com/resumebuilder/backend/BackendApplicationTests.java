@@ -14,8 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.resumebuilder.backend.BackendApplicationTestConfiguration.Identity;
 
-import jakarta.annotation.PostConstruct;
-
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Import(BackendApplicationTestConfiguration.class)
 class BackendApplicationTests {
@@ -57,12 +55,8 @@ class BackendApplicationTests {
 						.build(),
 				String.class);
 		// Expecting 401 Unauthorized
-		// System.out.println(response.getStatusCode());
 		assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
 		assertThat(response.getBody()).isEqualTo("Hello, World!");
 	}
-
-	@Value("${spring.data.mongodb.uri}")
-	private String mongoUri;
 
 }

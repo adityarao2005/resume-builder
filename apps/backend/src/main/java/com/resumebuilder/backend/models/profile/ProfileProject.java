@@ -2,6 +2,7 @@ package com.resumebuilder.backend.models.profile;
 
 import java.util.List;
 
+import com.resumebuilder.backend.models.Builder;
 import com.resumebuilder.backend.models.Description;
 import com.resumebuilder.backend.models.Duration;
 import com.resumebuilder.backend.models.resume.Project;
@@ -26,5 +27,38 @@ public class ProfileProject extends Project {
     public void setSkills(List<Skill> skills) {
         this.skills = skills;
     }
-    
+
+    public static class ProfileProjectBuilder implements Builder<ProfileProject> {
+        private ProfileProject project;
+
+        public ProfileProjectBuilder() {
+            project = new ProfileProject();
+        }
+
+        public ProfileProjectBuilder withTitle(String title) {
+            project.setTitle(title);
+            return this;
+        }
+
+        public ProfileProjectBuilder withDuration(Duration duration) {
+            project.setDuration(duration);
+            return this;
+        }
+
+        public ProfileProjectBuilder withDescription(Description description) {
+            project.setDescription(description);
+            return this;
+        }
+
+        public ProfileProjectBuilder withSkills(List<Skill> skills) {
+            project.setSkills(skills);
+            return this;
+        }
+
+        @Override
+        public ProfileProject build() {
+            return project;
+        }
+    }
+
 }

@@ -3,6 +3,7 @@ package com.resumebuilder.backend.models.resume;
 import java.util.Map;
 
 import com.resumebuilder.backend.models.Address;
+import com.resumebuilder.backend.models.Builder;
 
 public class ContactInfo {
     private String email;
@@ -51,6 +52,37 @@ public class ContactInfo {
 
     public void setMediaProfiles(Map<String, String> mediaProfiles) {
         this.mediaProfiles = mediaProfiles;
+    }
+
+    public static class ContactInfoBuilder implements Builder<ContactInfo> {
+        private ContactInfo contactInfo;
+
+        public ContactInfoBuilder() {
+            contactInfo = new ContactInfo();
+        }
+
+        public ContactInfoBuilder withEmail(String email) {
+            contactInfo.setEmail(email);
+            return this;
+        }
+
+        public ContactInfoBuilder withPhone(String phone) {
+            contactInfo.setPhone(phone);
+            return this;
+        }
+
+        public ContactInfoBuilder withAddress(Address address) {
+            contactInfo.setAddress(address);
+            return this;
+        }
+
+     
+
+
+        @Override
+        public ContactInfo build() {
+            return contactInfo;
+        }
     }
 
     

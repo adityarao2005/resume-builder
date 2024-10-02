@@ -3,6 +3,7 @@ package com.resumebuilder.backend.models.resume;
 import java.util.List;
 
 import com.resumebuilder.backend.models.Award;
+import com.resumebuilder.backend.models.Builder;
 import com.resumebuilder.backend.models.Description;
 
 public class ResumeData {
@@ -116,4 +117,66 @@ public class ResumeData {
         this.hobbies = hobbies;
     }
 
+    public static class ResumeDataBuilder implements Builder<ResumeData> {
+        private ResumeData resumeData;
+
+        public ResumeDataBuilder() {
+            resumeData = new ResumeData();
+        }
+
+        public ResumeDataBuilder withName(String name) {
+            resumeData.setName(name);
+            return this;
+        }
+
+        public ResumeDataBuilder withContactInfo(ContactInfo contactInfo) {
+            resumeData.setContactInfo(contactInfo);
+            return this;
+        }
+
+        public ResumeDataBuilder withHighlights(Description highlights) {
+            resumeData.setHighlights(highlights);
+            return this;
+        }
+
+        public ResumeDataBuilder withEducation(List<EducationEntry> education) {
+            resumeData.setEducation(education);
+            return this;
+        }
+
+        public ResumeDataBuilder withExperience(List<Experience> experience) {
+            resumeData.setExperience(experience);
+            return this;
+        }
+
+        public ResumeDataBuilder withProjects(List<Project> projects) {
+            resumeData.setProjects(projects);
+            return this;
+        }
+
+        public ResumeDataBuilder withExtraCurriculars(List<Experience> extraCurriculars) {
+            resumeData.setExtraCurriculars(extraCurriculars);
+            return this;
+        }
+
+        public ResumeDataBuilder withSkills(List<Skill> skills) {
+            resumeData.setSkills(skills);
+            return this;
+        }
+
+        public ResumeDataBuilder withAwards(List<Award> awards) {
+            resumeData.setAwards(awards);
+            return this;
+        }
+
+        public ResumeDataBuilder withHobbies(List<String> hobbies) {
+            resumeData.setHobbies(hobbies);
+            return this;
+        }
+
+        @Override
+        public ResumeData build() {
+            return resumeData;
+        }
+    } 
 }

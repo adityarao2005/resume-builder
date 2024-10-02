@@ -32,4 +32,8 @@ public class Duration {
     public void setEnd(LocalDate end) {
         this.end = end;
     }
+
+    public static Duration from(LocalDate start, LocalDate end) {
+        return new Duration(start, end);
+    }
 }

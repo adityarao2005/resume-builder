@@ -39,4 +39,8 @@ public class Skill {
     public void setProficiencyLevel(String proficiencyLevel) {
         this.proficiencyLevel = proficiencyLevel;
     }
+
+    public static Skill from(String name, String type, String proficiencyLevel) {
+        return new Skill(name, type, proficiencyLevel);
+    }
 }

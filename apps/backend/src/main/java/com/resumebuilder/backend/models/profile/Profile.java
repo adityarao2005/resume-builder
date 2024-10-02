@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.resumebuilder.backend.models.Award;
+import com.resumebuilder.backend.models.Builder;
 import com.resumebuilder.backend.models.resume.ContactInfo;
 import com.resumebuilder.backend.models.resume.EducationEntry;
 import com.resumebuilder.backend.models.resume.Skill;
@@ -134,4 +135,71 @@ public class Profile {
         this.userId = userId;
     }
 
+    public static class ProfileBuilder implements Builder<Profile> {
+        private Profile profile;
+
+        public ProfileBuilder() {
+            profile = new Profile();
+        }
+
+        public ProfileBuilder withId(String id) {
+            profile.setId(id);
+            return this;
+        }
+
+        public ProfileBuilder withUserId(String userId) {
+            profile.setUserId(userId);
+            return this;
+        }
+
+        public ProfileBuilder withName(String name) {
+            profile.setName(name);
+            return this;
+        }
+
+        public ProfileBuilder withContactInfo(ContactInfo contactInfo) {
+            profile.setContactInfo(contactInfo);
+            return this;
+        }
+
+        public ProfileBuilder withEducation(List<EducationEntry> education) {
+            profile.setEducation(education);
+            return this;
+        }
+
+        public ProfileBuilder withExperience(List<ProfileExperience> experience) {
+            profile.setExperience(experience);
+            return this;
+        }
+
+        public ProfileBuilder withProjects(List<ProfileProject> projects) {
+            profile.setProjects(projects);
+            return this;
+        }
+
+        public ProfileBuilder withExtraCurriculars(List<ProfileExperience> extraCurriculars) {
+            profile.setExtraCurriculars(extraCurriculars);
+            return this;
+        }
+
+        public ProfileBuilder withOtherSkills(List<Skill> otherSkills) {
+            profile.setOtherSkills(otherSkills);
+            return this;
+        }
+
+        public ProfileBuilder withOtherAwards(List<Award> otherAwards) {
+            profile.setOtherAwards(otherAwards);
+            return this;
+        }
+
+        public ProfileBuilder withHobbies(List<String> hobbies) {
+            profile.setHobbies(hobbies);
+            return this;
+        }
+
+        @Override
+        public Profile build() {
+            return profile;
+        }
+    }
 }

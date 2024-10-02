@@ -5,7 +5,6 @@ public class Address {
     private String city;
     private String country;
 
-
     // Constructors, getters, and setters
     public Address() {
     }
@@ -18,18 +17,21 @@ public class Address {
     public String getCity() {
         return city;
     }
-    
+
     public void setCity(String city) {
         this.city = city;
     }
-    
+
     public String getCountry() {
         return country;
     }
-    
+
     public void setCountry(String country) {
         this.country = country;
     }
-    
-    
+
+    public static Address from(String city, String country) {
+        return new Address(city, country);
+    }
+
 }

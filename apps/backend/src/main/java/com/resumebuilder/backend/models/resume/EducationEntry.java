@@ -3,6 +3,7 @@ package com.resumebuilder.backend.models.resume;
 import java.util.List;
 
 import com.resumebuilder.backend.models.Address;
+import com.resumebuilder.backend.models.Builder;
 import com.resumebuilder.backend.models.Description;
 import com.resumebuilder.backend.models.Duration;
 
@@ -76,4 +77,46 @@ public class EducationEntry {
         this.description = description;
     }
 
+    public static class EducationEntryBuilder implements Builder<EducationEntry> {
+        private EducationEntry educationEntry;
+
+        public EducationEntryBuilder() {
+            educationEntry = new EducationEntry();
+        }
+
+        public EducationEntryBuilder withInstitution(String institution) {
+            educationEntry.setInstitution(institution);
+            return this;
+        }
+
+        public EducationEntryBuilder withQualification(String qualification) {
+            educationEntry.setQualification(qualification);
+            return this;
+        }
+
+        public EducationEntryBuilder withLocation(Address location) {
+            educationEntry.setLocation(location);
+            return this;
+        }
+
+        public EducationEntryBuilder withCourses(List<String> courses) {
+            educationEntry.setCourses(courses);
+            return this;
+        }
+
+        public EducationEntryBuilder withDuration(Duration duration) {
+            educationEntry.setDuration(duration);
+            return this;
+        }
+
+        public EducationEntryBuilder withDescription(Description description) {
+            educationEntry.setDescription(description);
+            return this;
+        }
+
+        @Override
+        public EducationEntry build() {
+            return educationEntry;
+        }
+    }
 }

@@ -50,4 +50,37 @@ public class Job {
         this.description = description;
     }
 
+    public static class JobBuilder implements Builder<Job> {
+        private Job job;
+
+        public JobBuilder() {
+            job = new Job();
+        }
+
+        public JobBuilder withTitle(String title) {
+            job.setTitle(title);
+            return this;
+        }
+
+        public JobBuilder withCompany(String company) {
+            job.setCompany(company);
+            return this;
+        }
+
+        public JobBuilder withDuration(Duration duration) {
+            job.setDuration(duration);
+            return this;
+        }
+
+        public JobBuilder withDescription(Description description) {
+            job.setDescription(description);
+            return this;
+        }
+
+        @Override
+        public Job build() {
+            return job;
+        }
+    }
+
 }

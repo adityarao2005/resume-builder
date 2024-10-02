@@ -21,4 +21,8 @@ public class Description {
         this.lines = lines;
     }
 
+    public static Description from(String... lines) {
+        return new Description(List.of(lines));
+    }
+
 }

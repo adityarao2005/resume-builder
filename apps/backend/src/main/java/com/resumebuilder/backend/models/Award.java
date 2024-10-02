@@ -3,8 +3,7 @@ package com.resumebuilder.backend.models;
 import java.time.LocalDate;
 
 // Represents an award with a title, date, and affiliation
-public class 
-Award {
+public class Award {
     private String title;
     private LocalDate date;
     private String affilatedTo;
@@ -43,4 +42,7 @@ Award {
         this.affilatedTo = affilatedTo;
     }
 
+    public static Award from(String title, LocalDate date, String affilatedTo) {
+        return new Award(title, date, affilatedTo);
+    }
 }

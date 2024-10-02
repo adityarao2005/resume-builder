@@ -42,4 +42,30 @@ public class Project {
         this.description = description;
     }
 
+    public static class ProjectBuilder {
+        private Project project;
+
+        public ProjectBuilder() {
+            project = new Project();
+        }
+
+        public ProjectBuilder withTitle(String title) {
+            project.setTitle(title);
+            return this;
+        }
+
+        public ProjectBuilder withDuration(Duration duration) {
+            project.setDuration(duration);
+            return this;
+        }
+
+        public ProjectBuilder withDescription(Description description) {
+            project.setDescription(description);
+            return this;
+        }
+
+        public Project build() {
+            return project;
+        }
+    }
 }
