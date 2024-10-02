@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.resumebuilder.backend.models.resume.Resume;
@@ -41,8 +42,8 @@ public class ResumeService {
      * therefore no
      * deleting the history
      */
-    public void deleteResume(String documentId) {
-        resumeRepository.deleteByDocumentId(documentId);
+    public void deleteResume(String documentId, UserDetails userDetails) {
+        resumeRepository.deleteByDocumentIdAndUserId(documentId, userDetails.getUsername());
     }
 
     /**

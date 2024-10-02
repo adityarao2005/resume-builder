@@ -28,6 +28,31 @@ public class ProfileProject extends Project {
         this.skills = skills;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((skills == null) ? 0 : skills.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ProfileProject other = (ProfileProject) obj;
+        if (skills == null) {
+            if (other.skills != null)
+                return false;
+        } else if (!skills.equals(other.skills))
+            return false;
+        return true;
+    }
+
     public static class ProfileProjectBuilder implements Builder<ProfileProject> {
         private ProfileProject project;
 

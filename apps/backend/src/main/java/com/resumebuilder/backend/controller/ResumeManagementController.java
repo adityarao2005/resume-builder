@@ -27,9 +27,9 @@ public class ResumeManagementController {
 
     @DeleteMapping("/resume/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteResume(@PathVariable("id") String documentId, @AuthenticationPrincipal UserDetails userDetails) {
+    public void deleteResume(@PathVariable("id") String documentId, @AuthenticationPrincipal UserDetails details) {
         // Delete the resume by ID
-        service.deleteResume(documentId);
+        service.deleteResume(documentId, details);
     }
 
     @GetMapping("/resume")

@@ -2,6 +2,8 @@ package com.resumebuilder.backend;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,10 +38,7 @@ public class ResumeManagementTests {
     public void testUnauthCreateResume() {
         Resume resume = TestResumes.resumes()[0];
 
-        ResponseEntity<Resume> response = template.exchange(
-                RequestEntity
-                        .post(rootUrl + "/resume")
-                        .body(resume),
+        ResponseEntity<Resume> response = template.postForEntity(rootUrl + "/resume", resume,
                 Resume.class);
 
         assertThat(response.getStatusCode().is4xxClientError()).isTrue();
@@ -76,5 +75,85 @@ public class ResumeManagementTests {
             assertThat(created.getCreatedAt()).isNotNull();
             assertThat(created.getJob()).isEqualTo(resume.getJob());
         }
+    }
+
+    @Test
+    public void testUnauthGetAllResumes() {
+        ResponseEntity<Resume[]> response = template.getForEntity(rootUrl + "/resume", Resume[].class);
+        assertThat(response.getStatusCode().is4xxClientError()).isTrue();
+    }
+
+    private ResponseEntity<Resume[]> getResumes() {
+        return template.exchange(
+                RequestEntity
+                        .get(rootUrl + "/resume")
+                        .header("Authorization", "Bearer " + identity.idToken())
+                        .build(),
+                Resume[].class);
+
+    }
+
+    @Test
+    @SuppressWarnings("null")
+    public void testAuthGetAllResumes() {
+        assertThat(identity.idToken()).isNotNull();
+
+        ResponseEntity<Resume[]> response = getResumes();
+        Resume[] resumes = response.getBody();
+
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(resumes).isNotNull();
+        assertThat(resumes.length).isEqualTo(TestResumes.resumes().length);
+    }
+
+    @Test
+    public void testUnauthDeleteResume() {
+        assertThat(identity.idToken()).isNotNull();
+
+        ResponseEntity<Resume[]> response = getResumes();
+        Resume[] resumes = response.getBody();
+
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(resumes).isNotNull();
+        assertThat(resumes.length).isEqualTo(TestResumes.resumes().length);
+
+        ResponseEntity<Void> deleteResponse = template.exchange(
+                RequestEntity
+                        .delete(rootUrl + "/resume/" + resumes[2].getDocumentId())
+                        .header("Authorization", "Bearer " + identity.idToken())
+                        .build(),
+                Void.class);
+
+        assertThat(deleteResponse.getStatusCode().is4xxClientError()).isTrue();
+    }
+
+    @Test
+    public void testAuthDeleteResume() {
+        assertThat(identity.idToken()).isNotNull();
+
+        ResponseEntity<Resume[]> response = getResumes();
+        Resume[] resumes = response.getBody();
+
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(resumes).isNotNull();
+        assertThat(resumes.length).isEqualTo(TestResumes.resumes().length);
+
+        ResponseEntity<Void> deleteResponse = template.exchange(
+                RequestEntity
+                        .delete(rootUrl + "/resume/" + resumes[2].getDocumentId())
+                        .header("Authorization", "Bearer " + identity.idToken())
+                        .build(),
+                Void.class);
+
+        assertThat(deleteResponse.getStatusCode().is2xxSuccessful()).isTrue();
+
+        ResponseEntity<Resume[]> response0 = getResumes();
+        Resume[] resumes0 = response.getBody();
+
+        assertThat(response0.getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(resumes0).isNotNull();
+        assertThat(resumes0.length).isEqualTo(resumes.length - 1);
+        assertThat(List.of(resumes0).contains(resumes[2])).isFalse();
+
     }
 }

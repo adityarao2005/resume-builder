@@ -135,6 +135,91 @@ public class Profile {
         this.userId = userId;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((contactInfo == null) ? 0 : contactInfo.hashCode());
+        result = prime * result + ((education == null) ? 0 : education.hashCode());
+        result = prime * result + ((experience == null) ? 0 : experience.hashCode());
+        result = prime * result + ((projects == null) ? 0 : projects.hashCode());
+        result = prime * result + ((extraCurriculars == null) ? 0 : extraCurriculars.hashCode());
+        result = prime * result + ((otherSkills == null) ? 0 : otherSkills.hashCode());
+        result = prime * result + ((otherAwards == null) ? 0 : otherAwards.hashCode());
+        result = prime * result + ((hobbies == null) ? 0 : hobbies.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Profile other = (Profile) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (userId == null) {
+            if (other.userId != null)
+                return false;
+        } else if (!userId.equals(other.userId))
+            return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (contactInfo == null) {
+            if (other.contactInfo != null)
+                return false;
+        } else if (!contactInfo.equals(other.contactInfo))
+            return false;
+        if (education == null) {
+            if (other.education != null)
+                return false;
+        } else if (!education.equals(other.education))
+            return false;
+        if (experience == null) {
+            if (other.experience != null)
+                return false;
+        } else if (!experience.equals(other.experience))
+            return false;
+        if (projects == null) {
+            if (other.projects != null)
+                return false;
+        } else if (!projects.equals(other.projects))
+            return false;
+        if (extraCurriculars == null) {
+            if (other.extraCurriculars != null)
+                return false;
+        } else if (!extraCurriculars.equals(other.extraCurriculars))
+            return false;
+        if (otherSkills == null) {
+            if (other.otherSkills != null)
+                return false;
+        } else if (!otherSkills.equals(other.otherSkills))
+            return false;
+        if (otherAwards == null) {
+            if (other.otherAwards != null)
+                return false;
+        } else if (!otherAwards.equals(other.otherAwards))
+            return false;
+        if (hobbies == null) {
+            if (other.hobbies != null)
+                return false;
+        } else if (!hobbies.equals(other.hobbies))
+            return false;
+        return true;
+    }
+
     public static class ProfileBuilder implements Builder<Profile> {
         private Profile profile;
 

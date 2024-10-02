@@ -117,6 +117,85 @@ public class ResumeData {
         this.hobbies = hobbies;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((contactInfo == null) ? 0 : contactInfo.hashCode());
+        result = prime * result + ((highlights == null) ? 0 : highlights.hashCode());
+        result = prime * result + ((education == null) ? 0 : education.hashCode());
+        result = prime * result + ((experience == null) ? 0 : experience.hashCode());
+        result = prime * result + ((projects == null) ? 0 : projects.hashCode());
+        result = prime * result + ((extraCurriculars == null) ? 0 : extraCurriculars.hashCode());
+        result = prime * result + ((skills == null) ? 0 : skills.hashCode());
+        result = prime * result + ((awards == null) ? 0 : awards.hashCode());
+        result = prime * result + ((hobbies == null) ? 0 : hobbies.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ResumeData other = (ResumeData) obj;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (contactInfo == null) {
+            if (other.contactInfo != null)
+                return false;
+        } else if (!contactInfo.equals(other.contactInfo))
+            return false;
+        if (highlights == null) {
+            if (other.highlights != null)
+                return false;
+        } else if (!highlights.equals(other.highlights))
+            return false;
+        if (education == null) {
+            if (other.education != null)
+                return false;
+        } else if (!education.equals(other.education))
+            return false;
+        if (experience == null) {
+            if (other.experience != null)
+                return false;
+        } else if (!experience.equals(other.experience))
+            return false;
+        if (projects == null) {
+            if (other.projects != null)
+                return false;
+        } else if (!projects.equals(other.projects))
+            return false;
+        if (extraCurriculars == null) {
+            if (other.extraCurriculars != null)
+                return false;
+        } else if (!extraCurriculars.equals(other.extraCurriculars))
+            return false;
+        if (skills == null) {
+            if (other.skills != null)
+                return false;
+        } else if (!skills.equals(other.skills))
+            return false;
+        if (awards == null) {
+            if (other.awards != null)
+                return false;
+        } else if (!awards.equals(other.awards))
+            return false;
+        if (hobbies == null) {
+            if (other.hobbies != null)
+                return false;
+        } else if (!hobbies.equals(other.hobbies))
+            return false;
+        return true;
+    }
+
     public static class ResumeDataBuilder implements Builder<ResumeData> {
         private ResumeData resumeData;
 
