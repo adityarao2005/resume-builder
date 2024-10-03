@@ -16,7 +16,7 @@ public class WebSocketResumeService {
     @Autowired
     private ResumeService resumeService;
     @Autowired
-    private WebSocketIdentityService identityService;
+    private IdentityService identityService;
 
     private String documentId;
     private Resume version;
@@ -28,7 +28,7 @@ public class WebSocketResumeService {
     public Optional<Resume> getCurrentResume(String documentId) {
         // Get the latest resume
         Optional<Resume> optionalResume = resumeService.getLatestResume(documentId,
-                identityService.getIdentity().getUsername());
+                identityService.getUserId());
         // Store the document id if this exists
         if (optionalResume.isPresent()) {
             // Store document id
@@ -50,7 +50,7 @@ public class WebSocketResumeService {
 
         // If this is the first time we are creating a resume then get the latest
         // version
-        Resume prevVersion = resumeService.getLatestResume(documentId, identityService.getIdentity().getUsername())
+        Resume prevVersion = resumeService.getLatestResume(documentId, identityService.getUserId())
                 .get();
         if (prevVersion.getVersion() == ResumeService.INITIAL_VERSION) {
             this.version = prevVersion;

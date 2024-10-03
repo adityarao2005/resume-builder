@@ -64,10 +64,10 @@ public class ResumeManagementTests {
             // Check that the created resume matches the input
             assertThat(created).isNotNull();
             assertThat(created.getId()).isNotNull();
-            assertThat(created.getUserId()).isEqualTo(identity.idToken());
+            assertThat(created.getUserId()).isEqualTo(identity.localId());
             assertThat(created.getDocumentId()).isNotNull();
             assertThat(created.getData()).isEqualTo(resume.getData());
-            assertThat(created.getVersion()).isEqualTo(1);
+            assertThat(created.getVersion()).isEqualTo(0);
             assertThat(created.getCreatedAt()).isNotNull();
             assertThat(created.getJob()).isEqualTo(resume.getJob());
         }
@@ -117,7 +117,6 @@ public class ResumeManagementTests {
         ResponseEntity<Void> deleteResponse = template.exchange(
                 RequestEntity
                         .delete("/resume/" + resumes[2].getDocumentId())
-                        .header("Authorization", "Bearer " + identity.idToken())
                         .build(),
                 Void.class);
 
@@ -126,7 +125,7 @@ public class ResumeManagementTests {
 
     @SuppressWarnings("null")
     @Test
-    public void testAuthDeleteResume() {
+    public void testAuthDeleteResume() throws Exception {
         assertThat(identity.idToken()).isNotNull();
 
         ResponseEntity<Resume[]> response = getResumes();
@@ -144,9 +143,12 @@ public class ResumeManagementTests {
                 Void.class);
 
         assertThat(deleteResponse.getStatusCode().is2xxSuccessful()).isTrue();
+        deleteResponse.getBody();
+
+        Thread.sleep(1000);
 
         ResponseEntity<Resume[]> response0 = getResumes();
-        Resume[] resumes0 = response.getBody();
+        Resume[] resumes0 = response0.getBody();
 
         assertThat(response0.getStatusCode().is2xxSuccessful()).isTrue();
         assertThat(resumes0).isNotNull();

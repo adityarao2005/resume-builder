@@ -21,7 +21,7 @@ public class BackendApplicationTestConfiguration {
     private TestRestTemplate restTemplate;
 
     // Identity record
-    public static record Identity(String idToken) {
+    public static record Identity(String idToken, String localId) {
     }
 
     @Bean
