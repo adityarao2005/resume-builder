@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -20,9 +19,6 @@ import com.resumebuilder.backend.models.resume.Resume;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Import(BackendApplicationTestConfiguration.class)
 public class ResumeManagementTests {
-
-    @Value("http://localhost:${local.server.port}")
-    private String rootUrl;
 
     @Test
     void contextLoads() {
@@ -38,7 +34,7 @@ public class ResumeManagementTests {
     public void testUnauthCreateResume() {
         Resume resume = TestResumes.resumes()[0];
 
-        ResponseEntity<Resume> response = template.postForEntity(rootUrl + "/resume", resume,
+        ResponseEntity<Resume> response = template.postForEntity("/resume", resume,
                 Resume.class);
 
         assertThat(response.getStatusCode().is4xxClientError()).isTrue();
@@ -55,7 +51,7 @@ public class ResumeManagementTests {
             // Send a POST request to create a resume
             ResponseEntity<Resume> response = template.exchange(
                     RequestEntity
-                            .post(rootUrl + "/resume")
+                            .post("/resume")
                             .header("Authorization", "Bearer " + identity.idToken())
                             .body(resume),
                     Resume.class);
@@ -79,14 +75,14 @@ public class ResumeManagementTests {
 
     @Test
     public void testUnauthGetAllResumes() {
-        ResponseEntity<Resume[]> response = template.getForEntity(rootUrl + "/resume", Resume[].class);
+        ResponseEntity<Resume[]> response = template.getForEntity("/resume", Resume[].class);
         assertThat(response.getStatusCode().is4xxClientError()).isTrue();
     }
 
     private ResponseEntity<Resume[]> getResumes() {
         return template.exchange(
                 RequestEntity
-                        .get(rootUrl + "/resume")
+                        .get("/resume")
                         .header("Authorization", "Bearer " + identity.idToken())
                         .build(),
                 Resume[].class);
@@ -120,7 +116,7 @@ public class ResumeManagementTests {
 
         ResponseEntity<Void> deleteResponse = template.exchange(
                 RequestEntity
-                        .delete(rootUrl + "/resume/" + resumes[2].getDocumentId())
+                        .delete("/resume/" + resumes[2].getDocumentId())
                         .header("Authorization", "Bearer " + identity.idToken())
                         .build(),
                 Void.class);
@@ -142,7 +138,7 @@ public class ResumeManagementTests {
 
         ResponseEntity<Void> deleteResponse = template.exchange(
                 RequestEntity
-                        .delete(rootUrl + "/resume/" + resumes[2].getDocumentId())
+                        .delete("/resume/" + resumes[2].getDocumentId())
                         .header("Authorization", "Bearer " + identity.idToken())
                         .build(),
                 Void.class);

@@ -1,5 +1,6 @@
 package com.resumebuilder.backend.models.resume;
 
+import com.resumebuilder.backend.models.Builder;
 import com.resumebuilder.backend.models.Description;
 import com.resumebuilder.backend.models.Duration;
 
@@ -79,7 +80,7 @@ public class Project {
         return true;
     }
 
-    public static class ProjectBuilder {
+    public static class ProjectBuilder implements Builder<Project> {
         private Project project;
 
         public ProjectBuilder() {

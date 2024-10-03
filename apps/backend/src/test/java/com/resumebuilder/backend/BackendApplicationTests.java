@@ -2,7 +2,6 @@ package com.resumebuilder.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -17,8 +16,6 @@ import com.resumebuilder.backend.BackendApplicationTestConfiguration.Identity;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Import(BackendApplicationTestConfiguration.class)
 class BackendApplicationTests {
-	@Value("http://localhost:${local.server.port}")
-	private String rootUrl;
 
 	@Test
 	void contextLoads() {
@@ -35,7 +32,7 @@ class BackendApplicationTests {
 		// Test unauthenticated access
 		ResponseEntity<String> response = template.exchange(
 				RequestEntity
-						.get(rootUrl + "/sample")
+						.get("/sample")
 						.build(),
 				String.class);
 		// Expecting 401 Unauthorized
@@ -50,7 +47,7 @@ class BackendApplicationTests {
 
 		ResponseEntity<String> response = template.exchange(
 				RequestEntity
-						.get(rootUrl + "/sample")
+						.get("/sample")
 						.header("Authorization", "Bearer " + identity.idToken())
 						.build(),
 				String.class);

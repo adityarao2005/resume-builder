@@ -119,8 +119,10 @@ public class ContactInfo {
             return this;
         }
 
-     
-
+        public ContactInfoBuilder withMediaProfiles(Map<String, String> mediaProfiles) {
+            contactInfo.setMediaProfiles(mediaProfiles);
+            return this;
+        }
 
         @Override
         public ContactInfo build() {
@@ -128,5 +130,4 @@ public class ContactInfo {
         }
     }
 
-    
 }
