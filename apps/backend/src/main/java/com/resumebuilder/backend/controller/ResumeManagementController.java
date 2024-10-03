@@ -49,6 +49,8 @@ public class ResumeManagementController {
     @ResponseStatus(HttpStatus.CREATED)
     public Resume createResume(@RequestBody Resume entity, @AuthenticationPrincipal UserDetails userDetails) {
         // Set defaults for resume then persist it
+
+        
         entity.setDocumentId(UUID.randomUUID().toString());
         entity.setVersion(ResumeService.INITIAL_VERSION);
         entity.setUserId(userDetails.getUsername());
