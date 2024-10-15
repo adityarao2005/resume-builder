@@ -5,8 +5,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { Resume as namespace, Common, Profile } from '@/models/types';
 //import {profile as initialState} from '@/app/app/profile/profile';
 
-const initialState: Profile.IProfile = {
-    userID: '',
+export const initialState: Profile.IProfile = {
     name: '',
     contactInfo: {
         mediaProfiles: new Map(),
@@ -27,11 +26,9 @@ export const profileSlice = createSlice({
     initialState,
     // The reducers for the resume
     reducers: {
+        resetProfile: () => initialState,
         updateProfile: (state, action: PayloadAction<Profile.IProfile>) => {
             return action.payload;
-        },
-        setUserID: (state, action: PayloadAction<string>) => {
-            state.userID = action.payload;
         },
         setName: (state, action: PayloadAction<string>) => {
             state.name = action.payload;
@@ -65,8 +62,8 @@ export const profileSlice = createSlice({
 
 // Export the actions
 export const {
+    resetProfile,
     updateProfile,
-    setUserID,
     setName,
     setContactInfo,
     setEducation,

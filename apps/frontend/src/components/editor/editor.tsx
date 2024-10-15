@@ -28,10 +28,6 @@ export function CollapsableEditor(props: IEditorProps & { id: string }) {
 
 export function ModalEditor(props: IEditorProps & { id: string }) {
     // Render a modal editor component where the editor appears as a modal
-    {
-        // TODO: make it draggable/look draggable
-    }
-
     return (
         <div>
             <div className="border-base-300 border bg-base-100 shadow-md rounded-xl flex flex-row p-3 space-x-2"

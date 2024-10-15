@@ -11,3 +11,7 @@
  - redux
     - https://redux.js.org/tutorials/quick-start
  - Next.js
+
+Backend
+ - Texlive
+  - sudo apt install texlive

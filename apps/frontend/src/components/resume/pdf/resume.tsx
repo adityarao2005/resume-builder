@@ -10,7 +10,7 @@ const certifications = ['AWS Cloud Practitioner', 'Docker & Kubernetes']
 
 // Resume details - hardcoded for now
 // TODO: This will be replaced with a database call in the future
-export const resume: namespace.ResumeDetails = {
+export const resume: namespace.ResumeData = {
     name: "Aditya Rao",
     contactInfo: {
         phone: "+1 (647)-978-3730",
@@ -117,8 +117,6 @@ export const resume: namespace.ResumeDetails = {
         ...libraries.map(name => ({ name, type: "Libraries" })),
         ...certifications.map(name => ({ name, type: "Udemy Certifications (in progress)" }))
     ],
-    version: 1,
-    template: "",
     awards: [{ title: "Dean's Honour List", date: new Date(2024, 4) }],
     hobbies: hobbies
 }

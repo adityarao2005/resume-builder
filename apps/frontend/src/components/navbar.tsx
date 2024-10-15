@@ -4,7 +4,6 @@ import { NavHeader, NavLink, NavMenu } from "@/components/navbar.components";
 import { useAuthContext } from "@/components/context/AuthContext";
 
 export default function Navbar() {
-    // TODO - Test hook for now, change later once authentication is created
     const { user } = useAuthContext();
 
     return (<div className="navbar bg-base-100 drop-shadow-md">

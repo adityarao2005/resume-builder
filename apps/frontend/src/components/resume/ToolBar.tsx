@@ -1,8 +1,10 @@
 import { NavMenu } from "@/components/navbar.components"
-import { Button, Field, Fieldset, Select, Tab, TabGroup, TabList, Label } from "@headlessui/react"
+import { Button, Field, Fieldset, Select, Tab, TabGroup, TabList, Label, Switch } from "@headlessui/react"
+import { useState } from "react";
 
 // toolbar component
 export default function ToolBar() {
+    const [autoCompile, setAutoCompile] = useState(true);
     // TODO: Add switch field for enabling auto-compile (in non autocompile mode, the compile button should be enabled & the editing would not happen immediately which means some delay in the UI must occur from context to cache)
     return (<div className="navbar bg-base-100 drop-shadow">
         <TabGroup>
@@ -14,8 +16,30 @@ export default function ToolBar() {
         </TabGroup>
         <div className="flex-1"></div>
         <NavMenu>
-            <li><Button className="btn mx-2 h-full">Compile</Button></li>
-            <li><Button className="btn mx-2 h-full">Score</Button></li>
+            <li>
+                <Fieldset className="h-full flex">
+                    {!autoCompile &&
+                        <Field>
+                            <Button className="btn btn-primary h-full">Compile</Button>
+                        </Field>
+                    }
+                    <Field className="h-full flex-1 flex flex-col align-middle">
+                        <div className="flex-1"></div>
+                        <div className="space-x-1">
+                            <Label>Auto-Compile:</Label>
+                            <Switch
+                                checked={autoCompile}
+                                onChange={setAutoCompile}
+                                className="group inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition data-[checked]:bg-blue-600"
+                            >
+                                <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-[checked]:translate-x-6" />
+                            </Switch>
+                        </div>
+                        <div className="flex-1"></div>
+                    </Field>
+                </Fieldset>
+            </li>
+            <li><Button className="btn btn-primary m-2">Score</Button></li>
             <li>
                 <Fieldset>
                     <Field className="space-x-1">

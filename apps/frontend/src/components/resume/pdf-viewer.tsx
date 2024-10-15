@@ -18,8 +18,10 @@ export default function ResumeViewer() {
     const resumeState = useAppSelector((state) => state.resume);
     const [state, setState] = useState(resumeState);
     const ref = useRef<NodeJS.Timeout>();
+    const [key, setKey] = useState(0);
 
     // Add a delay/timeout to the state update to prevent iframe from reloading on every state change
+    // TODO: Change the idea of this when we manually compile this
     useEffect(() => {
         if (ref.current) {
             clearTimeout(ref.current);
@@ -27,14 +29,13 @@ export default function ResumeViewer() {
 
         ref.current = setTimeout(() => {
             setState(resumeState);
+            setKey(key + 1);
         }, 1000)
     }, [resumeState]);
 
     return (
-        <>
-            <PDFViewer className='flex-1'>
-                <RenderResumeDocument document={state} />
-            </PDFViewer>
-        </>
+        <PDFViewer key={key} className='flex-1'>
+            <RenderResumeDocument document={state} />
+        </PDFViewer>
     );
 }

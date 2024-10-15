@@ -1,0 +1,6 @@
+services:
+  # TODO: Keep this for testing, later use Atlas
+  mongo:
+      image: mongo:latest
+      ports:
+          - "27017:27017"
