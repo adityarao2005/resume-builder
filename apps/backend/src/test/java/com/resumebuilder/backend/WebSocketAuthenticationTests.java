@@ -29,7 +29,7 @@ import com.resumebuilder.backend.BackendApplicationTestConfiguration.Identity;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Import(value = { BackendApplicationTestConfiguration.class, WebsocketTestConfiguration.class })
-public class ResumeControllerTests {
+public class WebSocketAuthenticationTests {
 
     @Autowired
     private Identity identity;
