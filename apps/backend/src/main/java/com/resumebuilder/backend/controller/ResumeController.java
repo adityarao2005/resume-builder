@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.resumebuilder.backend.models.Award;
 import com.resumebuilder.backend.models.Description;
+import com.resumebuilder.backend.models.Job;
 import com.resumebuilder.backend.models.resume.ContactInfo;
 import com.resumebuilder.backend.models.resume.EducationEntry;
 import com.resumebuilder.backend.models.resume.Experience;
@@ -82,8 +82,6 @@ public class ResumeController {
 
         return new Ack("update/" + operationName, true, "Operation successful");
     }
-
-
 
     // Set the name of the resume
     @MessageMapping("/resume/name")
@@ -164,6 +162,14 @@ public class ResumeController {
     public Ack handleHobbies(@Payload List<String> hobbies) {
         // Handle the hobbies information here
         return applyOperationOnResume("setHobbies", resume -> resume.getData().setHobbies(hobbies));
+    }
+
+    // Set the job information
+    @MessageMapping("/resume/job")
+    @SendToUser("/queue/resume/ack")
+    public Ack handleJob(@Payload Job job) {
+        // Handle the job information here
+        return applyOperationOnResume("setJob", resume -> resume.setJob(job));
     }
 
     // Compile the resume

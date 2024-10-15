@@ -79,7 +79,7 @@ public class ResumeManagementTests {
         assertThat(response.getStatusCode().is4xxClientError()).isTrue();
     }
 
-    private ResponseEntity<Resume[]> getResumes() {
+    public ResponseEntity<Resume[]> getResumes() {
         return template.exchange(
                 RequestEntity
                         .get("/resume")
@@ -143,9 +143,6 @@ public class ResumeManagementTests {
                 Void.class);
 
         assertThat(deleteResponse.getStatusCode().is2xxSuccessful()).isTrue();
-        deleteResponse.getBody();
-
-        Thread.sleep(1000);
 
         ResponseEntity<Resume[]> response0 = getResumes();
         Resume[] resumes0 = response0.getBody();
@@ -155,5 +152,14 @@ public class ResumeManagementTests {
         assertThat(resumes0.length).isEqualTo(resumes.length - 1);
         assertThat(List.of(resumes0).contains(resumes[2])).isFalse();
 
+        deleteResponse = template.exchange(
+                RequestEntity
+                        .delete("/resume/" + resumes[1].getDocumentId())
+                        .header("Authorization", "Bearer " + identity.idToken())
+                        .build(),
+                Void.class);
+        
+        assertThat(deleteResponse.getStatusCode().is2xxSuccessful()).isTrue();
+    
     }
 }
