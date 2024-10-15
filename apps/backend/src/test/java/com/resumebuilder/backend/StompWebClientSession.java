@@ -24,7 +24,8 @@ public class StompWebClientSession extends StompSessionHandlerAdapter {
                     .connectAsync(url, this)
                     .get();
         } catch (Exception e) {
-            throw new RuntimeException("Connection failed." + e.getMessage()); // Do some failover and implement retry patterns.
+            throw new RuntimeException("Connection failed." + e.getMessage()); // Do some failover and implement retry
+                                                                               // patterns.
         }
     }
 
@@ -33,11 +34,7 @@ public class StompWebClientSession extends StompSessionHandlerAdapter {
         super.afterConnected(session, connectedHeaders);
     }
 
-    public void subscribe(String topic, StompFrameHandler handler) {
-        session.subscribe(topic, handler);
-    }
-
-    public void subscribeAck(String topic, Class<?> clazz) {
+    public void subscribe(String topic, Class<?> clazz) {
         topicQueueMap.putIfAbsent(topic, new ArrayBlockingQueue<>(10));
 
         session.subscribe(topic, new StompFrameHandler() {
@@ -59,13 +56,10 @@ public class StompWebClientSession extends StompSessionHandlerAdapter {
         session.send(topic, payload);
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T sendAndReceive(String topicSend, String topicReceive, Object payload, Class<T> clazz) {
-        send(topicSend, payload);
-
+    public <T> T awaitMessage(String topic, Class<T> clazz) {
         try {
-            if (topicQueueMap.containsKey(topicReceive)) {
-                return (T) topicQueueMap.get(topicReceive).take();
+            if (topicQueueMap.containsKey(topic)) {
+                return (T) topicQueueMap.get(topic).take();
             } else {
                 throw new Exception("No subscription created.");
             }

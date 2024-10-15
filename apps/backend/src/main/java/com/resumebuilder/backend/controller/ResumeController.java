@@ -1,14 +1,17 @@
 package com.resumebuilder.backend.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.resumebuilder.backend.models.Award;
@@ -68,14 +71,22 @@ public class ResumeController {
      * }
      */
 
-    public record Greeting(String content) {}
-    
+    public record Greeting(String content) {
+    }
+
     @MessageMapping("/ping")
     @SendToUser("/queue/ping")
     public Greeting ping(@Payload Greeting message) {
         // Send a ping message to the user
         System.out.println("Received Message: " + message.content());
         return new Greeting("pong");
+    }
+
+    @MessageMapping("/me")
+    @SendToUser("/queue/me")
+    public Greeting handleMe() {
+        // Return the principal
+        return new Greeting(identityService.getIdentity().getName());
     }
 
     @MessageMapping("/resume/{id}")

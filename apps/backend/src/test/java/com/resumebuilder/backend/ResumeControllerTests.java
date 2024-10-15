@@ -1,26 +1,28 @@
 package com.resumebuilder.backend;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.lang.reflect.Type;
 import java.security.Principal;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.NonNullFields;
 import org.springframework.lang.Nullable;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import com.resumebuilder.backend.BackendApplicationTestConfiguration.Identity;
@@ -48,22 +50,45 @@ public class ResumeControllerTests {
     }
 
     @Test
+    @SuppressWarnings("null")
+    public void testUnAuthWebSocketConnection() throws Exception {
+        String urlWithToken = "ws://localhost:" + port + "/ws";
+
+        ExecutionException exception = assertThrows(ExecutionException.class, () -> {
+            stompClient.connectAsync(urlWithToken, new StompSessionHandlerAdapter() {
+                @Override
+                public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+                    System.out.println("Connected to WebSocket");
+                }
+
+                @Override
+                public void handleException(StompSession session, StompCommand command, StompHeaders headers,
+                        byte[] payload, Throwable exception) {
+                    System.err.println("WebSocket error: " + exception.getMessage());
+                }
+            }).get(1, TimeUnit.SECONDS);
+        });
+
+        assertThat(exception.getCause()).isInstanceOf(HttpClientErrorException.Unauthorized.class);
+    }
+
+    @Test
     public void testAuthWebSocketConnection() throws Exception {
         StompWebClientSession session = new StompWebClientSession(stompClient, getWebSocketURL());
+        session.subscribe("/user/queue/me", Greeting.class);
 
-        session.subscribeAck("/user/queue/ping", Principal.class);
-        Principal principal = session.sendAndReceive("/app/ping", "/user/queue/ping", session, Principal.class);
-
-        session.disconnect();
+        session.send("/app/me", new Greeting("Hello world"));
+        Greeting principal = session.awaitMessage("/user/queue/me", Greeting.class);
 
         assertThat(principal).isNotNull();
-        assertThat(principal.getName()).isEqualTo(identity.localId());
+        assertThat(principal.content()).isEqualTo(identity.localId());
     }
 
     public record Greeting(String content) {
     }
 
     @Test
+    @SuppressWarnings("null")
     public void testPing() throws Exception {
         CountDownLatch latch = new CountDownLatch(1);
 
