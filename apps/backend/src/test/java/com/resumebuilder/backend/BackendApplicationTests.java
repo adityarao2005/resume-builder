@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 
@@ -56,4 +57,20 @@ class BackendApplicationTests {
 		assertThat(response.getBody()).isEqualTo("Hello, World!");
 	}
 
+	@Test
+	void testSampleControllerAccessToken() {
+		// Test authenticated access
+		assertThat(identity.idToken()).isNotNull();
+
+		ResponseEntity<String> response = template.exchange(
+				RequestEntity
+						.get("/sample?access_token=" + identity.idToken())
+						.build(),
+				String.class);
+		// Expecting 401 Unauthorized
+		assertThat(response.getStatusCode().isSameCodeAs(HttpStatusCode.valueOf(401))).isFalse();
+		assertThat(response.getStatusCode().is4xxClientError()).isFalse();
+		assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+		assertThat(response.getBody()).isEqualTo("Hello, World!");
+	}
 }

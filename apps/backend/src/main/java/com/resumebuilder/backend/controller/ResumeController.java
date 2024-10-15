@@ -7,8 +7,9 @@ import java.util.function.Consumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.annotation.SendToUser;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.resumebuilder.backend.models.Award;
 import com.resumebuilder.backend.models.Description;
@@ -19,11 +20,12 @@ import com.resumebuilder.backend.models.resume.Project;
 import com.resumebuilder.backend.models.resume.Resume;
 import com.resumebuilder.backend.models.resume.Skill;
 import com.resumebuilder.backend.service.ResumeCompilationService;
+import com.resumebuilder.backend.service.WebSocketIdentityService;
 import com.resumebuilder.backend.service.WebSocketResumeService;
 import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationReport;
 import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationRequest;
 
-@Controller
+@RestController
 public class ResumeController {
 
     @Autowired
@@ -31,6 +33,9 @@ public class ResumeController {
 
     @Autowired
     private ResumeCompilationService compilationService;
+
+    @Autowired
+    private WebSocketIdentityService identityService;
 
     public record Ack(String action, boolean success, String message) {
     };
@@ -62,6 +67,16 @@ public class ResumeController {
      * return new Ack();
      * }
      */
+
+    public record Greeting(String content) {}
+    
+    @MessageMapping("/ping")
+    @SendToUser("/queue/ping")
+    public Greeting ping(@Payload Greeting message) {
+        // Send a ping message to the user
+        System.out.println("Received Message: " + message.content());
+        return new Greeting("pong");
+    }
 
     @MessageMapping("/resume/{id}")
     @SendToUser("/queue/resume")

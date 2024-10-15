@@ -16,7 +16,7 @@ public class WebSocketResumeService {
     @Autowired
     private ResumeService resumeService;
     @Autowired
-    private IdentityService identityService;
+    private WebSocketIdentityService identityService;
 
     private String documentId;
     private Resume version;
