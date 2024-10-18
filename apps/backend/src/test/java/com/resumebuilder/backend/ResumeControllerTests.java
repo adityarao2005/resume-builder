@@ -87,7 +87,6 @@ public class ResumeControllerTests {
         return getWorkingResume().getDocumentId();
     }
 
-    // TODO: Implement the rest of the methods for ResumeController to test them
     @Test
     public void testWebSocketSession() throws Exception {
 
@@ -106,37 +105,36 @@ public class ResumeControllerTests {
         // Sets the name
         testName(session, data);
 
-        // TODO: Set the contact info
+        // Set the contact info
         testContactInfo(session, data);
 
-        // TODO: Set highlights
+        // Set highlights
         testHighlights(session, data);
 
-        // TODO: Set education
+        // Set education
         testEducation(session, data);
 
-        // TODO: Set experience
+        // Set experience
         testExperience(session, data);
 
-        // TODO: Set projects
+        // Set projects
         testProjects(session, data);
 
-        // TODO: Set extra-curricular activities
+        // Set extra-curricular activities
         testExtraCurricularActivities(session, data);
 
-        // TODO: Set skills
+        // Set skills
         testSkills(session, data);
 
-        // TODO: Set awards
+        // Set awards
         testAwards(session, data);
 
-        // TODO: Set hobbies
+        // Set hobbies
         testHobbies(session, data);
 
-        // TODO: Set job
+        // Set job
         testJob(session, resume);
 
-        // TODO: Compile the resume
         session.disconnect();
 
         Resume oo = getWorkingResume();
