@@ -12,14 +12,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.cglib.core.Local;
+import org.springframework.boot.web.server.MimeMappings.Mapping;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
-import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.resumebuilder.backend.BackendApplicationTestConfiguration.Identity;
+import com.resumebuilder.backend.WebSocketAuthenticationTests.Greeting;
 import com.resumebuilder.backend.controller.ResumeController.Ack;
 import com.resumebuilder.backend.models.Builder;
 import com.resumebuilder.backend.models.Address;
@@ -66,7 +68,7 @@ public class ResumeControllerTests {
     }
 
     @SuppressWarnings("null")
-    public String getWorkingResumeId() {
+    public Resume getWorkingResume() {
         ResponseEntity<Resume[]> resumes = template.exchange(
                 RequestEntity
                         .get("/resume")
@@ -78,12 +80,17 @@ public class ResumeControllerTests {
         assertThat(resumes.getBody()).isNotNull();
         assertThat(resumes.getBody().length).isGreaterThan(0);
 
-        return resumes.getBody()[0].getDocumentId();
+        return resumes.getBody()[0];
+    }
+
+    public String getWorkingResumeId() {
+        return getWorkingResume().getDocumentId();
     }
 
     // TODO: Implement the rest of the methods for ResumeController to test them
     @Test
     public void testWebSocketSession() throws Exception {
+
         // Create the session
         StompWebClientSession session = new StompWebClientSession(stompClient, getWebSocketURL());
         // Subscribe to the necessary queues
@@ -92,7 +99,7 @@ public class ResumeControllerTests {
         session.subscribe("/user/queue/resume/report", ResumeCompilationReport.class);
 
         // Get the working resume
-        Resume resume = session.sendAndAwait("/app/resume/" + getWorkingResumeId(), null, Resume.class);
+        Resume resume = session.sendAndAwait("/app/resume/set/" + getWorkingResumeId(), null, Resume.class);
         assertThat(resume).isNotNull();
 
         ResumeData data = resume.getData();
@@ -130,7 +137,76 @@ public class ResumeControllerTests {
         testJob(session, resume);
 
         // TODO: Compile the resume
+        session.disconnect();
 
+        Resume oo = getWorkingResume();
+        assertThat(oo).isNotNull();
+        assertThat(oo.getData()).isEqualTo(data);
+        assertThat(oo.getJob()).isEqualTo(resume.getJob());
+    }
+
+    @Test
+    public void testWebSocketSessionVersioning() throws Exception {
+        // Create the session
+        StompWebClientSession session = new StompWebClientSession(stompClient, getWebSocketURL());
+        // Subscribe to the necessary queues
+        session.subscribe("/user/queue/resume", Resume.class);
+        session.subscribe("/user/queue/resume/ack", Ack.class);
+        session.subscribe("/user/queue/resume/report", ResumeCompilationReport.class);
+
+        // Get the working resume
+        Resume resume = session.sendAndAwait("/app/resume/set/" + getWorkingResumeId(), null, Resume.class);
+        assertThat(resume).isNotNull();
+
+        ResumeData data = resume.getData();
+        // Sets the name
+        testName2(session, data);
+
+        session.disconnect();
+
+        Resume oo = getWorkingResume();
+        assertThat(oo).isNotNull();
+        assertThat(oo.getData()).isEqualTo(data);
+        assertThat(oo.getJob()).isEqualTo(resume.getJob());
+        assertThat(oo.getVersion()).isEqualTo(2);
+    }
+
+    @Test
+    public void testWebSocketSessionVersioning2() throws Exception {
+        // Create the session
+        StompWebClientSession session = new StompWebClientSession(stompClient, getWebSocketURL());
+        // Subscribe to the necessary queues
+        session.subscribe("/user/queue/resume", Resume.class);
+        session.subscribe("/user/queue/resume/ack", Ack.class);
+        session.subscribe("/user/queue/resume/report", ResumeCompilationReport.class);
+
+        // Get the working resume
+        Resume resume = session.sendAndAwait("/app/resume/set/" + getWorkingResumeId(), null, Resume.class);
+        assertThat(resume).isNotNull();
+        assertThat(resume.getData().getName()).isEqualTo("John Doe 3");
+        assertThat(resume.getVersion()).isEqualTo(3);
+
+        ResumeData data = resume.getData();
+        // Sets the name
+        testName3(session, data, "Johnathon Doe");
+
+        session.disconnect();
+
+        Resume oo = getWorkingResume();
+        assertThat(oo).isNotNull();
+        assertThat(oo.getData()).isEqualTo(data);
+        assertThat(oo.getJob()).isEqualTo(resume.getJob());
+        assertThat(oo.getVersion()).isEqualTo(4);
+    }
+
+    private void testName3(StompWebClientSession session, ResumeData data, String name) {
+        data.setName(name);
+        tryAck(session, data.getName(), "/app/resume/name", "update/setName");
+    }
+
+    private void testName2(StompWebClientSession session, ResumeData data) {
+        data.setName("John Doe 2");
+        tryAck(session, data.getName(), "/app/resume/name", "update/setName");
     }
 
     private void testName(StompWebClientSession session, ResumeData data) {
@@ -144,7 +220,7 @@ public class ResumeControllerTests {
         contactInfo.setPhone("123-456-7890");
         contactInfo.setAddress(new Address("Springfield", "IL"));
         // Check if everything worked out
-        tryAck(session, contactInfo, "/app/resume/contactInfo", "update/setContactInfo");
+        tryAck(session, contactInfo, "/app/resume/contact_info", "update/setContactInfo");
     }
 
     private void testHighlights(StompWebClientSession session, ResumeData data) {

@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @TestConfiguration
@@ -21,7 +22,7 @@ public class BackendApplicationTestConfiguration {
     private TestRestTemplate restTemplate;
 
     // Identity record
-    public static record Identity(String idToken, String localId) {
+    public static record Identity(@JsonProperty("idToken") String idToken, @JsonProperty("localId") String localId) {
     }
 
     @Bean

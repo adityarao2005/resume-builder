@@ -25,12 +25,12 @@ public class WebSocketResumeService {
     }
 
     // Get the resume: Only for read only purposes
-    public Optional<Resume> getCurrentResume(String documentId) {
+    public Resume getCurrentResume(String documentId) {
         // Get the latest resume
-        Optional<Resume> optionalResume = resumeService.getLatestResume(documentId,
+        Resume optionalResume = resumeService.getLatestResume(documentId,
                 identityService.getUserId());
         // Store the document id if this exists
-        if (optionalResume.isPresent()) {
+        if (optionalResume != null) {
             // Store document id
             this.documentId = documentId;
         }
@@ -50,8 +50,7 @@ public class WebSocketResumeService {
 
         // If this is the first time we are creating a resume then get the latest
         // version
-        Resume prevVersion = resumeService.getLatestResume(documentId, identityService.getUserId())
-                .get();
+        Resume prevVersion = resumeService.getLatestResume(documentId, identityService.getUserId());
         if (prevVersion.getVersion() == ResumeService.INITIAL_VERSION) {
             this.version = prevVersion;
             this.version.setVersion(1);
@@ -66,6 +65,12 @@ public class WebSocketResumeService {
 
         this.version = resumeService.saveOrUpdateResume(resume);
         return version;
+    }
+
+    public void saveState() {
+        if (version != null) {
+            resumeService.saveOrUpdateResume(version);
+        }
     }
 
 }

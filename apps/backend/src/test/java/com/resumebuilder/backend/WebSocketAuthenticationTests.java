@@ -75,8 +75,10 @@ public class WebSocketAuthenticationTests {
         StompWebClientSession session = new StompWebClientSession(stompClient, getWebSocketURL());
         session.subscribe("/user/queue/me", Greeting.class);
 
-        session.send("/app/me", new Greeting("Hello world"));
-        Greeting principal = session.awaitMessage(Greeting.class);
+        // session.send("/app/me", );
+        // Greeting principal = session.awaitMessage(Greeting.class);
+
+        Greeting principal = session.sendAndAwait("/app/me", new Greeting("Hello world"), Greeting.class);
 
         assertThat(principal).isNotNull();
         assertThat(principal.content()).isEqualTo(identity.localId());

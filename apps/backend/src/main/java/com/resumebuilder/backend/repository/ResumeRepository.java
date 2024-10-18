@@ -29,10 +29,10 @@ public interface ResumeRepository extends MongoRepository<Resume, String> {
 
     @Aggregation(pipeline = {
             "{ '$match': { 'documentId': ?0, 'userId': ?1 } }",
-            "{ '$sort': { 'createdAt': -1 } }",
+            "{ '$sort': { 'version': -1 } }",
             "{ '$limit': 1 }"
     })
-    Optional<Resume> findLatestVersionOfResume(String documentId, String userId);
+    Resume findLatestVersionOfResume(String documentId, String userId);
 
     void deleteByDocumentIdAndUserId(String documentId, String userId);
 }

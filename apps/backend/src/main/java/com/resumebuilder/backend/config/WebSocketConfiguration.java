@@ -1,9 +1,13 @@
 package com.resumebuilder.backend.config;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.lang.NonNull;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.security.config.annotation.web.socket.AbstractSecurityWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -11,6 +15,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.resumebuilder.backend.service.WebSocketIdentityService;
 
 @SuppressWarnings("deprecation")
@@ -49,6 +54,14 @@ public class WebSocketConfiguration extends AbstractSecurityWebSocketMessageBrok
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         identityService.setIdentity(null);
+    }
+
+    @Override
+    public boolean configureMessageConverters(@NonNull List<MessageConverter> messageConverters) {
+        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+        converter.getObjectMapper().registerModule(new JavaTimeModule());
+        messageConverters.add(converter);
+        return false;
     }
 
 }
