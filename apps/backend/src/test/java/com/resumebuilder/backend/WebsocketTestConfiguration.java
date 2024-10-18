@@ -12,6 +12,10 @@ import org.springframework.web.socket.sockjs.client.SockJsClient;
 import org.springframework.web.socket.sockjs.client.Transport;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 @TestConfiguration
 @Import(value = { BackendApplicationTestConfiguration.class })
 public class WebsocketTestConfiguration {
@@ -20,8 +24,16 @@ public class WebsocketTestConfiguration {
     public WebSocketStompClient webSocketStompClient() {
         WebSocketStompClient stompClient = new WebSocketStompClient(
                 new SockJsClient(List.<Transport>of(new WebSocketTransport(new StandardWebSocketClient()))));
-        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+        stompClient.setMessageConverter(mappingJackson2MessageConverter());
         return stompClient;
+    }
+
+    @Bean
+    public MappingJackson2MessageConverter mappingJackson2MessageConverter() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+        objectMapper.registerModule(new JavaTimeModule());
+        return new MappingJackson2MessageConverter(objectMapper);
     }
 
 }

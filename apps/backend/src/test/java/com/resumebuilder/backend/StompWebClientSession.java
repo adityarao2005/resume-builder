@@ -16,7 +16,7 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 public class StompWebClientSession extends StompSessionHandlerAdapter {
     private StompSession session;
-    private Map<String, BlockingQueue<Object>> topicQueueMap = new HashMap<>();
+    private Map<Class<?>, BlockingQueue<Object>> topicQueueMap = new HashMap<>();
 
     public StompWebClientSession(WebSocketStompClient client, String url) {
         try {
@@ -35,7 +35,7 @@ public class StompWebClientSession extends StompSessionHandlerAdapter {
     }
 
     public void subscribe(String topic, Class<?> clazz) {
-        topicQueueMap.putIfAbsent(topic, new ArrayBlockingQueue<>(10));
+        topicQueueMap.putIfAbsent(clazz, new ArrayBlockingQueue<>(10));
 
         session.subscribe(topic, new StompFrameHandler() {
             @Override
@@ -47,7 +47,7 @@ public class StompWebClientSession extends StompSessionHandlerAdapter {
             public void handleFrame(@NonNull StompHeaders headers, @Nullable Object payload) {
                 System.out.println("Received: " + payload);
 
-                topicQueueMap.get(topic).add(payload);
+                topicQueueMap.get(clazz).add(payload);
             }
         });
     }
@@ -56,16 +56,22 @@ public class StompWebClientSession extends StompSessionHandlerAdapter {
         session.send(topic, payload);
     }
 
-    public <T> T awaitMessage(String topic, Class<T> clazz) {
+    @SuppressWarnings("unchecked")
+    public <T> T awaitMessage(Class<T> clazz) {
         try {
-            if (topicQueueMap.containsKey(topic)) {
-                return (T) topicQueueMap.get(topic).take();
+            if (topicQueueMap.containsKey(clazz)) {
+                return (T) topicQueueMap.get(clazz).take();
             } else {
                 throw new Exception("No subscription created.");
             }
         } catch (Exception e) {
             throw new RuntimeException("Interrupted while waiting for response.");
         }
+    }
+
+    public <T> T sendAndAwait(String topic, Object payload, Class<T> clazz) {
+        send(topic, payload);
+        return awaitMessage(clazz);
     }
 
     public void disconnect() {

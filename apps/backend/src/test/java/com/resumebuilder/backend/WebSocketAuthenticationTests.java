@@ -4,11 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.lang.reflect.Type;
-import java.security.Principal;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,8 +75,10 @@ public class WebSocketAuthenticationTests {
         StompWebClientSession session = new StompWebClientSession(stompClient, getWebSocketURL());
         session.subscribe("/user/queue/me", Greeting.class);
 
-        session.send("/app/me", new Greeting("Hello world"));
-        Greeting principal = session.awaitMessage("/user/queue/me", Greeting.class);
+        // session.send("/app/me", );
+        // Greeting principal = session.awaitMessage(Greeting.class);
+
+        Greeting principal = session.sendAndAwait("/app/me", new Greeting("Hello world"), Greeting.class);
 
         assertThat(principal).isNotNull();
         assertThat(principal.content()).isEqualTo(identity.localId());

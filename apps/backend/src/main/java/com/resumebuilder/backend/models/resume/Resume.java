@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.resumebuilder.backend.models.Builder;
 import com.resumebuilder.backend.models.Job;
 
@@ -16,6 +17,7 @@ public class Resume {
     private String documentId;
     private ResumeData data;
     private int version;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate createdAt;
     private Job job;
 

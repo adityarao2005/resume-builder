@@ -1,6 +1,5 @@
 package com.resumebuilder.backend.service;
 
-import java.util.Optional;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +65,7 @@ public class ResumeService {
      * Implement getting the current version of a resume by ID, especially
      * when viewing and editing a resume
      */
-    public Optional<Resume> getLatestResume(String documentId, String userId) {
+    public Resume getLatestResume(String documentId, String userId) {
         return resumeRepository.findLatestVersionOfResume(documentId, userId);
     }
 

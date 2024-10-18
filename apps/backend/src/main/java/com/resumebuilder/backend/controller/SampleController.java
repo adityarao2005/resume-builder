@@ -14,7 +14,6 @@ public class SampleController {
 
     @GetMapping("/sample")
     public String sample() {
-        // TODO: Use the "sub" or the "user_id" claim for the id of the user when saving
         // to database
         System.err.println(SecurityContextHolder.getContext().getAuthentication());
         System.err.println(identityService.getUserId());
