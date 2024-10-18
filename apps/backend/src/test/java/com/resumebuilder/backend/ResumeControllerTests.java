@@ -199,6 +199,22 @@ public class ResumeControllerTests {
         assertThat(oo.getVersion()).isEqualTo(4);
     }
 
+    @Test
+    @SuppressWarnings("null")
+    public void testHistory() {
+        ResponseEntity<Resume[]> response = template.exchange(
+                RequestEntity
+                        .get("/resume/history/" + getWorkingResumeId())
+                        .header("Authorization", "Bearer " + identity.idToken())
+                        .build(),
+                Resume[].class);
+
+        Resume[] resumes = response.getBody();
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(resumes).isNotNull();
+        assertThat(resumes.length).isEqualTo(4);
+    }
+
     private void testName3(StompWebClientSession session, ResumeData data, String name) {
         data.setName(name);
         tryAck(session, data.getName(), "/app/resume/name", "update/setName");
