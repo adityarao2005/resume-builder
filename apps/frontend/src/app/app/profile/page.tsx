@@ -24,7 +24,7 @@ const PDFDownloadLink = dynamic(
 // Header component
 function Header() {
     const profile = useAppSelector((state) => state.profile);
-    const [cv, setCV] = useState<Resume.ResumeDetails>(initialState);
+    const [cv, setCV] = useState<Resume.ResumeData>(initialState);
     const ref = useRef<NodeJS.Timeout>();
 
     useEffect(() => {
@@ -50,8 +50,6 @@ function Header() {
                 ],
                 awards: profile.otherAwards,
                 hobbies: profile.hobbies,
-                version: 0,
-                template: ''
             });
         }, 1000);
     }, [profile]);

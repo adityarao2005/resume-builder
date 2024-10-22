@@ -93,8 +93,10 @@ export namespace Resume {
     // Resume interface
     export interface Resume {
         // TODO: add a separate section for styling
-        versions: ResumeData[];
+        data: ResumeData;
         job: Common.IJob;
+        createdAt: Date;
+        documentId?: string;
     }
 }
 

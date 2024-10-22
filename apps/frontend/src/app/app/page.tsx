@@ -1,6 +1,10 @@
-"use server";
+"use client";
 
 import DashboardContent from "@/app/app/content";
+import { useAuthContext } from "@/components/context/AuthContext";
+import { Resume } from "@/models/types";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export interface IResumeEntry {
     job: {
@@ -8,6 +12,7 @@ export interface IResumeEntry {
         title: string;
         description: string;
     };
+    documentId?: string;
     createdAt: Date;
     skills: string[];
 }
@@ -42,13 +47,52 @@ const resumeEntries: IResumeEntry[] = [
     }
 ]
 
-// TODO: replace with actual db backend logic
-export async function fetchResumeEntries() {
-    return resumeEntries;
-}
+export default function Page() {
+    const { user } = useAuthContext();
+    const router = useRouter();
 
-export default async function Page() {
-    const entries = await fetchResumeEntries();
+    if (!user) {
+        router.push("/app/login");
+        return;
+    }
+
+    const [entries, setEntries] = useState<IResumeEntry[]>(resumeEntries);
+
+    // Fetch resume entries
+    useEffect(() => {
+        async function fetchEntries() {
+            const token = await user?.getIdToken();
+            const response = await fetch("/api/resume", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                }
+            })
+
+            if (response.ok) {
+                const data: Resume.Resume[] = await response.json();
+                const dataEntries = data.map((entry) => {
+                    return {
+                        job: {
+                            summary: entry.job.description.lines.join("."),
+                            title: entry.job.title,
+                            description: entry.job.description.lines.join(".")
+                        },
+                        skills: entry.data.skills.map((skill) => skill.name),
+                        createdAt: new Date(entry.createdAt),
+                        documentId: entry.documentId
+                    }
+                });
+                setEntries(dataEntries);
+            } else {
+                console.error("Failed to fetch resume entries");
+            }
+        }
+
+        fetchEntries();
+
+    }, []);
 
     return <DashboardContent resumeEntries={entries} />;
 }
