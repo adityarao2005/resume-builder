@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Fieldset, Field, Button, Label, Input } from "@headlessui/react";
 import Collapsable from "@/components/editor/collapsableContainer";
 import AddButton from "@/components/editor/addbutton";
+import { useResumeDataSelector } from "@/state/resumeSelectors";
 
 // Hobbies Fragment
 export interface IHobbiesEditorProps {
@@ -58,7 +59,7 @@ export function DescriptionEditor({ description, setDescription }: IHobbiesEdito
 }
 
 export default function HobbiesFragment() {
-    const description = useAppSelector((state) => state.resume.hobbies);
+    const description = useResumeDataSelector((state) => state.hobbies);
     const dispatch = useAppDispatch();
 
     // Set hobbies

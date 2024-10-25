@@ -4,19 +4,32 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 //import { resume as initialState } from '@/components/resume/pdf/resume';
 import { Resume as namespace, Common } from '@/models/types';
 
-export const initialState: namespace.ResumeData = {
-    name: '',
-    contactInfo: {
-        mediaProfiles: new Map()
+export const initialState: namespace.Resume = {
+    data: {
+        name: '',
+        contactInfo: {
+            mediaProfiles: new Map()
+        },
+        education: [],
+        highlights: { lines: [] },
+        experiences: [],
+        projects: [],
+        extraCurriculars: [],
+        skills: [],
+        awards: [],
+        hobbies: []
     },
-    education: [],
-    highlights: { lines: [] },
-    experiences: [],
-    projects: [],
-    extraCurriculars: [],
-    skills: [],
-    awards: [],
-    hobbies: []
+    // TODO: Check if the Date is in date data type
+    createdAt: new Date(),
+    job: {
+        title: '',
+        company: '',
+        description: { lines: [] },
+        duration: {
+            start: new Date(),
+            end: new Date()
+        }
+    }
 };
 
 
@@ -28,38 +41,38 @@ export const resumeSlice = createSlice({
     // The reducers for the resume
     reducers: {
         resetResume: () => initialState,
-        updateResume: (state, action: PayloadAction<namespace.ResumeData>) => {
+        updateResume: (state, action: PayloadAction<namespace.Resume>) => {
             return action.payload;
         },
         setName: (state, action: PayloadAction<string>) => {
-            state.name = action.payload;
+            state.data.name = action.payload;
         },
         setContactInfo: (state, action: PayloadAction<namespace.IContactInfo>) => {
-            state.contactInfo = action.payload;
+            state.data.contactInfo = action.payload;
         },
         setEducation: (state, action: PayloadAction<namespace.IEducationEntry[]>) => {
-            state.education = action.payload;
+            state.data.education = action.payload;
         },
         setHighlights: (state, action: PayloadAction<Common.IDescription>) => {
-            state.highlights = action.payload;
+            state.data.highlights = action.payload;
         },
         setExperiences: (state, action: PayloadAction<namespace.IExperience[]>) => {
-            state.experiences = action.payload;
+            state.data.experiences = action.payload;
         },
         setProjects: (state, action: PayloadAction<namespace.IProject[]>) => {
-            state.projects = action.payload;
+            state.data.projects = action.payload;
         },
         setExtraCurriculars: (state, action: PayloadAction<namespace.IExperience[]>) => {
-            state.extraCurriculars = action.payload;
+            state.data.extraCurriculars = action.payload;
         },
         setSkills: (state, action: PayloadAction<namespace.ISkill[]>) => {
-            state.skills = action.payload;
+            state.data.skills = action.payload;
         },
         setAwards: (state, action: PayloadAction<Common.IAward[]>) => {
-            state.awards = action.payload;
+            state.data.awards = action.payload;
         },
         setHobbies: (state, action: PayloadAction<string[]>) => {
-            state.hobbies = action.payload;
+            state.data.hobbies = action.payload;
         }
     }
 });

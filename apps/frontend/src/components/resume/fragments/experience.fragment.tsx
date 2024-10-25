@@ -10,9 +10,10 @@ import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsab
 import { formatDate } from "@/components/formatDate";
 import { IDragAndDrop, useDragAndDrop } from "@/components/dnd";
 import Editor from "@/components/editor/editor";
+import { useResumeDataSelector } from "@/state/resumeSelectors";
 
 function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: { entry: Resume.IExperience, index: number } & IDragAndDrop) {
-    const experiences = useAppSelector((state) => state.resume.experiences);
+    const experiences = useResumeDataSelector((state) => state.experiences);
     const dispatch = useAppDispatch();
 
     // Set address
@@ -25,14 +26,14 @@ function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }
     // Set start date
     const setStartDate = (date: string) => {
         const copy = experiences ? [...experiences] : [];
-        copy[index] = { ...copy[index], duration: { ...copy[index].duration, start: new Date(date) } };
+        copy[index] = { ...copy[index], duration: { ...copy[index].duration, start: date } };
         dispatch(setExperiences(copy));
     }
 
     // Set end date
     const setEndDate = (date: string) => {
         const copy = experiences ? [...experiences] : [];
-        copy[index] = { ...copy[index], duration: { ...copy[index].duration, end: new Date(date) } };
+        copy[index] = { ...copy[index], duration: { ...copy[index].duration, end: date } };
         dispatch(setExperiences(copy));
     }
 
@@ -89,7 +90,7 @@ function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }
                 <input
                     className="input input-bordered w-full"
                     type="date"
-                    value={formatDate(entry.duration.start)} onChange={(source) => setStartDate(source.target.value)} />
+                    value={entry.duration.start} onChange={(source) => setStartDate(source.target.value)} />
             </Field>
             {
                 // End date input
@@ -99,7 +100,7 @@ function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }
                 <input
                     className="input input-bordered w-full"
                     type="date"
-                    value={formatDate(entry.duration.end)} onChange={(source) => setEndDate(source.target.value)} />
+                    value={entry.duration.end} onChange={(source) => setEndDate(source.target.value)} />
             </Field>
             {
                 // Address input
@@ -118,7 +119,7 @@ function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }
 }
 
 export default function ExperienceFragment() {
-    const experiences = useAppSelector((state) => state.resume.experiences);
+    const experiences = useResumeDataSelector((state) => state.experiences);
     const dispatch = useAppDispatch();
 
     // Add experience
@@ -128,7 +129,7 @@ export default function ExperienceFragment() {
             company: '',
             title: '',
             description: { lines: [] },
-            duration: { start: new Date(), end: new Date() },
+            duration: { start: formatDate(new Date()), end: formatDate(new Date()) },
             location: { city: '', country: 'ca' },
         });
         dispatch(setExperiences(copy));

@@ -1,8 +1,10 @@
 "use client"
 import dynamic from "next/dynamic";
 import RenderResumeDocument from "./pdf/resume.rendering";
-import { useAppSelector } from "@/state/store";
+import { useAppDispatch, useAppSelector } from "@/state/store";
 import { useEffect, useRef, useState } from "react";
+import { useStompClient, useSubscription } from "react-stomp-hooks";
+import { updateResume } from "@/state/resumeSlice";
 
 // Dynamic import of the PDFViewer component
 const PDFViewer = dynamic(
@@ -14,11 +16,38 @@ const PDFViewer = dynamic(
 );
 
 // ResumeViewer component
-export default function ResumeViewer() {
+export default function ResumeViewer({ documentId }: { documentId: string }) {
     const resumeState = useAppSelector((state) => state.resume);
+    const dispatch = useAppDispatch();
     const [state, setState] = useState(resumeState);
     const ref = useRef<NodeJS.Timeout>();
-    const [key, setKey] = useState(0);
+    const client = useStompClient();
+
+    // Updates the resume on load
+    useSubscription("/user/queue/resume", (message) => {
+        if (message.body) {
+            dispatch(updateResume(JSON.parse(message.body)));
+        }
+    })
+
+    useSubscription("/user/queue/resume/report", (message) => {
+        if (message.body) {
+            const report = JSON.parse(message.body);
+            if (report.error) {
+                alert("Error: " + report.data);
+            } else {
+                // TODO: Change this if using another service, like HTML one or LaTeX one
+                setState(report.data);
+            }
+        }
+    })
+
+    useEffect(() => {
+        client?.publish({
+            destination: `/app/resume/set/${documentId}`,
+            body: JSON.stringify({}),
+        })
+    }, [])
 
     // Add a delay/timeout to the state update to prevent iframe from reloading on every state change
     // TODO: Change the idea of this when we manually compile this
@@ -28,14 +57,20 @@ export default function ResumeViewer() {
         }
 
         ref.current = setTimeout(() => {
-            setState(resumeState);
-            setKey(key + 1);
+            client?.publish({
+                destination: `/app/resume/compile`,
+                body: JSON.stringify({
+                    // TODO: Fix it such that resumeState is actually Resume object and not ResumeData
+                    resume: JSON.stringify(resumeState),
+                    format: "JSON"
+                }),
+            })
         }, 1000)
     }, [resumeState]);
 
     return (
-        <PDFViewer key={key} className='flex-1'>
-            <RenderResumeDocument document={state} />
+        <PDFViewer className='flex-1'>
+            <RenderResumeDocument document={state.data} />
         </PDFViewer>
     );
 }

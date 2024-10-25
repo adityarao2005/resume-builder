@@ -10,6 +10,7 @@ import RenderResumeDocument from "@/components/resume/pdf/resume.rendering";
 import dynamic from "next/dynamic";
 import { useAuthContext } from "@/components/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { formatDate } from "@/components/formatDate";
 
 // Dynamic import of the PDFViewer component
 const PDFDownloadLink = dynamic(
@@ -24,7 +25,7 @@ const PDFDownloadLink = dynamic(
 // Header component
 function Header() {
     const profile = useAppSelector((state) => state.profile);
-    const [cv, setCV] = useState<Resume.ResumeData>(initialState);
+    const [cv, setCV] = useState<Resume.Resume>(initialState);
     const ref = useRef<NodeJS.Timeout>();
 
     useEffect(() => {
@@ -34,23 +35,34 @@ function Header() {
 
         // Add a delay/timeout to the state update to prevent document from reloading on every state change
         ref.current = setTimeout(() => {
-            setCV({
-                name: profile.name,
-                contactInfo: profile.contactInfo,
-                education: profile.education,
-                highlights: { lines: [] },
-                experiences: profile.experiences,
-                projects: profile.projects,
-                extraCurriculars: profile.extraCurriculars,
-                skills: [
-                    ...profile.otherSkills,
-                    ...profile.experiences.flatMap((exp) => exp.skills),
-                    ...profile.projects.flatMap((exp) => exp.skills),
-                    ...profile.extraCurriculars.flatMap((exp) => exp.skills),
-                ],
-                awards: profile.otherAwards,
-                hobbies: profile.hobbies,
-            });
+            setCV(
+                {
+                    data: {
+                        name: profile.name,
+                        contactInfo: profile.contactInfo,
+                        education: profile.education,
+                        highlights: { lines: [] },
+                        experiences: profile.experiences,
+                        projects: profile.projects,
+                        extraCurriculars: profile.extraCurriculars,
+                        skills: [
+                            ...profile.otherSkills,
+                            ...profile.experiences.flatMap((exp) => exp.skills),
+                            ...profile.projects.flatMap((exp) => exp.skills),
+                            ...profile.extraCurriculars.flatMap((exp) => exp.skills),
+                        ],
+                        awards: profile.otherAwards,
+                        hobbies: profile.hobbies,
+                    },
+                    createdAt: formatDate(new Date()),
+                    job: {
+                        title: '',
+                        company: '',
+                        description: { lines: [] },
+                        duration: { start: formatDate(new Date()), end: formatDate(new Date()) },
+                    },
+                    documentId: ''
+                });
         }, 1000);
     }, [profile]);
 
@@ -62,7 +74,7 @@ function Header() {
         {
             // TODO: Implement this as a server generated pdf from react
         }
-        <PDFDownloadLink document={<RenderResumeDocument document={cv} />} fileName="cv.pdf" className="btn btn-primary w-full">Generate CV</PDFDownloadLink>
+        <PDFDownloadLink document={<RenderResumeDocument document={cv.data} />} fileName="cv.pdf" className="btn btn-primary w-full">Generate CV</PDFDownloadLink>
     </div>)
 }
 

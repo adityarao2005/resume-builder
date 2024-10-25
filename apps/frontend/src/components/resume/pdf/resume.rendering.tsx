@@ -95,7 +95,7 @@ function EducationEntry({ entry }: { entry: Resume.IEducationEntry }) {
                 </View>
                 <View style={styles.rightSection}>
                     <Text style={styles.text}>{entry.location.city}, {convertISOAddressToName(entry.location)}</Text>
-                    <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
+                    <Text style={styles.text}>{entry.duration.start} - {entry.duration.end}</Text>
                 </View>
             </View>
             <Components.List type={"bullet"} items={list} />
@@ -123,7 +123,7 @@ function ExperienceEntry({ entry }: { entry: Resume.IExperience }) {
             </View>
             <View style={styles.rightSection}>
                 <Text style={styles.text}>{entry.location.city}, {convertISOAddressToName(entry.location)}</Text>
-                <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
+                <Text style={styles.text}>{entry.duration.start} - {entry.duration.end}</Text>
             </View>
         </View>
         <Components.List type={"bullet"} items={entry.description.lines} />
@@ -150,7 +150,7 @@ function Projects({ projects }: { projects: Resume.IProject[] }) {
                             <Text style={{ ...styles.text, fontWeight: 'bold' }}>{entry.title}</Text>
                         </View>
                         <View style={styles.rightSection}>
-                            <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
+                            <Text style={styles.text}>{entry.duration.start} - {entry.duration.end}</Text>
                         </View>
                     </View>
                     <Components.List type={"bullet"} items={entry.description.lines} />
@@ -203,7 +203,7 @@ function Awards({ awards }: { awards: Common.IAward[] }) {
                             <Text style={{ ...styles.text, fontWeight: 'bold' }}>{award.title}</Text>
                         </View>
                         <View style={styles.rightSection}>
-                            <Text style={styles.text}>{formatDate(award.date)}</Text>
+                            <Text style={styles.text}>{award.date}</Text>
                         </View>
                     </View>
                 ))}
@@ -221,7 +221,7 @@ function Hobbies({ hobbies }: { hobbies: string[] }) {
     )
 }
 
-export default function RenderResumeDocument({ document }: { document: Resume.ResumeDetails }) {
+export default function RenderResumeDocument({ document }: { document: Resume.ResumeData }) {
     return (
         <Document>
             <Page size="A4" style={styles.page}>

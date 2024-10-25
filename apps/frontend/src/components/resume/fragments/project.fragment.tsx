@@ -9,22 +9,23 @@ import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsab
 import { formatDate } from "@/components/formatDate";
 import { IDragAndDrop, useDragAndDrop } from "@/components/dnd";
 import Editor from "@/components/editor/editor";
+import { useResumeDataSelector } from "@/state/resumeSelectors";
 
 function ProjectsEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: { entry: Resume.IProject, index: number } & IDragAndDrop) {
-    const projects = useAppSelector((state) => state.resume.projects);
+    const projects = useResumeDataSelector((state) => state.projects);
     const dispatch = useAppDispatch();
 
     // Set start date
     const setStartDate = (date: string) => {
         const copy = projects ? [...projects] : [];
-        copy[index] = { ...copy[index], duration: { ...copy[index].duration, start: new Date(date) } };
+        copy[index] = { ...copy[index], duration: { ...copy[index].duration, start: date } };
         dispatch(setProjects(copy));
     }
 
     // Set end date
     const setEndDate = (date: string) => {
         const copy = projects ? [...projects] : [];
-        copy[index] = { ...copy[index], duration: { ...copy[index].duration, end: new Date(date) } };
+        copy[index] = { ...copy[index], duration: { ...copy[index].duration, end: date } };
         dispatch(setProjects(copy));
     }
 
@@ -67,7 +68,7 @@ function ProjectsEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: 
                 <input
                     className="input input-bordered w-full"
                     type="date"
-                    value={formatDate(entry.duration.start)} onChange={(source) => setStartDate(source.target.value)} />
+                    value={entry.duration.start} onChange={(source) => setStartDate(source.target.value)} />
             </Field>
             {
                 // End date input
@@ -77,7 +78,7 @@ function ProjectsEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: 
                 <input
                     className="input input-bordered w-full"
                     type="date"
-                    value={formatDate(entry.duration.end)} onChange={(source) => setEndDate(source.target.value)} />
+                    value={entry.duration.end} onChange={(source) => setEndDate(source.target.value)} />
             </Field>
 
             {
@@ -93,7 +94,7 @@ function ProjectsEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: 
 }
 
 export default function ProjectFragment() {
-    const projects = useAppSelector((state) => state.resume.projects);
+    const projects = useResumeDataSelector((state) => state.projects);
     const dispatch = useAppDispatch();
 
     // Add project
@@ -102,7 +103,7 @@ export default function ProjectFragment() {
         copy.push({
             title: '',
             description: { lines: [] },
-            duration: { start: new Date(), end: new Date() },
+            duration: { start: formatDate(new Date()), end: formatDate(new Date()) },
         });
         dispatch(setProjects(copy));
     }

@@ -1,8 +1,6 @@
 package com.resumebuilder.backend.controller;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +10,8 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.resumebuilder.backend.models.Address;
 import com.resumebuilder.backend.models.Award;
-import com.resumebuilder.backend.models.Builder;
 import com.resumebuilder.backend.models.Description;
-import com.resumebuilder.backend.models.Duration;
 import com.resumebuilder.backend.models.Job;
 import com.resumebuilder.backend.models.resume.ContactInfo;
 import com.resumebuilder.backend.models.resume.EducationEntry;
@@ -24,7 +19,6 @@ import com.resumebuilder.backend.models.resume.Experience;
 import com.resumebuilder.backend.models.resume.Project;
 import com.resumebuilder.backend.models.resume.Resume;
 import com.resumebuilder.backend.models.resume.Skill;
-import com.resumebuilder.backend.models.resume.Resume.ResumeBuilder;
 import com.resumebuilder.backend.service.ResumeCompilationService;
 import com.resumebuilder.backend.service.WebSocketIdentityService;
 import com.resumebuilder.backend.service.WebSocketResumeService;

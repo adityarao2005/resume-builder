@@ -32,12 +32,12 @@ function Sidebar() {
         </div>)
 }
 
-function MainContent() {
+function MainContent({ documentId } : { documentId: string }) {
     return (<div className="flex-1 flex flex-col">
         {
             // Resume viewer component
         }
-        <ResumeViewer />
+        <ResumeViewer documentId={documentId}/>
     </div>)
 }
 
@@ -100,12 +100,12 @@ export default function ResumePage({ params }: { params: { id: string } }) {
             {
                 // sidebar and main content
             }
-            {/* <StompSessionProvider url={"/api/ws?access_token=" + params.id}> */}
-            <div className="flex flex-row h-full flex-1">
-                <Sidebar />
-                <MainContent />
-            </div>
-            {/* </StompSessionProvider> */}
+            <StompSessionProvider url={"/api/ws?access_token=" + params.id}>
+                <div className="flex flex-row h-full flex-1">
+                    <Sidebar />
+                    <MainContent documentId={params.id} />
+                </div>
+            </StompSessionProvider>
         </div>)
     }
 }

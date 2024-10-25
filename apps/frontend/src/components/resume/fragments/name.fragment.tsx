@@ -2,9 +2,10 @@
 import { useAppDispatch, useAppSelector } from "@/state/store";
 import { setName } from "@/state/resumeSlice";
 import Collapsable from "@/components/editor/collapsableContainer";
+import { useResumeDataSelector } from "@/state/resumeSelectors";
 
 export default function NameFragment() {
-    const name = useAppSelector((state) => state.resume.name);
+    const name = useResumeDataSelector((state) => state.name);
     const dispatch = useAppDispatch();
 
     // Render the component

@@ -10,11 +10,12 @@ import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsab
 import { formatDate } from "@/components/formatDate";
 import { IDragAndDrop, useDragAndDrop } from "@/components/dnd";
 import Editor from "@/components/editor/editor";
+import { useResumeDataSelector } from "@/state/resumeSelectors";
 
 // Extra Curriculars Entry Fragment
 function ExtraCurricularFragment({ entry, index, dragEnd, dragEnter, dragStart }:
     { entry: Resume.IExperience, index: number } & IDragAndDrop) {
-    const extraCurriculars = useAppSelector((state) => state.resume.extraCurriculars);
+    const extraCurriculars = useResumeDataSelector((state) => state.extraCurriculars);
     const dispatch = useAppDispatch();
 
     // Set address
@@ -27,14 +28,14 @@ function ExtraCurricularFragment({ entry, index, dragEnd, dragEnter, dragStart }
     // Set start date
     const setStartDate = (date: string) => {
         const copy = extraCurriculars ? [...extraCurriculars] : [];
-        copy[index] = { ...copy[index], duration: { ...copy[index].duration, start: new Date(date) } };
+        copy[index] = { ...copy[index], duration: { ...copy[index].duration, start: date } };
         dispatch(setExtraCurriculars(copy));
     }
 
     // Set end date
     const setEndDate = (date: string) => {
         const copy = extraCurriculars ? [...extraCurriculars] : [];
-        copy[index] = { ...copy[index], duration: { ...copy[index].duration, end: new Date(date) } };
+        copy[index] = { ...copy[index], duration: { ...copy[index].duration, end: date } };
         dispatch(setExtraCurriculars(copy));
     }
 
@@ -91,7 +92,7 @@ function ExtraCurricularFragment({ entry, index, dragEnd, dragEnter, dragStart }
                 <input
                     className="input input-bordered w-full"
                     type="date"
-                    value={formatDate(entry.duration.start)} onChange={(source) => setStartDate(source.target.value)} />
+                    value={entry.duration.start} onChange={(source) => setStartDate(source.target.value)} />
             </Field>
             {
                 // End Date input
@@ -101,7 +102,7 @@ function ExtraCurricularFragment({ entry, index, dragEnd, dragEnter, dragStart }
                 <input
                     className="input input-bordered w-full"
                     type="date"
-                    value={formatDate(entry.duration.end)} onChange={(source) => setEndDate(source.target.value)} />
+                    value={entry.duration.end} onChange={(source) => setEndDate(source.target.value)} />
             </Field>
             {
                 // Address input
@@ -120,7 +121,7 @@ function ExtraCurricularFragment({ entry, index, dragEnd, dragEnter, dragStart }
 }
 
 export default function ECFragment() {
-    const extraCurriculars = useAppSelector((state) => state.resume.extraCurriculars);
+    const extraCurriculars = useResumeDataSelector((state) => state.extraCurriculars);
     const dispatch = useAppDispatch();
 
     // Add extra curriculars
@@ -130,7 +131,7 @@ export default function ECFragment() {
             company: '',
             title: '',
             description: { lines: [] },
-            duration: { start: new Date(), end: new Date() },
+            duration: { start: formatDate(new Date()), end: formatDate(new Date()) },
             location: { city: '', country: 'ca' },
         });
         dispatch(setExtraCurriculars(copy));

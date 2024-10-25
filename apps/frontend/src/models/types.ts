@@ -13,14 +13,14 @@ export namespace Common {
 
     // Duration interface
     export interface IDuration {
-        start: Date;
-        end: Date;
+        start: string;
+        end: string;
     }
 
     // Award interface
     export interface IAward {
         title: string;
-        date: Date;
+        date: string;
         affiliatedTo?: string;
     }
 
@@ -95,7 +95,7 @@ export namespace Resume {
         // TODO: add a separate section for styling
         data: ResumeData;
         job: Common.IJob;
-        createdAt: Date;
+        createdAt: string;
         documentId?: string;
     }
 }

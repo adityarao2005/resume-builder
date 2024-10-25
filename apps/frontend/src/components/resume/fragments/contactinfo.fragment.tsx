@@ -8,9 +8,10 @@ import { Resume, Common } from "@/models/types";
 import { parsePhoneNumber } from "libphonenumber-js";
 import AddressEditor from "@/components/editor/addressEditor";
 import Collapsable from "@/components/editor/collapsableContainer";
+import { useResumeDataSelector } from "@/state/resumeSelectors";
 
 export default function ContactInfoFragment() {
-    const contactInfo = useAppSelector((state) => state.resume.contactInfo);
+    const contactInfo = useResumeDataSelector((state) => state.contactInfo);
     const dispatch = useAppDispatch();
 
     // Set phone
