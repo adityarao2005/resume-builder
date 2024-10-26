@@ -3,6 +3,7 @@ package com.resumebuilder.backend;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.time.LocalDate;
 import static java.time.Month.*;
 
@@ -12,16 +13,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.boot.web.server.MimeMappings.Mapping;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.resumebuilder.backend.BackendApplicationTestConfiguration.Identity;
-import com.resumebuilder.backend.WebSocketAuthenticationTests.Greeting;
 import com.resumebuilder.backend.controller.ResumeController.Ack;
 import com.resumebuilder.backend.models.Builder;
 import com.resumebuilder.backend.models.Address;
@@ -41,6 +38,9 @@ import com.resumebuilder.backend.models.resume.EducationEntry.EducationEntryBuil
 import com.resumebuilder.backend.models.resume.Experience.ExperienceBuilder;
 import com.resumebuilder.backend.models.resume.Project.ProjectBuilder;
 import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationReport;
+import com.resumebuilder.backend.service.ResumeCompilationService.ResumeDto;
+import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationFormat;
+import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationRequest;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Import(value = { BackendApplicationTestConfiguration.class, WebsocketTestConfiguration.class })
@@ -134,6 +134,16 @@ public class ResumeControllerTests {
 
         // Set job
         testJob(session, resume);
+
+        data.setName("John Doey Doe");
+        data.getContactInfo().setAddress(null);
+        data.getContactInfo().setEmail("joe.dohn@mail.com");
+        var hobbies = new ArrayList<>(data.getHobbies());
+        hobbies.add("Hiking");
+        data.setHobbies(hobbies);
+
+        // Compile the resume
+        testCompile(session, resume);
 
         session.disconnect();
 
@@ -239,6 +249,8 @@ public class ResumeControllerTests {
 
     private void testHighlights(StompWebClientSession session, ResumeData data) {
         Description highlights = data.getHighlights();
+        if (highlights == null)
+            highlights = new Description();
         highlights.setLines(List.of("I am a software engineer", "I have experience in Java"));
         // Check if everything worked out
         tryAck(session, highlights, "/app/resume/highlights", "update/setHighlights");
@@ -262,7 +274,7 @@ public class ResumeControllerTests {
     }
 
     private void testExperience(StompWebClientSession session, ResumeData data) {
-        List<Experience> experiences = data.getExperience();
+        List<Experience> experiences = data.getExperiences();
         Experience experience = Builder.create(ExperienceBuilder.class)
                 .withCompany("Google")
                 .withTitle("Software Engineer")
@@ -346,5 +358,18 @@ public class ResumeControllerTests {
         assertThat(ack.action()).isEqualTo(action);
         assertThat(ack.message()).isEqualTo("Operation successful");
 
+    }
+
+    private void testCompile(StompWebClientSession session, Resume data) {
+        ResumeCompilationRequest request = new ResumeCompilationRequest(
+                new ResumeDto(data.getData(), data.getJob(), data.getCreatedAt(), data.getDocumentId()),
+                ResumeCompilationFormat.PDF);
+        ResumeCompilationReport report = session.sendAndAwait("/app/resume/compile", request,
+                ResumeCompilationReport.class);
+
+        // Check if everything worked out
+        assertThat(report).isNotNull();
+        assertThat(report.error()).isFalse();
+        assertThat(report.data()).isEqualTo(data);
     }
 }

@@ -3,12 +3,38 @@ import { useAuthContext } from "@/components/context/AuthContext";
 import ToolBar from "@/components/resume/ToolBar"
 import { NameFragment, ContactInfoFragment, HoQFragment, EducationFragment, ExperienceFragment, ProjectFragment, ECFragment, SkillsFragment, HobbiesFragment, AwardsFragment } from "@/components/resume/fragments"
 import ResumeViewer from "@/components/resume/pdf-viewer"
+import { updateResume, setName } from "@/state/resumeSlice";
+import { useAppDispatch } from "@/state/store";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { StompSessionProvider } from 'react-stomp-hooks';
+import { StompSessionProvider, useStompClient, useSubscription } from 'react-stomp-hooks';
+import { DocumentProvider, useDocument } from "./hooks";
 
 
 function Sidebar() {
+    const client = useStompClient();
+    const dispatch = useAppDispatch();
+    const { id } = useDocument();
+
+    useSubscription("/user/queue/resume", (message) => {
+        if (message.body) {
+            console.log("Received resume update");
+            const resume = JSON.parse(message.body);
+            resume.data.contactInfo.mediaProfiles = new Map(Object.entries(resume.data.contactInfo.mediaProfiles));
+            dispatch(updateResume(resume));
+        }
+    })
+
+    useEffect(() => {
+        if (client) {
+            client?.publish({
+                destination: `/app/resume/set/${id}`,
+                body: JSON.stringify({}),
+            })
+            console.log("Published set resume request: /app/resume/set/" + id)
+        }
+    }, [client])
+
     return (
         <div className="w-96 h-full relative bg-base-300">
             {
@@ -32,12 +58,12 @@ function Sidebar() {
         </div>)
 }
 
-function MainContent({ documentId } : { documentId: string }) {
+function MainContent() {
     return (<div className="flex-1 flex flex-col">
         {
             // Resume viewer component
         }
-        <ResumeViewer documentId={documentId}/>
+        <ResumeViewer />
     </div>)
 }
 
@@ -51,6 +77,7 @@ export default function ResumePage({ params }: { params: { id: string } }) {
     const { user } = useAuthContext();
     const router = useRouter();
     const [loaded, setLoaded] = useState(LoadingState.LOADING);
+    const [url, setURL] = useState("");
 
     if (!user) {
         router.push("/app/login");
@@ -69,8 +96,11 @@ export default function ResumePage({ params }: { params: { id: string } }) {
 
             if (data.length == 0)
                 setLoaded(LoadingState.NOT_FOUND);
-            else
+            else {
                 setLoaded(LoadingState.LOADED);
+                const token = await user?.getIdToken();
+                setURL(`/api/ws?access_token=${token}`);
+            }
         }
 
         registerResume();
@@ -100,12 +130,14 @@ export default function ResumePage({ params }: { params: { id: string } }) {
             {
                 // sidebar and main content
             }
-            <StompSessionProvider url={"/api/ws?access_token=" + params.id}>
-                <div className="flex flex-row h-full flex-1">
-                    <Sidebar />
-                    <MainContent documentId={params.id} />
-                </div>
-            </StompSessionProvider>
+            <DocumentProvider value={params}>
+                <StompSessionProvider url={url}>
+                    <div className="flex flex-row h-full flex-1">
+                        <Sidebar />
+                        <MainContent />
+                    </div>
+                </StompSessionProvider>
+            </DocumentProvider>
         </div>)
     }
 }

@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/state/store";
 import { useEffect, useRef, useState } from "react";
 import { useStompClient, useSubscription } from "react-stomp-hooks";
 import { updateResume } from "@/state/resumeSlice";
+import { useDocument } from "@/app/app/resume/[id]/hooks";
 
 // Dynamic import of the PDFViewer component
 const PDFViewer = dynamic(
@@ -16,19 +17,11 @@ const PDFViewer = dynamic(
 );
 
 // ResumeViewer component
-export default function ResumeViewer({ documentId }: { documentId: string }) {
+export default function ResumeViewer() {
     const resumeState = useAppSelector((state) => state.resume);
-    const dispatch = useAppDispatch();
     const [state, setState] = useState(resumeState);
     const ref = useRef<NodeJS.Timeout>();
     const client = useStompClient();
-
-    // Updates the resume on load
-    useSubscription("/user/queue/resume", (message) => {
-        if (message.body) {
-            dispatch(updateResume(JSON.parse(message.body)));
-        }
-    })
 
     useSubscription("/user/queue/resume/report", (message) => {
         if (message.body) {
@@ -37,17 +30,11 @@ export default function ResumeViewer({ documentId }: { documentId: string }) {
                 alert("Error: " + report.data);
             } else {
                 // TODO: Change this if using another service, like HTML one or LaTeX one
+                console.log(report.data)
                 setState(report.data);
             }
         }
     })
-
-    useEffect(() => {
-        client?.publish({
-            destination: `/app/resume/set/${documentId}`,
-            body: JSON.stringify({}),
-        })
-    }, [])
 
     // Add a delay/timeout to the state update to prevent iframe from reloading on every state change
     // TODO: Change the idea of this when we manually compile this
@@ -57,6 +44,8 @@ export default function ResumeViewer({ documentId }: { documentId: string }) {
         }
 
         ref.current = setTimeout(() => {
+            // TODO: Un comment this once i fix the initial display
+
             client?.publish({
                 destination: `/app/resume/compile`,
                 body: JSON.stringify({

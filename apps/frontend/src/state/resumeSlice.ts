@@ -3,11 +3,18 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 //import { resume as initialState } from '@/components/resume/pdf/resume';
 import { Resume as namespace, Common } from '@/models/types';
+import { formatDate } from "@/components/formatDate";
 
 export const initialState: namespace.Resume = {
     data: {
         name: '',
         contactInfo: {
+            phone: '',
+            email: '',
+            address: {
+                city: '',
+                country: 'ca'
+            },
             mediaProfiles: new Map()
         },
         education: [],
@@ -20,14 +27,14 @@ export const initialState: namespace.Resume = {
         hobbies: []
     },
     // TODO: Check if the Date is in date data type
-    createdAt: new Date(),
+    createdAt: formatDate(new Date()),
     job: {
         title: '',
         company: '',
         description: { lines: [] },
         duration: {
-            start: new Date(),
-            end: new Date()
+            start: formatDate(new Date()),
+            end: formatDate(new Date())
         }
     }
 };
@@ -42,7 +49,19 @@ export const resumeSlice = createSlice({
     reducers: {
         resetResume: () => initialState,
         updateResume: (state, action: PayloadAction<namespace.Resume>) => {
-            return action.payload;
+            state.createdAt = action.payload.createdAt;
+            state.data.name = action.payload.data.name;
+            state.data.contactInfo = action.payload.data.contactInfo;
+            state.data.education = action.payload.data.education;
+            state.data.highlights = action.payload.data.highlights;
+            state.data.experiences = action.payload.data.experiences;
+            state.data.projects = action.payload.data.projects;
+            state.data.extraCurriculars = action.payload.data.extraCurriculars;
+            state.data.skills = action.payload.data.skills;
+            state.data.awards = action.payload.data.awards;
+            state.data.hobbies = action.payload.data.hobbies;
+            state.documentId = action.payload.documentId;
+            state.job = action.payload.job;
         },
         setName: (state, action: PayloadAction<string>) => {
             state.data.name = action.payload;

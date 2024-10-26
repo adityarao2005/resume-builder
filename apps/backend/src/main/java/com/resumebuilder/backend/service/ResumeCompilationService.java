@@ -1,6 +1,10 @@
 package com.resumebuilder.backend.service;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.resumebuilder.backend.models.Job;
 import com.resumebuilder.backend.models.resume.Resume;
+import com.resumebuilder.backend.models.resume.ResumeData;
+import java.time.LocalDate;
 
 public interface ResumeCompilationService {
     public static record ResumeCompilationReport(String documentId, boolean error, Object data) {
@@ -21,8 +25,11 @@ public interface ResumeCompilationService {
         JSON
     }
 
-    public static record ResumeCompilationRequest(Resume resume, ResumeCompilationFormat format) {
+    public static record ResumeDto(ResumeData data, Job job, @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") LocalDate createdAt, String documentId) {
     }
 
-    public ResumeCompilationReport compileResume(ResumeCompilationRequest request) throws Exception;
+    public static record ResumeCompilationRequest(ResumeDto resume, ResumeCompilationFormat format) {
+    }
+
+    public ResumeCompilationReport compileResume(ResumeCompilationRequest request, Resume resume) throws Exception;
 }

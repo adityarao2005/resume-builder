@@ -189,7 +189,7 @@ function CreateModal() {
                 contactInfo: { email: '', phone: '', mediaProfiles: new Map() },
                 education: [],
                 highlights: { lines: [] },
-                experiences: [],
+                experience: [],
                 projects: [],
                 extraCurriculars: [],
                 awards: [],

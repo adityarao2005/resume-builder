@@ -2,6 +2,7 @@ package com.resumebuilder.backend.controller;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -37,6 +38,8 @@ public class ResumeController {
     @Autowired
     private WebSocketIdentityService identityService;
 
+    private final Logger logger = Logger.getLogger(ResumeController.class.getName());
+
     public record Ack(String action, boolean success, String message) {
     };
 
@@ -62,6 +65,7 @@ public class ResumeController {
     @SendToUser("/queue/resume")
     public Resume setResume(@DestinationVariable("id") String documentId) {
         // Fetch the resume by ID
+        logger.info("Setting resume with ID: " + documentId);
         return resumeService.getCurrentResume(documentId);
     }
 
@@ -120,7 +124,7 @@ public class ResumeController {
     @SendToUser("/queue/resume/ack")
     public Ack handleExperience(@Payload List<Experience> experience) {
         // Handle the experience information here
-        return applyOperationOnResume("setExperience", resume -> resume.getData().setExperience(experience));
+        return applyOperationOnResume("setExperience", resume -> resume.getData().setExperiences(experience));
     }
 
     // Set the projects information
@@ -180,20 +184,20 @@ public class ResumeController {
     public ResumeCompilationReport handleCompile(@Payload ResumeCompilationRequest request) {
         // Handle the compile action here
         if (!resumeService.isResumeAvailable()) {
-            return new ResumeCompilationReport(request.resume().getDocumentId(), true, "ERROR: Resume not available");
+            return new ResumeCompilationReport(request.resume().documentId(), true, "ERROR: Resume not available");
         }
 
         Resume resume = resumeService.aquireResume();
         // TODO: set style and format
-        resume.setData(request.resume().getData());
-        resume.setJob(request.resume().getJob());
+        resume.setData(request.resume().data());
+        resume.setJob(request.resume().job());
         resumeService.saveState();
 
         try {
-            return compilationService.compileResume(request);
+            return compilationService.compileResume(request, resume);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResumeCompilationReport(request.resume().getDocumentId(), true, "ERROR: " + e.getMessage());
+            return new ResumeCompilationReport(request.resume().documentId(), true, "ERROR: " + e.getMessage());
         }
 
     }

@@ -15,7 +15,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.resumebuilder.backend.service.WebSocketIdentityService;
 
 @SuppressWarnings("deprecation")
@@ -32,7 +32,7 @@ public class WebSocketConfiguration extends AbstractSecurityWebSocketMessageBrok
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint("/ws").setAllowedOrigins("http://localhost:3000").withSockJS();
     }
 
     @Override
@@ -54,14 +54,6 @@ public class WebSocketConfiguration extends AbstractSecurityWebSocketMessageBrok
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         identityService.setIdentity(null);
-    }
-
-    @Override
-    public boolean configureMessageConverters(@NonNull List<MessageConverter> messageConverters) {
-        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-        converter.getObjectMapper().registerModule(new JavaTimeModule());
-        messageConverters.add(converter);
-        return false;
     }
 
 }
