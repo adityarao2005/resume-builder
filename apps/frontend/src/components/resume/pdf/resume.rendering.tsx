@@ -114,7 +114,6 @@ function Education({ education }: { education: Resume.IEducationEntry[] }) {
 
 // Experience entry component of resume
 function ExperienceEntry({ entry }: { entry: Resume.IExperience }) {
-    console.log(entry.location);
     return (<View wrap={false}>
         <View style={styles.splitSection}>
             <View style={styles.leftSection}>

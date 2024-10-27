@@ -9,10 +9,6 @@ export default function NameFragment() {
     const name = useResumeDataSelector((state) => state.name);
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        console.log("Name: " + name)
-    }, [name])
-
     // Render the component
     return (
         <Collapsable title="Name">

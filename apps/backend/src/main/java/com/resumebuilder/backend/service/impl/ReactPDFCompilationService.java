@@ -12,7 +12,7 @@ public class ReactPDFCompilationService implements ResumeCompilationService {
 
     @Override
     public ResumeCompilationReport compileResume(ResumeCompilationRequest request, Resume resume) {
-        return new ResumeCompilationReport(request.resume().documentId(), resume);
+        return new ResumeCompilationReport(request.resume().getDocumentId(), resume);
     }
 
 }

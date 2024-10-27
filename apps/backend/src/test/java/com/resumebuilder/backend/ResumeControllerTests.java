@@ -38,7 +38,6 @@ import com.resumebuilder.backend.models.resume.EducationEntry.EducationEntryBuil
 import com.resumebuilder.backend.models.resume.Experience.ExperienceBuilder;
 import com.resumebuilder.backend.models.resume.Project.ProjectBuilder;
 import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationReport;
-import com.resumebuilder.backend.service.ResumeCompilationService.ResumeDto;
 import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationFormat;
 import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationRequest;
 
@@ -361,9 +360,7 @@ public class ResumeControllerTests {
     }
 
     private void testCompile(StompWebClientSession session, Resume data) {
-        ResumeCompilationRequest request = new ResumeCompilationRequest(
-                new ResumeDto(data.getData(), data.getJob(), data.getCreatedAt(), data.getDocumentId()),
-                ResumeCompilationFormat.PDF);
+        ResumeCompilationRequest request = new ResumeCompilationRequest(data, ResumeCompilationFormat.PDF);
         ResumeCompilationReport report = session.sendAndAwait("/app/resume/compile", request,
                 ResumeCompilationReport.class);
 

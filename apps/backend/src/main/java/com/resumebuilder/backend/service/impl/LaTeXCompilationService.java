@@ -40,7 +40,7 @@ public class LaTeXCompilationService implements ResumeCompilationService {
             byte[] data = Files.readAllBytes(pdfFile);
 
             // Return the pdf data
-            return new ResumeCompilationReport(request.resume().documentId(), data);
+            return new ResumeCompilationReport(request.resume().getDocumentId(), data);
         } finally {
             // Clean up temporary files and directories
             Files.deleteIfExists(tempInFile);

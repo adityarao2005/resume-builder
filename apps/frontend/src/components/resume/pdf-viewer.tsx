@@ -45,7 +45,7 @@ export default function ResumeViewer() {
 
         ref.current = setTimeout(() => {
             // TODO: Un comment this once i fix the initial display
-
+            console.log(resumeState);
             client?.publish({
                 destination: `/app/resume/compile`,
                 body: JSON.stringify({
@@ -53,9 +53,14 @@ export default function ResumeViewer() {
                     resume: JSON.stringify(resumeState),
                     format: "JSON"
                 }),
+                headers: {
+                    "content-type": "application/json",
+                }
             })
         }, 1000)
     }, [resumeState]);
+
+    useEffect(() => { }, [state])
 
     return (
         <PDFViewer className='flex-1'>

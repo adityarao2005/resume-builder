@@ -25,10 +25,7 @@ public interface ResumeCompilationService {
         JSON
     }
 
-    public static record ResumeDto(ResumeData data, Job job, @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") LocalDate createdAt, String documentId) {
-    }
-
-    public static record ResumeCompilationRequest(ResumeDto resume, ResumeCompilationFormat format) {
+    public static record ResumeCompilationRequest(Resume resume, ResumeCompilationFormat format) {
     }
 
     public ResumeCompilationReport compileResume(ResumeCompilationRequest request, Resume resume) throws Exception;

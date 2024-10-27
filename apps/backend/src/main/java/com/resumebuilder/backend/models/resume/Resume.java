@@ -5,26 +5,42 @@ import java.time.LocalDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.resumebuilder.backend.models.Builder;
 import com.resumebuilder.backend.models.Job;
 
 @Document(collection = "resumes")
 public class Resume {
     @Id
+    @JsonProperty("id")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private String id;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @JsonProperty("userId")
     private String userId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @JsonProperty("documentId")
     private String documentId;
+    @JsonFormat(shape = JsonFormat.Shape.OBJECT)
+    @JsonProperty("data")
     private ResumeData data;
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
+    @JsonProperty("version")
     private int version;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonProperty("createdAt")
     private LocalDate createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.OBJECT)
+    @JsonProperty("job")
     private Job job;
 
     // Constructors, getters, and setters
     public Resume() {
     }
 
+    @JsonCreator
     public Resume(String id, String userId, String documentId, ResumeData data, int version, LocalDate createdAt,
             Job job) {
         this.id = id;

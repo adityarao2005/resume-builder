@@ -183,21 +183,22 @@ public class ResumeController {
     @SendToUser("/queue/resume/report")
     public ResumeCompilationReport handleCompile(@Payload ResumeCompilationRequest request) {
         // Handle the compile action here
+        System.out.println("Got here");
         if (!resumeService.isResumeAvailable()) {
-            return new ResumeCompilationReport(request.resume().documentId(), true, "ERROR: Resume not available");
+            return new ResumeCompilationReport(request.resume().getDocumentId(), true, "ERROR: Resume not available");
         }
 
         Resume resume = resumeService.aquireResume();
         // TODO: set style and format
-        resume.setData(request.resume().data());
-        resume.setJob(request.resume().job());
+        resume.setData(request.resume().getData());
+        resume.setJob(request.resume().getJob());
         resumeService.saveState();
 
         try {
             return compilationService.compileResume(request, resume);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResumeCompilationReport(request.resume().documentId(), true, "ERROR: " + e.getMessage());
+            return new ResumeCompilationReport(request.resume().getDocumentId(), true, "ERROR: " + e.getMessage());
         }
 
     }
