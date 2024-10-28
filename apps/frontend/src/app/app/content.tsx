@@ -8,6 +8,7 @@ import { formatDate } from "@/components/formatDate"
 import { IResumeEntry } from "@/app/app/page";
 import { Common, Resume } from "@/models/types";
 import { useAuthContext } from "@/components/context/AuthContext";
+import { setExperiences } from "@/state/profileSlice";
 
 function ResumeEntry(props: IResumeEntry) {
     return (
@@ -189,7 +190,7 @@ function CreateModal() {
                 contactInfo: { email: '', phone: '', mediaProfiles: new Map() },
                 education: [],
                 highlights: { lines: [] },
-                experience: [],
+                experiences: [],
                 projects: [],
                 extraCurriculars: [],
                 awards: [],
