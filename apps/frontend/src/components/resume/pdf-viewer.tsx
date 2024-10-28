@@ -30,8 +30,9 @@ export default function ResumeViewer() {
                 alert("Error: " + report.data);
             } else {
                 // TODO: Change this if using another service, like HTML one or LaTeX one
-                console.log(report.data)
-                setState(report.data);
+                const resume = report.data;
+                resume.data.contactInfo.mediaProfiles = new Map(Object.entries(resume.data.contactInfo.mediaProfiles));
+                setState(resume);
             }
         }
     })
@@ -44,12 +45,9 @@ export default function ResumeViewer() {
         }
 
         ref.current = setTimeout(() => {
-            // TODO: Un comment this once i fix the initial display
-            console.log(resumeState);
             client?.publish({
                 destination: `/app/resume/compile`,
                 body: JSON.stringify({
-                    // TODO: Fix it such that resumeState is actually Resume object and not ResumeData
                     resume: resumeState,
                     format: "JSON"
                 }),

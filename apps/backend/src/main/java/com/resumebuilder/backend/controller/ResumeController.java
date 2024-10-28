@@ -183,7 +183,6 @@ public class ResumeController {
     @SendToUser("/queue/resume/report")
     public ResumeCompilationReport handleCompile(@Payload ResumeCompilationRequest request) {
         // Handle the compile action here
-        System.out.println("Got here");
         if (!resumeService.isResumeAvailable()) {
             return new ResumeCompilationReport(request.resume().getDocumentId(), true, "ERROR: Resume not available");
         }

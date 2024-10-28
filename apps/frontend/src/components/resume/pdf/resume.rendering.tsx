@@ -3,7 +3,6 @@ import { Document, Page, View, Text, Link } from "@react-pdf/renderer";
 import { styles } from "./resume.style";
 import { Components } from './resume.components';
 import { MediaIcon } from './resume.icons';
-import { defaultCountries, parseCountry } from 'react-international-phone';
 import { convertISOAddressToName } from "@/components/editor/addressEditor";
 
 // TODO: Replace the styles from resume.style.ts with the styles provided from the user
