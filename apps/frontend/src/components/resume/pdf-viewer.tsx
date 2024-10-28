@@ -50,7 +50,7 @@ export default function ResumeViewer() {
                 destination: `/app/resume/compile`,
                 body: JSON.stringify({
                     // TODO: Fix it such that resumeState is actually Resume object and not ResumeData
-                    resume: JSON.stringify(resumeState),
+                    resume: resumeState,
                     format: "JSON"
                 }),
                 headers: {
