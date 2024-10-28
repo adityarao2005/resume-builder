@@ -16,6 +16,7 @@ Backend
 
 -   Texlive
 -   sudo apt install texlive
+- Maven Java 17 Spring boot
 
 IT WORKS
 TODO: Left over stuff to do:

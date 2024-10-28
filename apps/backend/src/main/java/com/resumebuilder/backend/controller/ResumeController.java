@@ -12,7 +12,6 @@ import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.resumebuilder.backend.models.Award;
-import com.resumebuilder.backend.models.Description;
 import com.resumebuilder.backend.models.Job;
 import com.resumebuilder.backend.models.resume.ContactInfo;
 import com.resumebuilder.backend.models.resume.EducationEntry;
@@ -26,26 +25,36 @@ import com.resumebuilder.backend.service.WebSocketResumeService;
 import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationReport;
 import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationRequest;
 
+// ResumeController handles WebSocket messages related to resumes
 @RestController
 public class ResumeController {
 
+    // Autowired services
+
+    // 1. WebSocketResumeService to manage resume state
     @Autowired
     private WebSocketResumeService resumeService;
 
+    // 2. ResumeCompilationService to compile resumes
     @Autowired
     private ResumeCompilationService compilationService;
 
+    // 3. WebSocketIdentityService to manage user identity
     @Autowired
     private WebSocketIdentityService identityService;
 
+    // 4. Logger for logging actions
     private final Logger logger = Logger.getLogger(ResumeController.class.getName());
 
+    // 5. Acknowledgment record to send back to the client
     public record Ack(String action, boolean success, String message) {
     };
 
+    // 6. Greeting record to send back to the client
     public record Greeting(String content) {
     }
 
+    // 7. Ping method to check connection
     @MessageMapping("/ping")
     @SendToUser("/queue/ping")
     public Greeting ping(@Payload Greeting message) {
@@ -54,6 +63,7 @@ public class ResumeController {
         return new Greeting("pong");
     }
 
+    // 8. Method to get the current user's identity
     @MessageMapping("/me")
     @SendToUser("/queue/me")
     public Greeting handleMe() {
@@ -61,6 +71,7 @@ public class ResumeController {
         return new Greeting(identityService.getIdentity().getName());
     }
 
+    // 9. Method to set the current resume based on document ID
     @MessageMapping("/resume/set/{id}")
     @SendToUser("/queue/resume")
     public Resume setResume(@DestinationVariable("id") String documentId) {
@@ -106,7 +117,7 @@ public class ResumeController {
     // Set the summary/highlights
     @MessageMapping("/resume/highlights")
     @SendToUser("/queue/resume/ack")
-    public Ack setHighlights(@Payload Description highlights) {
+    public Ack setHighlights(@Payload List<String> highlights) {
         // Handle the highlights information here
         return applyOperationOnResume("setHighlights", resume -> resume.getData().setHighlights(highlights));
     }

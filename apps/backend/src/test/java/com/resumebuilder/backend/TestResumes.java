@@ -21,7 +21,6 @@ import com.resumebuilder.backend.models.resume.ResumeData.ResumeDataBuilder;
 import com.resumebuilder.backend.models.Address;
 import com.resumebuilder.backend.models.Award;
 import com.resumebuilder.backend.models.Builder;
-import com.resumebuilder.backend.models.Description;
 import com.resumebuilder.backend.models.Duration;
 import com.resumebuilder.backend.models.Job;
 import com.resumebuilder.backend.models.Job.JobBuilder;
@@ -41,7 +40,7 @@ public class TestResumes {
 
         JOB = Builder.create(JobBuilder.class)
                 .withCompany("Cool Company")
-                .withDescription(Description.from("Cool Job Description"))
+                .withDescription("Cool Job Description")
                 .withDuration(Duration.from(
                         LocalDate.of(2025, Month.MAY, 1),
                         LocalDate.of(2025, Month.MAY, 2)))
@@ -67,7 +66,7 @@ public class TestResumes {
                         LocalDate.of(2020, Month.SEPTEMBER, 1),
                         LocalDate.of(2025, Month.AUGUST, 1)))
                 .withCourses(List.of("Software Engineering", "Computer Science", "Electrical Engineering"))
-                .withDescription(Description.from("First Year GPA: 4.0/4.0", "Majoring in Software Engineering",
+                .withDescription(List.of("First Year GPA: 4.0/4.0", "Majoring in Software Engineering",
                         "Expected Graduation: April 2023"))
                 .build();
 
@@ -79,7 +78,7 @@ public class TestResumes {
                         LocalDate.of(2025, Month.MAY, 2)))
                 .withLocation(Address.from("Toronto", "ca"))
                 .withDescription(
-                        Description.from("Developed a full stack application", "Worked with a team of 5 developers"))
+                        List.of("Developed a full stack application", "Worked with a team of 5 developers"))
                 .build();
 
         PROJECT_1 = Builder.create(ProjectBuilder.class)
@@ -88,7 +87,7 @@ public class TestResumes {
                         LocalDate.of(2025, Month.MAY, 1),
                         LocalDate.of(2025, Month.MAY, 2)))
                 .withDescription(
-                        Description.from("Developed a portfolio website", "Worked with a team of 5 developers"))
+                        List.of("Developed a portfolio website", "Worked with a team of 5 developers"))
                 .build();
 
         PROJECT_2 = Builder.create(ProjectBuilder.class)
@@ -97,7 +96,7 @@ public class TestResumes {
                         LocalDate.of(2025, Month.MAY, 1),
                         LocalDate.of(2025, Month.MAY, 2)))
                 .withDescription(
-                        Description.from("Developed a mobile application", "Worked with a team of 5 developers"))
+                        List.of("Developed a mobile application", "Worked with a team of 5 developers"))
                 .build();
 
         PROJECT_3 = Builder.create(ProjectBuilder.class)
@@ -106,7 +105,7 @@ public class TestResumes {
                         LocalDate.of(2025, Month.MAY, 1),
                         LocalDate.of(2025, Month.MAY, 2)))
                 .withDescription(
-                        Description.from("Developed a weather application", "Worked with a team of 5 developers"))
+                        List.of("Developed a weather application", "Worked with a team of 5 developers"))
                 .build();
 
         EXTRA_EXPERIENCE = Builder.create(ExperienceBuilder.class)
@@ -117,7 +116,7 @@ public class TestResumes {
                         LocalDate.of(2023, Month.MAY, 2)))
                 .withLocation(Address.from("Markham", "ca"))
                 .withDescription(
-                        Description.from("Developed a robot", "Worked with a team of 5 developers"))
+                        List.of("Developed a robot", "Worked with a team of 5 developers"))
                 .build();
 
         var programmingLanguages = List.of("Java", "Python", "C++", "JavaScript").stream()
@@ -136,7 +135,7 @@ public class TestResumes {
                 .withJob(JOB)
                 .withData(Builder.create(ResumeDataBuilder.class)
                         .withName(NAME)
-                        .withHighlights(Description.from("Software Engineer", "Full Stack Developer"))
+                        .withHighlights(List.of("Software Engineer", "Full Stack Developer"))
                         .withContactInfo(CONTACT_INFO)
                         .withEducation(List.of(EDUCATION_ENTRY))
                         .withExperience(List.of(EXPERIENCE))

@@ -4,12 +4,11 @@ import java.util.List;
 
 import com.resumebuilder.backend.models.Award;
 import com.resumebuilder.backend.models.Builder;
-import com.resumebuilder.backend.models.Description;
 
 public class ResumeData {
     private String name;
     private ContactInfo contactInfo;
-    private Description highlights;
+    private List<String> highlights;
     private List<EducationEntry> education;
     private List<Experience> experiences;
     private List<Project> projects;
@@ -22,7 +21,7 @@ public class ResumeData {
     public ResumeData() {
     }
 
-    public ResumeData(String name, ContactInfo contactInfo, Description highlights, List<EducationEntry> education,
+    public ResumeData(String name, ContactInfo contactInfo, List<String> highlights, List<EducationEntry> education,
             List<Experience> experiences, List<Project> projects, List<Experience> extraCurriculars,
             List<Skill> skills, List<Award> awards, List<String> hobbies) {
         this.name = name;
@@ -53,11 +52,11 @@ public class ResumeData {
         this.contactInfo = contactInfo;
     }
 
-    public Description getHighlights() {
+    public List<String> getHighlights() {
         return highlights;
     }
 
-    public void setHighlights(Description highlights) {
+    public void setHighlights(List<String> highlights) {
         this.highlights = highlights;
     }
 
@@ -213,7 +212,7 @@ public class ResumeData {
             return this;
         }
 
-        public ResumeDataBuilder withHighlights(Description highlights) {
+        public ResumeDataBuilder withHighlights(List<String> highlights) {
             resumeData.setHighlights(highlights);
             return this;
         }

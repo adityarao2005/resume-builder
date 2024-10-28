@@ -9,8 +9,10 @@ import jakarta.annotation.PostConstruct;
 
 @Service
 public class IdentityService {
+    // 1. Store the identity of the user
     private Principal identity;
 
+    // Default constructor
     public IdentityService() {
     }
 

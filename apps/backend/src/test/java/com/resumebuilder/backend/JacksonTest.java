@@ -1,8 +1,6 @@
 package com.resumebuilder.backend;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.resumebuilder.backend.models.Builder;
-import com.resumebuilder.backend.models.Description;
 import com.resumebuilder.backend.models.Duration;
 import com.resumebuilder.backend.models.Job.JobBuilder;
 import com.resumebuilder.backend.models.resume.Resume;
@@ -39,7 +36,7 @@ public class JacksonTest {
                 .withCompany("Google")
                 .withTitle("Software Engineer")
                 .withDuration(Duration.from(LocalDate.of(2024, 05, 06), LocalDate.of(2024, 8, 23)))
-                .withDescription(Description.from("Working in google"))
+                .withDescription("Working in google")
                 .build());
         resume.setCreatedAt(LocalDate.of(2024, 10, 22));
         resume.setData(Builder.create(ResumeDataBuilder.class)
@@ -51,7 +48,7 @@ public class JacksonTest {
                         .withMediaProfiles(Map.of())
                         .build())
                 .withEducation(List.of())
-                .withHighlights(Description.from())
+                .withHighlights(List.of())
                 .withExperience(List.of())
                 .withProjects(List.of())
                 .withExtraCurriculars(List.of())

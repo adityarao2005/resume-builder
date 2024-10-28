@@ -1,7 +1,6 @@
 package com.resumebuilder.backend.service;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
