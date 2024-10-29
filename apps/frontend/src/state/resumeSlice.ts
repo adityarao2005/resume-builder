@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-//import { resume as initialState } from '@/components/resume/pdf/resume';
 import { Resume as namespace, Common } from '@/models/types';
 import { formatDate } from "@/components/formatDate";
 
@@ -18,7 +17,7 @@ export const initialState: namespace.Resume = {
             mediaProfiles: new Map()
         },
         education: [],
-        highlights: { lines: [] },
+        highlights: [],
         experiences: [],
         projects: [],
         extraCurriculars: [],
@@ -31,7 +30,7 @@ export const initialState: namespace.Resume = {
     job: {
         title: '',
         company: '',
-        description: { lines: [] },
+        description: [],
         duration: {
             start: formatDate(new Date()),
             end: formatDate(new Date())

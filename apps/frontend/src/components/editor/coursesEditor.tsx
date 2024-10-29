@@ -37,6 +37,9 @@ export function Courses({ courses, setCourses }: IDescriptionEditorProps) {
                         setCourses(list);
                     }}
                     placeholder="Enter a line" />
+                {
+                    // Delete button
+                }
                 <Button
                     className="btn input-bordered rounded-l-none bg-base-300"
                     onClick={() => {

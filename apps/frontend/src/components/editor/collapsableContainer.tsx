@@ -35,6 +35,7 @@ export function DraggableCollapsable(
     );
 }
 
+// Field which collapses
 export function CollapsableField({ title, children }: PropsWithChildren<{ title: string }>) {
     return (
         <details className="collapse collapse-arrow border-base-300 border bg-base-100 shadow-md">

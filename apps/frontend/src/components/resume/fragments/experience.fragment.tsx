@@ -128,7 +128,7 @@ export default function ExperienceFragment() {
         copy.push({
             company: '',
             title: '',
-            description: { lines: [] },
+            description: [],
             duration: { start: formatDate(new Date()), end: formatDate(new Date()) },
             location: { city: '', country: 'ca' },
         });

@@ -102,7 +102,7 @@ export default function ProjectFragment() {
         const copy = projects ? [...projects] : [];
         copy.push({
             title: '',
-            description: { lines: [] },
+            description: [],
             duration: { start: formatDate(new Date()), end: formatDate(new Date()) },
         });
         dispatch(setProjects(copy));

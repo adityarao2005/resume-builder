@@ -148,7 +148,7 @@ export default function EducationFragment() {
             duration: { start: formatDate(new Date()), end: formatDate(new Date()) },
             location: { city: '', country: 'ca' },
             courses: [],
-            description: { lines: [] }
+            description: []
         });
         dispatch(setEducation(copy));
     }

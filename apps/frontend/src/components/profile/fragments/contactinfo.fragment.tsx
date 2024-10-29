@@ -10,11 +10,14 @@ import AddressEditor from "@/components/editor/addressEditor";
 import { CollapsableField } from "@/components/editor/collapsableContainer";
 
 export default function ContactInfoFragment() {
+    // 1. Get contact info from the Redux store
     const contactInfo = useAppSelector((state) => state.profile.contactInfo);
+    // 2. Get the dispatch function
     const dispatch = useAppDispatch();
 
     // Set phone
     const setPhone = (phone?: string) => {
+        // Validate phone number
         if (phone && phone.trim().length > 5)
             dispatch(setContactInfo({ ...contactInfo, phone: parsePhoneNumber(phone).formatInternational() }));
     }
@@ -26,6 +29,7 @@ export default function ContactInfoFragment() {
 
     // Set contact value
     const setContactValue = (key: Resume.MediaProfile, value: string) => {
+        // Create a new Map and set the value
         const contactInfo0 = { ...contactInfo };
         contactInfo0.mediaProfiles = new Map(contactInfo.mediaProfiles);
         contactInfo0.mediaProfiles.set(key, value);

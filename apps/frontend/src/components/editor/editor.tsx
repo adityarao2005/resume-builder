@@ -6,13 +6,16 @@ import { faEdit, faGripVertical, faTrash } from "@fortawesome/free-solid-svg-ico
 import Modal, { showModal } from "../modal";
 import { randomBytes } from "crypto";
 
+// Editor properties, has title and what to do when it is destroyed
 export interface IEditorPropsFragment {
     destructor: () => void;
     title: string;
 }
 
+// Editor properties, has drag and drop functionality
 export type IEditorProps = PropsWithChildren<IEditorPropsFragment & IDragAndDrop>;
 
+// Collapsable editor component
 export function CollapsableEditor(props: IEditorProps & { id: string }) {
     // Render a collapsable editor component where the editor appears as a dropdown component underneath the card
     return (<DraggableCollapsable
@@ -26,6 +29,7 @@ export function CollapsableEditor(props: IEditorProps & { id: string }) {
     </DraggableCollapsable>);
 }
 
+
 export function ModalEditor(props: IEditorProps & { id: string }) {
     // Render a modal editor component where the editor appears as a modal
     return (
@@ -37,16 +41,25 @@ export function ModalEditor(props: IEditorProps & { id: string }) {
                 onDragOver={(e) => e.preventDefault()}
                 draggable>
                 <h3 className="text-xl font-bold flex-1">{props.title}</h3>
+                {
+                    // Implement trash button
+                }
                 <div className="flex flex-col">
                     <div className="flex-1" />
                     <FontAwesomeIcon icon={faTrash} onClick={props.destructor} className="text-xl hover:cursor-pointer" />
                     <div className="flex-1" />
                 </div>
+                {
+                    // Implement edit button
+                }
                 <div className="flex flex-col">
                     <div className="flex-1" />
                     <FontAwesomeIcon icon={faEdit} onClick={() => showModal(props.id!)} className="text-xl hover:cursor-pointer" />
                     <div className="flex-1" />
                 </div>
+                {
+                    // Implement drag handle
+                }
                 <div className="flex flex-col">
                     <div className="flex-1" />
                     <FontAwesomeIcon icon={faGripVertical} className="text-xl hover:cursor-move" />
@@ -60,6 +73,7 @@ export function ModalEditor(props: IEditorProps & { id: string }) {
     );
 }
 
+// Editor component
 export default function Editor(props: IEditorProps & { id?: string }) {
     if (props.id)
         return <ModalEditor {...props} id={props.id} />;

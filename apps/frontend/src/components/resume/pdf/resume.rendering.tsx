@@ -67,7 +67,7 @@ function ContactInfo({ contactInfo }: { contactInfo: Resume.IContactInfo }) {
 function Highlights({ highlights }: { highlights: Common.IDescription }) {
     return (
         <Components.Section title="Highlights Of Qualification">
-            <Components.List type={"bullet"} items={highlights.lines} />
+            <Components.List type={"bullet"} items={highlights} />
         </Components.Section>
     )
 }
@@ -82,7 +82,7 @@ function EducationEntry({ entry }: { entry: Resume.IEducationEntry }) {
     // Create the list of items to be displayed
     const list = [];
     entry.courses.length > 0 && list.push("Relavent Courses: " + entry.courses.join(", "));
-    list.push(...entry.description.lines);
+    list.push(...entry.description);
 
     return (
         // 
@@ -124,7 +124,7 @@ function ExperienceEntry({ entry }: { entry: Resume.IExperience }) {
                 <Text style={styles.text}>{entry.duration.start} - {entry.duration.end}</Text>
             </View>
         </View>
-        <Components.List type={"bullet"} items={entry.description.lines} />
+        <Components.List type={"bullet"} items={entry.description} />
     </View>)
 }
 
@@ -151,7 +151,7 @@ function Projects({ projects }: { projects: Resume.IProject[] }) {
                             <Text style={styles.text}>{entry.duration.start} - {entry.duration.end}</Text>
                         </View>
                     </View>
-                    <Components.List type={"bullet"} items={entry.description.lines} />
+                    <Components.List type={"bullet"} items={entry.description} />
                 </View>
             ))}
         </Components.Section>
@@ -225,7 +225,7 @@ export default function RenderResumeDocument({ document }: { document: Resume.Re
             <Page size="A4" style={styles.page}>
                 <Name name={document.name} />
                 <ContactInfo contactInfo={document.contactInfo} />
-                {document.highlights.lines.length > 0 && <Highlights highlights={document.highlights} />}
+                {document.highlights.length > 0 && <Highlights highlights={document.highlights} />}
                 {document.education.length > 0 && <Education education={document.education} />}
                 {document.experiences.length > 0 && <Experience experience={document.experiences} />}
                 {document.projects.length > 0 && <Projects projects={document.projects} />}

@@ -130,7 +130,7 @@ export default function ECFragment() {
         copy.push({
             company: '',
             title: '',
-            description: { lines: [] },
+            description: [],
             duration: { start: formatDate(new Date()), end: formatDate(new Date()) },
             location: { city: '', country: 'ca' },
         });

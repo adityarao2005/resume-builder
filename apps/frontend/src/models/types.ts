@@ -7,9 +7,7 @@ export namespace Common {
     }
 
     // Description interface
-    export interface IDescription {
-        lines: string[];
-    }
+    export type IDescription = string[];
 
     // Duration interface
     export interface IDuration {
@@ -67,6 +65,11 @@ export namespace Resume {
 
     // Media profile type
     export type MediaProfile = 'LinkedIn' | 'Github' | 'Website';
+
+    export interface IMediaProfile {
+        accountType: string;
+        handle: string;
+    }
 
     // Contact information interface
     export interface IContactInfo {
