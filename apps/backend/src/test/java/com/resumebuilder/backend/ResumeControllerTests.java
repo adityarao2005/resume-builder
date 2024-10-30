@@ -29,6 +29,7 @@ import com.resumebuilder.backend.models.Job.JobBuilder;
 import com.resumebuilder.backend.models.resume.ContactInfo;
 import com.resumebuilder.backend.models.resume.EducationEntry;
 import com.resumebuilder.backend.models.resume.Experience;
+import com.resumebuilder.backend.models.resume.MediaProfile;
 import com.resumebuilder.backend.models.resume.Project;
 import com.resumebuilder.backend.models.resume.Resume;
 import com.resumebuilder.backend.models.resume.ResumeData;
@@ -135,7 +136,7 @@ public class ResumeControllerTests {
 
         data.setName("John Doey Doe");
         data.getContactInfo().setAddress(null);
-        data.getContactInfo().setEmail("joe.dohn@mail.com");
+        data.getContactInfo().getMediaProfiles().add(new MediaProfile("Email", "joe.dohn@mail.com"));
         var hobbies = new ArrayList<>(data.getHobbies());
         hobbies.add("Hiking");
         data.setHobbies(hobbies);
@@ -238,8 +239,8 @@ public class ResumeControllerTests {
 
     private void testContactInfo(StompWebClientSession session, ResumeData data) {
         ContactInfo contactInfo = data.getContactInfo();
-        contactInfo.setEmail("john@doe.com");
-        contactInfo.setPhone("123-456-7890");
+        contactInfo.getMediaProfiles().add(new MediaProfile("Email", "john@doe.com"));
+        contactInfo.getMediaProfiles().add(new MediaProfile("Phone", "123-456-7890"));
         contactInfo.setAddress(new Address("Springfield", "IL"));
         // Check if everything worked out
         tryAck(session, contactInfo, "/app/resume/contact_info", "update/setContactInfo");

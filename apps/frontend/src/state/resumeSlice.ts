@@ -8,13 +8,11 @@ export const initialState: namespace.Resume = {
     data: {
         name: '',
         contactInfo: {
-            phone: '',
-            email: '',
             address: {
                 city: '',
                 country: 'ca'
             },
-            mediaProfiles: new Map()
+            mediaProfiles: []
         },
         education: [],
         highlights: [],

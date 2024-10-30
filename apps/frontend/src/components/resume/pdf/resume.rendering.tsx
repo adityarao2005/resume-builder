@@ -18,29 +18,11 @@ function Name({ name }: { name: string }) {
 
 // Contact information component of resume
 function ContactInfo({ contactInfo }: { contactInfo: Resume.IContactInfo }) {
-    const profiles = [...contactInfo.mediaProfiles.entries()].filter(([type, data]) => data.trim().length > 0);
+    const profiles = [...contactInfo.mediaProfiles];
     const addressName = contactInfo.address ? convertISOAddressToName(contactInfo.address) : '';
 
     return (
         <View style={styles.contactInfo}>
-            {
-                contactInfo.phone && contactInfo.phone.length > 0 &&
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    <MediaIcon type='Phone' />
-                    <Text>&nbsp; {contactInfo.phone} |&nbsp;</Text>
-                </View>
-            }
-
-            {
-                contactInfo.email && contactInfo.email.length > 0 &&
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    <MediaIcon type="Email" />
-                    <Text>&nbsp;
-                        <Link src={"mailto:" + contactInfo.email}>{contactInfo.email}</Link> | &nbsp;
-                    </Text>
-                </View>
-            }
-
             {
                 contactInfo.address &&
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -50,12 +32,12 @@ function ContactInfo({ contactInfo }: { contactInfo: Resume.IContactInfo }) {
             }
 
             {
-                profiles.map(([type, data], index, array) => (
-                    <View key={data} style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                        <MediaIcon type={type} />
+                profiles.map(({ platform, handle }, index, array) => (
+                    <View key={handle} style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                        <MediaIcon type={platform} />
 
                         <Text>&nbsp;
-                            <Components.PDFLink src={data} /> {index != array.length - 1 && "|"} &nbsp;
+                            <Components.PDFLink src={handle} /> {index != array.length - 1 && "|"} &nbsp;
                         </Text>
                     </View>
                 ))

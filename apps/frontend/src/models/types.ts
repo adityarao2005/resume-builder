@@ -64,19 +64,15 @@ export namespace Resume {
     }
 
     // Media profile type
-    export type MediaProfile = 'LinkedIn' | 'Github' | 'Website';
-
     export interface IMediaProfile {
-        accountType: string;
+        platform: string;
         handle: string;
     }
 
     // Contact information interface
     export interface IContactInfo {
-        email?: string;
-        phone?: string;
         address?: Common.IAddress;
-        mediaProfiles: Map<MediaProfile, string>; // e.g [["LinkedIn", "https://www.linkedin.com/in/username"]]
+        mediaProfiles: IMediaProfile[]; // e.g [["LinkedIn", "https://www.linkedin.com/in/username"]]
     }
 
     // Resume details interface

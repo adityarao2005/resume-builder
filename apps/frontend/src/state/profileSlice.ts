@@ -8,7 +8,7 @@ import { Resume as namespace, Common, Profile } from '@/models/types';
 export const initialState: Profile.IProfile = {
     name: '',
     contactInfo: {
-        mediaProfiles: new Map(),
+        mediaProfiles: [],
     },
     education: [],
     experiences: [],

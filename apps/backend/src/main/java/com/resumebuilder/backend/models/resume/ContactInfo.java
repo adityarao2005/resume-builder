@@ -1,41 +1,21 @@
 package com.resumebuilder.backend.models.resume;
 
-import java.util.Map;
+import java.util.List;
 
 import com.resumebuilder.backend.models.Address;
 import com.resumebuilder.backend.models.Builder;
 
 public class ContactInfo {
-    private String email;
-    private String phone;
     private Address address;
-    private Map<String, String> mediaProfiles;
+    private List<MediaProfile> mediaProfiles;
 
     // Constructors, getters, and setters
     public ContactInfo() {
     }
 
-    public ContactInfo(String email, String phone, Address address, Map<String, String> mediaProfiles) {
-        this.email = email;
-        this.phone = phone;
+    public ContactInfo(Address address, List<MediaProfile> mediaProfiles) {
         this.address = address;
         this.mediaProfiles = mediaProfiles;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public Address getAddress() {
@@ -46,11 +26,11 @@ public class ContactInfo {
         this.address = address;
     }
 
-    public Map<String, String> getMediaProfiles() {
+    public List<MediaProfile> getMediaProfiles() {
         return mediaProfiles;
     }
 
-    public void setMediaProfiles(Map<String, String> mediaProfiles) {
+    public void setMediaProfiles(List<MediaProfile> mediaProfiles) {
         this.mediaProfiles = mediaProfiles;
     }
 
@@ -58,8 +38,6 @@ public class ContactInfo {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((email == null) ? 0 : email.hashCode());
-        result = prime * result + ((phone == null) ? 0 : phone.hashCode());
         result = prime * result + ((address == null) ? 0 : address.hashCode());
         result = prime * result + ((mediaProfiles == null) ? 0 : mediaProfiles.hashCode());
         return result;
@@ -74,16 +52,6 @@ public class ContactInfo {
         if (getClass() != obj.getClass())
             return false;
         ContactInfo other = (ContactInfo) obj;
-        if (email == null) {
-            if (other.email != null)
-                return false;
-        } else if (!email.equals(other.email))
-            return false;
-        if (phone == null) {
-            if (other.phone != null)
-                return false;
-        } else if (!phone.equals(other.phone))
-            return false;
         if (address == null) {
             if (other.address != null)
                 return false;
@@ -104,22 +72,12 @@ public class ContactInfo {
             contactInfo = new ContactInfo();
         }
 
-        public ContactInfoBuilder withEmail(String email) {
-            contactInfo.setEmail(email);
-            return this;
-        }
-
-        public ContactInfoBuilder withPhone(String phone) {
-            contactInfo.setPhone(phone);
-            return this;
-        }
-
         public ContactInfoBuilder withAddress(Address address) {
             contactInfo.setAddress(address);
             return this;
         }
 
-        public ContactInfoBuilder withMediaProfiles(Map<String, String> mediaProfiles) {
+        public ContactInfoBuilder withMediaProfiles(List<MediaProfile> mediaProfiles) {
             contactInfo.setMediaProfiles(mediaProfiles);
             return this;
         }

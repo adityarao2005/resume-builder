@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.resumebuilder.backend.models.Builder;
 import com.resumebuilder.backend.models.Duration;
 import com.resumebuilder.backend.models.Job.JobBuilder;
+import com.resumebuilder.backend.models.resume.MediaProfile;
 import com.resumebuilder.backend.models.resume.Resume;
 import com.resumebuilder.backend.models.resume.ContactInfo.ContactInfoBuilder;
 import com.resumebuilder.backend.models.resume.ResumeData.ResumeDataBuilder;
@@ -42,10 +43,8 @@ public class JacksonTest {
         resume.setData(Builder.create(ResumeDataBuilder.class)
                 .withName("")
                 .withContactInfo(Builder.create(ContactInfoBuilder.class)
-                        .withEmail("")
-                        .withPhone("")
                         .withAddress(null)
-                        .withMediaProfiles(Map.of())
+                        .withMediaProfiles(List.of())
                         .build())
                 .withEducation(List.of())
                 .withHighlights(List.of())

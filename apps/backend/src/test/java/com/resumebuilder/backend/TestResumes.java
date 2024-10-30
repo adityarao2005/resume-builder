@@ -9,6 +9,7 @@ import java.time.Month;
 import com.resumebuilder.backend.models.resume.ContactInfo;
 import com.resumebuilder.backend.models.resume.EducationEntry;
 import com.resumebuilder.backend.models.resume.Experience;
+import com.resumebuilder.backend.models.resume.MediaProfile;
 import com.resumebuilder.backend.models.resume.Project;
 import com.resumebuilder.backend.models.resume.Resume;
 import com.resumebuilder.backend.models.resume.Skill;
@@ -50,12 +51,14 @@ public class TestResumes {
         NAME = "Aditya Rao";
 
         CONTACT_INFO = Builder.create(ContactInfoBuilder.class)
-                .withEmail("example@example.ca")
-                .withPhone("123-456-7890")
-                .withMediaProfiles(Map.of(
-                        "LinkedIn", "linkedin.com/in/example",
-                        "Github", "github.com/example",
-                        "Website", "example.ca"))
+                .withMediaProfiles(List.of(
+                        new MediaProfile("Email", "example@example.ca"),
+                        new MediaProfile("Phone", "123-456-7890"),
+                        new MediaProfile("LinkedIn", "linkedin.com/in/example"),
+                        new MediaProfile(
+                                "Github", "github.com/example"),
+                        new MediaProfile(
+                                "Website", "example.ca")))
                 .build();
 
         EDUCATION_ENTRY = Builder.create(EducationEntryBuilder.class)
@@ -65,7 +68,8 @@ public class TestResumes {
                 .withDuration(Duration.from(
                         LocalDate.of(2020, Month.SEPTEMBER, 1),
                         LocalDate.of(2025, Month.AUGUST, 1)))
-                .withCourses(List.of("Software Engineering", "Computer Science", "Electrical Engineering"))
+                .withCourses(List.of("Software Engineering", "Computer Science",
+                        "Electrical Engineering"))
                 .withDescription(List.of("First Year GPA: 4.0/4.0", "Majoring in Software Engineering",
                         "Expected Graduation: April 2023"))
                 .build();
@@ -78,7 +82,8 @@ public class TestResumes {
                         LocalDate.of(2025, Month.MAY, 2)))
                 .withLocation(Address.from("Toronto", "ca"))
                 .withDescription(
-                        List.of("Developed a full stack application", "Worked with a team of 5 developers"))
+                        List.of("Developed a full stack application",
+                                "Worked with a team of 5 developers"))
                 .build();
 
         PROJECT_1 = Builder.create(ProjectBuilder.class)
@@ -87,7 +92,8 @@ public class TestResumes {
                         LocalDate.of(2025, Month.MAY, 1),
                         LocalDate.of(2025, Month.MAY, 2)))
                 .withDescription(
-                        List.of("Developed a portfolio website", "Worked with a team of 5 developers"))
+                        List.of("Developed a portfolio website",
+                                "Worked with a team of 5 developers"))
                 .build();
 
         PROJECT_2 = Builder.create(ProjectBuilder.class)
@@ -96,7 +102,8 @@ public class TestResumes {
                         LocalDate.of(2025, Month.MAY, 1),
                         LocalDate.of(2025, Month.MAY, 2)))
                 .withDescription(
-                        List.of("Developed a mobile application", "Worked with a team of 5 developers"))
+                        List.of("Developed a mobile application",
+                                "Worked with a team of 5 developers"))
                 .build();
 
         PROJECT_3 = Builder.create(ProjectBuilder.class)
@@ -105,7 +112,8 @@ public class TestResumes {
                         LocalDate.of(2025, Month.MAY, 1),
                         LocalDate.of(2025, Month.MAY, 2)))
                 .withDescription(
-                        List.of("Developed a weather application", "Worked with a team of 5 developers"))
+                        List.of("Developed a weather application",
+                                "Worked with a team of 5 developers"))
                 .build();
 
         EXTRA_EXPERIENCE = Builder.create(ExperienceBuilder.class)
@@ -142,7 +150,8 @@ public class TestResumes {
                         .withProjects(List.of(PROJECT_1, PROJECT_2, PROJECT_3))
                         .withExtraCurriculars(List.of(EXTRA_EXPERIENCE))
                         .withSkills(SKILLS)
-                        .withAwards(List.of(Award.from("Dean's Honor List", LocalDate.of(2024, 3, 1), null)))
+                        .withAwards(List.of(Award.from("Dean's Honor List",
+                                LocalDate.of(2024, 3, 1), null)))
                         .withHobbies(List.of("Soccer", "Reading", "Cooking"))
                         .build())
                 .build();
