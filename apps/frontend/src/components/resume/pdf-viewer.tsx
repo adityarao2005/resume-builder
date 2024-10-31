@@ -20,6 +20,7 @@ const PDFViewer = dynamic(
 export default function ResumeViewer() {
     const resumeState = useAppSelector((state) => state.resume);
     const [state, setState] = useState(resumeState);
+    const [loaded, setLoaded] = useState(false);
     const ref = useRef<NodeJS.Timeout>();
     const client = useStompClient();
 
@@ -31,7 +32,6 @@ export default function ResumeViewer() {
             } else {
                 // TODO: Change this if using another service, like HTML one or LaTeX one
                 const resume = report.data;
-                resume.data.contactInfo.mediaProfiles = new Map(Object.entries(resume.data.contactInfo.mediaProfiles));
                 setState(resume);
             }
         }
@@ -45,16 +45,23 @@ export default function ResumeViewer() {
         }
 
         ref.current = setTimeout(() => {
-            client?.publish({
-                destination: `/app/resume/compile`,
-                body: JSON.stringify({
-                    resume: resumeState,
-                    format: "JSON"
-                }),
-                headers: {
-                    "content-type": "application/json",
-                }
-            })
+            // Ensure that only if we made an edit will we publish the resume
+            // Make sure that this doesnt fire when the resume is loaded from the server
+            // Since the first call to this will be on load, we want to skip that
+            if (loaded) {
+                client?.publish({
+                    destination: `/app/resume/compile`,
+                    body: JSON.stringify({
+                        resume: resumeState,
+                        format: "JSON"
+                    }),
+                    headers: {
+                        "content-type": "application/json",
+                    }
+                })
+            } else {
+                setLoaded(true)
+            }
         }, 1000)
     }, [resumeState]);
 

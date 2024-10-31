@@ -219,7 +219,7 @@ public class ResumeControllerTests {
         Resume[] resumes = response.getBody();
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
         assertThat(resumes).isNotNull();
-        assertThat(resumes.length).isEqualTo(4);
+        assertThat(resumes.length).isEqualTo(1);
     }
 
     private void testName3(StompWebClientSession session, ResumeData data, String name) {

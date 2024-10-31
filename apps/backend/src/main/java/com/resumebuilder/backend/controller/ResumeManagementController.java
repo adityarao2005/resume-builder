@@ -10,12 +10,12 @@ import com.resumebuilder.backend.service.IdentityService;
 import com.resumebuilder.backend.service.ResumeService;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,6 +46,15 @@ public class ResumeManagementController {
     public List<Resume> getAllResumes() {
         // Get all resumes for the current user
         return service.getAllLatestResumesByUserId(identityService.getUserId());
+    }
+
+    @GetMapping("/resume/exists/{id}")
+    public ResponseEntity<?> resumeExists(@PathVariable("id") String documentId) {
+        // Check if a resume exists by ID
+        return service.getResumeHistory(documentId, identityService.getUserId()).isEmpty() ?
+                ResponseEntity.notFound().build() :
+                ResponseEntity.noContent().build();
+        
     }
 
     // Endpoint to get the history of a resume by its ID

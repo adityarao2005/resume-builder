@@ -1,5 +1,6 @@
 import { Field, Button, Input, Select } from "@headlessui/react";
 import { Resume } from "@/models/types";
+import Modal, { showModal } from "../modal";
 
 // Courses editor
 export interface IMediaProfileProps {
@@ -14,7 +15,7 @@ export function AddMediaProfileButton({ mediaProfiles, setMediaProfiles }: IMedi
             <Button
                 className="btn bg-base-100 shadow-md flex-1"
                 onClick={() => setMediaProfiles([...mediaProfiles, { handle: '', platform: '' }])}>
-                Add Course
+                Add Media Profile
             </Button>
         </Field>
     )
@@ -29,12 +30,12 @@ export function MediaProfilesComponent({ mediaProfiles, setMediaProfiles }: IMed
                 // Platform input
             }
             <div className="flex flex-row">
-                <Select name="sort-by" className="select select-bordered w-full max-w-xs"
+                <Select name="sort-by" className="select select-bordered flex-1"
                     aria-label="Platform"
                     value={mediaProfile.platform}
                     onChange={(source) => {
                         const list = [...mediaProfiles];
-                        list[index].platform = source.target.value;
+                        list[index] = { ...list[index], platform: source.target.value };
                         setMediaProfiles(list);
                     }}>
                     <option value="Email">Email</option>
@@ -49,11 +50,11 @@ export function MediaProfilesComponent({ mediaProfiles, setMediaProfiles }: IMed
                     // Handle of media profile
                 }
                 <Input
-                    className="input input-bordered rounded-r-none flex-1"
+                    className="input input-bordered rounded-r-none"
                     value={mediaProfile.handle}
                     onChange={(source) => {
                         const list = [...mediaProfiles];
-                        list[index].handle = source.target.value;
+                        list[index] = { ...list[index], handle: source.target.value };
                         setMediaProfiles(list);
                     }}
                     type={mediaProfile.platform == "Phone" ? "tel" : (mediaProfile.platform == "Email" ? "email" : "text")}
@@ -79,8 +80,12 @@ export default function MediaProfilesEditor({ mediaProfiles, setMediaProfiles }:
     // Return course editor
     return (
         <>
-            <AddMediaProfileButton mediaProfiles={mediaProfiles} setMediaProfiles={setMediaProfiles} />
-            <MediaProfilesEditor mediaProfiles={mediaProfiles} setMediaProfiles={setMediaProfiles} />
+            <Button className="btn input-bordered w-full bg-base-300" onClick={() => showModal('mediaProfiles')}>Open Media Profiles Editor</Button>
+
+            <Modal name="mediaProfiles" title="Media Profiles">
+                <AddMediaProfileButton mediaProfiles={mediaProfiles} setMediaProfiles={setMediaProfiles} />
+                <MediaProfilesComponent mediaProfiles={mediaProfiles} setMediaProfiles={setMediaProfiles} />
+            </Modal>
         </>
     );
 }

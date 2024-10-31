@@ -16,18 +16,17 @@ function Sidebar() {
     const dispatch = useAppDispatch();
     const { id } = useDocument();
 
+
     useSubscription("/user/queue/resume", (message) => {
         if (message.body) {
-            console.log("Received resume update");
             const resume = JSON.parse(message.body);
-            resume.data.contactInfo.mediaProfiles = new Map(Object.entries(resume.data.contactInfo.mediaProfiles));
             dispatch(updateResume(resume));
         }
     })
 
     useEffect(() => {
         if (client) {
-            client?.publish({
+            client.publish({
                 destination: `/app/resume/set/${id}`,
                 body: JSON.stringify({}),
             })
@@ -44,6 +43,7 @@ function Sidebar() {
                 {
                     // sections of the resume to be editted
                 }
+                
                 <NameFragment />
                 <ContactInfoFragment />
                 <HoQFragment />
@@ -69,15 +69,15 @@ function MainContent() {
 
 enum LoadingState {
     LOADING,
-    LOADED,
     NOT_FOUND
 }
+
+type LoadingType = LoadingState.LOADING | LoadingState.NOT_FOUND | string;
 
 export default function ResumePage({ params }: { params: { id: string } }) {
     const { user } = useAuthContext();
     const router = useRouter();
-    const [loaded, setLoaded] = useState(LoadingState.LOADING);
-    const [url, setURL] = useState("");
+    const [loaded, setLoaded] = useState<LoadingType>(LoadingState.LOADING);
 
     if (!user) {
         router.push("/app/login");
@@ -86,20 +86,18 @@ export default function ResumePage({ params }: { params: { id: string } }) {
 
     useEffect(() => {
         async function registerResume() {
-            const data = await fetch("/api/resume/history/" + params.id, {
+            const token = await user?.getIdToken();
+            const response = await fetch("/api/resume/exists/" + params.id, {
                 method: "GET",
                 headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${await user?.getIdToken()}`
+                    "Authorization": `Bearer ${token}`
                 }
-            }).then(response => response.json());
+            });
 
-            if (data.length == 0)
+            if (!response.ok) {
                 setLoaded(LoadingState.NOT_FOUND);
-            else {
-                setLoaded(LoadingState.LOADED);
-                const token = await user?.getIdToken();
-                setURL(`/api/ws?access_token=${token}`);
+            } else {
+                setLoaded(`/api/ws?access_token=${token}`);
             }
         }
 
@@ -130,14 +128,18 @@ export default function ResumePage({ params }: { params: { id: string } }) {
             {
                 // sidebar and main content
             }
+
             <DocumentProvider value={params}>
-                <StompSessionProvider url={url}>
+
+                <StompSessionProvider url={loaded} debug={STOMP => console.log({ STOMP })}
+                    onConnect={() => console.log({ STOMP_CONNECT: 'TCP connection successfully established' })}>
                     <div className="flex flex-row h-full flex-1">
                         <Sidebar />
                         <MainContent />
                     </div>
                 </StompSessionProvider>
             </DocumentProvider>
+
         </div>)
     }
 }

@@ -27,7 +27,7 @@ export namespace Common {
         title: string;
         company: string;
         duration: IDuration;
-        description: IDescription;
+        description: string;
     }
 
 }
@@ -42,8 +42,12 @@ export namespace Resume {
     }
 
     // Experience interface
-    export interface IExperience extends Common.IJob {
+    export interface IExperience {
         location: Common.IAddress;
+        title: string;
+        company: string;
+        duration: Common.IDuration;
+        description: Common.IDescription;
     }
 
     // Project interface

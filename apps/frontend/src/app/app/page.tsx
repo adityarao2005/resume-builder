@@ -75,9 +75,9 @@ export default function Page() {
                 const dataEntries = data.map((entry) => {
                     return {
                         job: {
-                            summary: entry.job.description.lines.join("."),
+                            summary: entry.job.description,
                             title: entry.job.title,
-                            description: entry.job.description.lines.join(".")
+                            description: entry.job.description
                         },
                         skills: entry.data.skills.map((skill) => skill.name),
                         createdAt: new Date(entry.createdAt),

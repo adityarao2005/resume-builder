@@ -23,6 +23,7 @@ export default function ContactInfoFragment() {
                 {
                     // Media profiles editor
                 }
+                
                 <MediaProfilesEditor mediaProfiles={contactInfo.mediaProfiles} setMediaProfiles={(mediaProfiles) => dispatch(setContactInfo({ ...contactInfo, mediaProfiles }))} />
                 {
                     // Address input

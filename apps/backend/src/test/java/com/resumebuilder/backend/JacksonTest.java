@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.resumebuilder.backend.models.Builder;
 import com.resumebuilder.backend.models.Duration;
 import com.resumebuilder.backend.models.Job.JobBuilder;
-import com.resumebuilder.backend.models.resume.MediaProfile;
 import com.resumebuilder.backend.models.resume.Resume;
 import com.resumebuilder.backend.models.resume.ContactInfo.ContactInfoBuilder;
 import com.resumebuilder.backend.models.resume.ResumeData.ResumeDataBuilder;

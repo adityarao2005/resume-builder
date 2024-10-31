@@ -178,18 +178,16 @@ function CreateModal() {
                 start: startDate,
                 end: endDate
             },
-            description: {
-                lines: [description]
-            }
+            description: description
         }
 
         const resume = {
             job,
             data: {
                 name: '',
-                contactInfo: { email: '', phone: '', mediaProfiles: new Map() },
+                contactInfo: { mediaProfiles: [] },
                 education: [],
-                highlights: { lines: [] },
+                highlights: [],
                 experiences: [],
                 projects: [],
                 extraCurriculars: [],
