@@ -12,6 +12,7 @@ export default function HobbiesFragment() {
         dispatch(setHobbies(description));
     }
 
+    // Use the DescriptionEditor component
     return (
         <CollapsableField title="Hobbies">
             <DescriptionEditor description={description} setDescription={setDescription} />

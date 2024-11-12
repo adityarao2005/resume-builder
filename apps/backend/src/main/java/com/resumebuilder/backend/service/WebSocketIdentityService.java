@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Scope(value = "websocket", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class WebSocketIdentityService {
-
+    // 1. Store the identity of the user
     private Principal identity;
 
     public WebSocketIdentityService() {

@@ -1,19 +1,20 @@
 package com.resumebuilder.backend.models.resume;
 
+import java.util.List;
+
 import com.resumebuilder.backend.models.Builder;
-import com.resumebuilder.backend.models.Description;
 import com.resumebuilder.backend.models.Duration;
 
 public class Project {
     private String title;
     private Duration duration;
-    private Description description;
+    private List<String> description;
 
     // Constructors, getters, and setters
     public Project() {
     }
 
-    public Project(String title, Duration duration, Description description) {
+    public Project(String title, Duration duration, List<String> description) {
         this.title = title;
         this.duration = duration;
         this.description = description;
@@ -35,11 +36,11 @@ public class Project {
         this.duration = duration;
     }
 
-    public Description getDescription() {
+    public List<String> getDescription() {
         return description;
     }
 
-    public void setDescription(Description description) {
+    public void setDescription(List<String> description) {
         this.description = description;
     }
 
@@ -97,7 +98,7 @@ public class Project {
             return this;
         }
 
-        public ProjectBuilder withDescription(Description description) {
+        public ProjectBuilder withDescription(List<String> description) {
             project.setDescription(description);
             return this;
         }

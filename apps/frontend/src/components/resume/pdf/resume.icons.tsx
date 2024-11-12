@@ -72,8 +72,11 @@ const icons = new Map<string, React.FC>([
 ])
 
 // Media icon component
-export function MediaIcon(props: { type: Resume.MediaProfile | 'Phone' | 'Email' | 'Address' }) {
-    const IconComponent = icons.get(props.type)!;
-    return <IconComponent />;
+export function MediaIcon(props: { type: string }) {
+    const IconComponent = icons.get(props.type);
+    if (IconComponent) {
+        return <IconComponent />;
+    }
+    return <></> // Return empty fragment if no icon found;
 }
 

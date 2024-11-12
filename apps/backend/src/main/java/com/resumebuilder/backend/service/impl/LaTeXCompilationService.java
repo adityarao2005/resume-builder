@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.springframework.stereotype.Service;
-
 import com.resumebuilder.backend.models.resume.Resume;
 import com.resumebuilder.backend.service.ResumeCompilationService;
 
@@ -13,10 +12,10 @@ import com.resumebuilder.backend.service.ResumeCompilationService;
 public class LaTeXCompilationService implements ResumeCompilationService {
 
     @Override
-    public ResumeCompilationReport compileResume(ResumeCompilationRequest request)
+    public ResumeCompilationReport compileResume(ResumeCompilationRequest request, Resume resume)
             throws IOException, InterruptedException {
         // TODO Auto-generated method stub
-        String latexData = templateJSONtoLaTeX(request.resume());
+        String latexData = templateJSONtoLaTeX(resume);
 
         // Create temporary input file and output directory
         Path tempInFile = Files.createTempFile("latex_input", ".tex");

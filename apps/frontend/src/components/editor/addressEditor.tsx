@@ -4,12 +4,14 @@ import { CountrySelector, defaultCountries, parseCountry } from "react-internati
 
 // Convert ISO address to name
 export function convertISOAddressToName(address: Common.IAddress) {
+    // Find the country name based on the ISO code
     return defaultCountries
         .map(parseCountry)
         .filter((country) => country.iso2 == address.country)[0]
         .name;
 }
 
+// Address editor
 export default function AddressEditor(props: { address: Common.IAddress, setAddress: (address: Common.IAddress) => void }) {
     // Convert ISO address to name
     const addressName = convertISOAddressToName(props.address);

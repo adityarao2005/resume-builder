@@ -21,14 +21,14 @@ function ProjectsEntryFragment(
     // Set start date
     const setStartDate = (date: string) => {
         const copy = projects ? [...projects] : [];
-        copy[index] = { ...copy[index], duration: { ...copy[index].duration, start: new Date(date) } };
+        copy[index] = { ...copy[index], duration: { ...copy[index].duration, start: date } };
         dispatch(setProjects(copy));
     }
 
     // Set end date
     const setEndDate = (date: string) => {
         const copy = projects ? [...projects] : [];
-        copy[index] = { ...copy[index], duration: { ...copy[index].duration, end: new Date(date) } };
+        copy[index] = { ...copy[index], duration: { ...copy[index].duration, end: date } };
         dispatch(setProjects(copy));
     }
 
@@ -79,7 +79,7 @@ function ProjectsEntryFragment(
                     <input
                         className="input input-bordered w-full"
                         type="date"
-                        value={formatDate(entry.duration.start)} onChange={(source) => setStartDate(source.target.value)} />
+                        value={(entry.duration.start)} onChange={(source) => setStartDate(source.target.value)} />
                 </Field>
                 {
                     // End date input
@@ -89,7 +89,7 @@ function ProjectsEntryFragment(
                     <input
                         className="input input-bordered w-full"
                         type="date"
-                        value={formatDate(entry.duration.end)} onChange={(source) => setEndDate(source.target.value)} />
+                        value={(entry.duration.end)} onChange={(source) => setEndDate(source.target.value)} />
                 </Field>
 
                 {
@@ -118,8 +118,8 @@ export default function ProjectFragment() {
         const copy = projects ? [...projects] : [];
         copy.push({
             title: '',
-            description: { lines: [] },
-            duration: { start: new Date(), end: new Date() },
+            description: [],
+            duration: { start: formatDate(new Date()), end: formatDate(new Date()) },
             skills: []
         });
         dispatch(setProjects(copy));

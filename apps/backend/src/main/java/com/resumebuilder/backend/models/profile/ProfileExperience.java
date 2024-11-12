@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.resumebuilder.backend.models.Address;
 import com.resumebuilder.backend.models.Builder;
-import com.resumebuilder.backend.models.Description;
 import com.resumebuilder.backend.models.Duration;
 import com.resumebuilder.backend.models.resume.Experience;
 import com.resumebuilder.backend.models.resume.Skill;
@@ -16,7 +15,7 @@ public class ProfileExperience extends Experience {
     public ProfileExperience() {
     }
 
-    public ProfileExperience(String title, String company, Duration duration, Description description, Address location,
+    public ProfileExperience(String title, String company, Duration duration, List<String> description, Address location,
             List<Skill> skills) {
         super(title, company, duration, description, location);
         this.skills = skills;
@@ -77,7 +76,7 @@ public class ProfileExperience extends Experience {
             return this;
         }
 
-        public ProfileExperienceBuilder withDescription(Description description) {
+        public ProfileExperienceBuilder withDescription(List<String> description) {
             experience.setDescription(description);
             return this;
         }

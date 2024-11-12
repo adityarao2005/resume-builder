@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.resumebuilder.backend.models.Address;
 import com.resumebuilder.backend.models.Builder;
-import com.resumebuilder.backend.models.Description;
 import com.resumebuilder.backend.models.Duration;
 
 public class EducationEntry {
@@ -13,14 +12,14 @@ public class EducationEntry {
     private Address location;
     private List<String> courses;
     private Duration duration;
-    private Description description;
+    private List<String> description;
 
     // Constructors, getters, and setters
     public EducationEntry() {
     }
 
     public EducationEntry(String institution, String qualification, Address location, List<String> courses,
-            Duration duration, Description description) {
+            Duration duration, List<String> description) {
         this.institution = institution;
         this.qualification = qualification;
         this.location = location;
@@ -69,11 +68,11 @@ public class EducationEntry {
         this.duration = duration;
     }
 
-    public Description getDescription() {
+    public List<String> getDescription() {
         return description;
     }
 
-    public void setDescription(Description description) {
+    public void setDescription(List<String> description) {
         this.description = description;
     }
 
@@ -164,7 +163,7 @@ public class EducationEntry {
             return this;
         }
 
-        public EducationEntryBuilder withDescription(Description description) {
+        public EducationEntryBuilder withDescription(List<String> description) {
             educationEntry.setDescription(description);
             return this;
         }

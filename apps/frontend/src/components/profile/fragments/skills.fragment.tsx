@@ -7,6 +7,7 @@ export default function SkillsFragment() {
     const skills = useAppSelector((state) => state.profile.otherSkills);
     const dispatch = useAppDispatch();
 
+    // Set skills
     return (
         <CollapsableField title="Other Skills">
             <SkillsEditor skills={skills} setSkills={copy => dispatch(setOtherSkills(copy))} />

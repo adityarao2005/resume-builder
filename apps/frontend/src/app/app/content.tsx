@@ -1,10 +1,14 @@
 "use client";
 import Modal, { showModal } from "@/components/modal";
-import { Input, Button, Field, Fieldset, Label, Select } from "@headlessui/react";
+import { Input, Button, Field, Fieldset, Label, Select, Textarea } from "@headlessui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation'
 import { formatDate } from "@/components/formatDate"
 import { IResumeEntry } from "@/app/app/page";
+import { Common, Resume } from "@/models/types";
+import { useAuthContext } from "@/components/context/AuthContext";
+import { setExperiences } from "@/state/profileSlice";
 
 function ResumeEntry(props: IResumeEntry) {
     return (
@@ -13,7 +17,7 @@ function ResumeEntry(props: IResumeEntry) {
                 <div className="h-52" />
             </figure>
             <div className="card-body">
-                <h2 className="card-title"><Link href="/app/resume/0" className="link">{props.job.title}</Link></h2>
+                <h2 className="card-title"><Link href={"/app/resume/" + props.documentId} className="link">{props.job.title}</Link></h2>
                 <p>{props.job.summary}</p>
                 <div className="card-actions justify-end">
                     {props.skills.map((skill, index) => <div key={index} className="badge badge-outline">{skill}</div>)}
@@ -157,28 +161,112 @@ function SortModal({ sortProps, setSortProps }: { sortProps: SortModalProps, set
 }
 
 function CreateModal() {
+    const { user } = useAuthContext();
+    const router = useRouter();
+    const [title, setTitle] = useState("");
+    const [company, setCompany] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [description, setDescription] = useState("");
+
+    async function createScratch() {
+
+        const job = {
+            title,
+            company,
+            duration: {
+                start: startDate,
+                end: endDate
+            },
+            description: description
+        }
+
+        const resume = {
+            job,
+            data: {
+                name: '',
+                contactInfo: { mediaProfiles: [] },
+                education: [],
+                highlights: [],
+                experiences: [],
+                projects: [],
+                extraCurriculars: [],
+                awards: [],
+                hobbies: [],
+                skills: [],
+            },
+        }
+
+        const token = await user?.getIdToken();
+        const response = await fetch("/api/resume", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(resume)
+        })
+        const documentId = (await response.json()).documentId;
+
+        if (response.ok) {
+            router.push('/app/resume/' + documentId)
+        } else {
+            console.log("Something went wrong")
+        }
+    }
+
     return (
-        <Modal name="create_modal" title="Create">
-            <div className="flex w-full flex-col lg:flex-row">
-                <div className="card bg-base-300 rounded-box grid h-32 flex-grow place-items-center">Create with AI</div>
-                <div className="divider lg:divider-horizontal">OR</div>
-                <div className="card bg-base-300 rounded-box grid h-32 flex-grow place-items-center">Create from scratch</div>
+        <Modal name="create_modal" title="Create Resume">
+            <div className="flex w-full flex-col">
+                <div className="pb-2">
+                    <h2 className="text-md font-bold">Enter the job details</h2>
+                    <Fieldset className="space-y-1">
+                        <Field className="flex flex-row">
+                            <Label className="font-bold">Title:&nbsp;</Label>
+                            <Input className="input input-bordered flex-1" type="text" value={title} onChange={e => setTitle(e.target.value)} />
+                        </Field>
+                        <Field className="flex flex-row">
+                            <Label className="font-bold">Company:&nbsp;</Label>
+                            <Input className="input input-bordered flex-1" type="text" value={company} onChange={e => setCompany(e.target.value)} />
+                        </Field>
+                        <Field className="flex flex-row">
+                            <Label className="font-bold">Start Date:&nbsp;</Label>
+                            <Input className="input input-bordered flex-1" type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
+                        </Field>
+                        <Field className="flex flex-row">
+                            <Label className="font-bold">End Date:&nbsp;</Label>
+                            <Input className="input input-bordered flex-1" type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
+                        </Field>
+                        <Field className="flex flex-col">
+                            <Label className="font-bold">Description:&nbsp;</Label>
+                            <Textarea className="input input-bordered h-20" value={description} onChange={e => setDescription(e.target.value)} />
+                        </Field>
+                    </Fieldset>
+                </div>
+                <div className="flex-row flex-1 flex">
+                    <div className="card bg-base-300 rounded-box grid h-32 flex-grow place-items-center">Create with AI</div>
+                    <div className="divider lg:divider-horizontal">OR</div>
+                    <div className="card bg-base-300 rounded-box grid h-32 flex-grow place-items-center cursor-pointer hover:bg-base-200" onClick={createScratch}>Create from scratch</div>
+                </div>
             </div>
         </Modal>
     )
 }
 
 export default function DashboardContent({ resumeEntries }: { resumeEntries: IResumeEntry[] }) {
-    const initialState = resumeEntries;
 
-    const [entries, setEntries] = useState(initialState);
+    const [entries, setEntries] = useState(resumeEntries);
     const [searchValue, setSearchValue] = useState("");
     const [filterProps, setFilterProps] = useState<FilterModalProps>({ skills: [] });
     const [sortProps, setSortProps] = useState<SortModalProps>({ by: "title", order: "ascending" });
 
+    useEffect(() => {
+        setEntries(resumeEntries);
+    }, [resumeEntries])
+
     // Filter entries based on search query & filter queries & sort queries
     const generateEntries = () => {
-        let entries = initialState;
+        let entries = resumeEntries;
 
         // search
         entries = entries

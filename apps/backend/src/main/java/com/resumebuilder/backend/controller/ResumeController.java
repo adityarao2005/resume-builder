@@ -1,9 +1,8 @@
 package com.resumebuilder.backend.controller;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -12,11 +11,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.resumebuilder.backend.models.Address;
 import com.resumebuilder.backend.models.Award;
-import com.resumebuilder.backend.models.Builder;
-import com.resumebuilder.backend.models.Description;
-import com.resumebuilder.backend.models.Duration;
 import com.resumebuilder.backend.models.Job;
 import com.resumebuilder.backend.models.resume.ContactInfo;
 import com.resumebuilder.backend.models.resume.EducationEntry;
@@ -24,31 +19,42 @@ import com.resumebuilder.backend.models.resume.Experience;
 import com.resumebuilder.backend.models.resume.Project;
 import com.resumebuilder.backend.models.resume.Resume;
 import com.resumebuilder.backend.models.resume.Skill;
-import com.resumebuilder.backend.models.resume.Resume.ResumeBuilder;
 import com.resumebuilder.backend.service.ResumeCompilationService;
 import com.resumebuilder.backend.service.WebSocketIdentityService;
 import com.resumebuilder.backend.service.WebSocketResumeService;
 import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationReport;
 import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationRequest;
 
+// ResumeController handles WebSocket messages related to resumes
 @RestController
 public class ResumeController {
 
+    // Autowired services
+
+    // 1. WebSocketResumeService to manage resume state
     @Autowired
     private WebSocketResumeService resumeService;
 
+    // 2. ResumeCompilationService to compile resumes
     @Autowired
     private ResumeCompilationService compilationService;
 
+    // 3. WebSocketIdentityService to manage user identity
     @Autowired
     private WebSocketIdentityService identityService;
 
+    // 4. Logger for logging actions
+    private final Logger logger = Logger.getLogger(ResumeController.class.getName());
+
+    // 5. Acknowledgment record to send back to the client
     public record Ack(String action, boolean success, String message) {
     };
 
+    // 6. Greeting record to send back to the client
     public record Greeting(String content) {
     }
 
+    // 7. Ping method to check connection
     @MessageMapping("/ping")
     @SendToUser("/queue/ping")
     public Greeting ping(@Payload Greeting message) {
@@ -57,6 +63,7 @@ public class ResumeController {
         return new Greeting("pong");
     }
 
+    // 8. Method to get the current user's identity
     @MessageMapping("/me")
     @SendToUser("/queue/me")
     public Greeting handleMe() {
@@ -64,10 +71,12 @@ public class ResumeController {
         return new Greeting(identityService.getIdentity().getName());
     }
 
+    // 9. Method to set the current resume based on document ID
     @MessageMapping("/resume/set/{id}")
     @SendToUser("/queue/resume")
     public Resume setResume(@DestinationVariable("id") String documentId) {
         // Fetch the resume by ID
+        logger.info("Setting resume with ID: " + documentId);
         return resumeService.getCurrentResume(documentId);
     }
 
@@ -108,7 +117,7 @@ public class ResumeController {
     // Set the summary/highlights
     @MessageMapping("/resume/highlights")
     @SendToUser("/queue/resume/ack")
-    public Ack setHighlights(@Payload Description highlights) {
+    public Ack setHighlights(@Payload List<String> highlights) {
         // Handle the highlights information here
         return applyOperationOnResume("setHighlights", resume -> resume.getData().setHighlights(highlights));
     }
@@ -126,7 +135,7 @@ public class ResumeController {
     @SendToUser("/queue/resume/ack")
     public Ack handleExperience(@Payload List<Experience> experience) {
         // Handle the experience information here
-        return applyOperationOnResume("setExperience", resume -> resume.getData().setExperience(experience));
+        return applyOperationOnResume("setExperience", resume -> resume.getData().setExperiences(experience));
     }
 
     // Set the projects information
@@ -196,7 +205,7 @@ public class ResumeController {
         resumeService.saveState();
 
         try {
-            return compilationService.compileResume(request);
+            return compilationService.compileResume(request, resume);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResumeCompilationReport(request.resume().getDocumentId(), true, "ERROR: " + e.getMessage());

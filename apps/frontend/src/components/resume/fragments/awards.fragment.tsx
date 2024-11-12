@@ -4,8 +4,9 @@ import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Field, Button, Input } from "@headlessui/react";
 import Collapsable from "@/components/editor/collapsableContainer";
 import AddButton from "@/components/editor/addbutton";
-import { formatDate } from "@/components/formatDate";
 import Modal, { showModal } from "@/components/modal";
+import { useResumeDataSelector } from "@/state/resumeSelectors";
+import { formatDate } from "@/components/formatDate";
 
 // Award editor props
 export interface IAwardEditorProps {
@@ -25,7 +26,7 @@ export function Awards({ awards, setAwards }: IAwardEditorProps) {
     // Set date
     const setDate = (date: string, index: number) => {
         const list = [...awards];
-        list[index] = { title: list[index].title, date: new Date(date) };
+        list[index] = { title: list[index].title, date: date };
         setAwards(list);
     }
 
@@ -57,7 +58,7 @@ export function Awards({ awards, setAwards }: IAwardEditorProps) {
                 <Input
                     className="input input-bordered w-full"
                     type="date"
-                    value={formatDate(award.date)}
+                    value={award.date}
                     onChange={source => setDate(source.target.value, index)} />
                 {
                     // Remove button
@@ -79,7 +80,7 @@ export function AwardsEditor({ awards, setAwards }: IAwardEditorProps) {
             <Button className="btn input-bordered w-full bg-base-300" onClick={() => showModal('award')}>Open Awards Editor</Button>
 
             <Modal name="award" title="Awards/Achievements">
-                <AddButton<Common.IAward> data={awards} setData={setAwards} title="Awards/Achievments" sample={{ date: new Date(), title: '' }} />
+                <AddButton<Common.IAward> data={awards} setData={setAwards} title="Awards/Achievments" sample={{ date: formatDate(new Date()), title: '' }} />
                 <div className="grid grid-cols-3">
                     <Awards awards={awards} setAwards={setAwards} />
                 </div>
@@ -89,7 +90,7 @@ export function AwardsEditor({ awards, setAwards }: IAwardEditorProps) {
 }
 
 export default function AwardsFragment() {
-    const awards = useAppSelector((state) => state.resume.awards);
+    const awards = useResumeDataSelector(state => state.awards);
     const dispatch = useAppDispatch();
 
     // Return the awards editor

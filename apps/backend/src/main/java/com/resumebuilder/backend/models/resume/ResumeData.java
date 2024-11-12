@@ -4,14 +4,13 @@ import java.util.List;
 
 import com.resumebuilder.backend.models.Award;
 import com.resumebuilder.backend.models.Builder;
-import com.resumebuilder.backend.models.Description;
 
 public class ResumeData {
     private String name;
     private ContactInfo contactInfo;
-    private Description highlights;
+    private List<String> highlights;
     private List<EducationEntry> education;
-    private List<Experience> experience;
+    private List<Experience> experiences;
     private List<Project> projects;
     private List<Experience> extraCurriculars;
     private List<Skill> skills;
@@ -22,14 +21,14 @@ public class ResumeData {
     public ResumeData() {
     }
 
-    public ResumeData(String name, ContactInfo contactInfo, Description highlights, List<EducationEntry> education,
-            List<Experience> experience, List<Project> projects, List<Experience> extraCurriculars,
+    public ResumeData(String name, ContactInfo contactInfo, List<String> highlights, List<EducationEntry> education,
+            List<Experience> experiences, List<Project> projects, List<Experience> extraCurriculars,
             List<Skill> skills, List<Award> awards, List<String> hobbies) {
         this.name = name;
         this.contactInfo = contactInfo;
         this.highlights = highlights;
         this.education = education;
-        this.experience = experience;
+        this.experiences = experiences;
         this.projects = projects;
         this.extraCurriculars = extraCurriculars;
         this.skills = skills;
@@ -53,11 +52,11 @@ public class ResumeData {
         this.contactInfo = contactInfo;
     }
 
-    public Description getHighlights() {
+    public List<String> getHighlights() {
         return highlights;
     }
 
-    public void setHighlights(Description highlights) {
+    public void setHighlights(List<String> highlights) {
         this.highlights = highlights;
     }
 
@@ -69,12 +68,12 @@ public class ResumeData {
         this.education = education;
     }
 
-    public List<Experience> getExperience() {
-        return experience;
+    public List<Experience> getExperiences() {
+        return experiences;
     }
 
-    public void setExperience(List<Experience> experience) {
-        this.experience = experience;
+    public void setExperiences(List<Experience> experiences) {
+        this.experiences = experiences;
     }
 
     public List<Project> getProjects() {
@@ -125,7 +124,7 @@ public class ResumeData {
         result = prime * result + ((contactInfo == null) ? 0 : contactInfo.hashCode());
         result = prime * result + ((highlights == null) ? 0 : highlights.hashCode());
         result = prime * result + ((education == null) ? 0 : education.hashCode());
-        result = prime * result + ((experience == null) ? 0 : experience.hashCode());
+        result = prime * result + ((experiences == null) ? 0 : experiences.hashCode());
         result = prime * result + ((projects == null) ? 0 : projects.hashCode());
         result = prime * result + ((extraCurriculars == null) ? 0 : extraCurriculars.hashCode());
         result = prime * result + ((skills == null) ? 0 : skills.hashCode());
@@ -163,10 +162,10 @@ public class ResumeData {
                 return false;
         } else if (!education.equals(other.education))
             return false;
-        if (experience == null) {
-            if (other.experience != null)
+        if (experiences == null) {
+            if (other.experiences != null)
                 return false;
-        } else if (!experience.equals(other.experience))
+        } else if (!experiences.equals(other.experiences))
             return false;
         if (projects == null) {
             if (other.projects != null)
@@ -213,7 +212,7 @@ public class ResumeData {
             return this;
         }
 
-        public ResumeDataBuilder withHighlights(Description highlights) {
+        public ResumeDataBuilder withHighlights(List<String> highlights) {
             resumeData.setHighlights(highlights);
             return this;
         }
@@ -224,7 +223,7 @@ public class ResumeData {
         }
 
         public ResumeDataBuilder withExperience(List<Experience> experience) {
-            resumeData.setExperience(experience);
+            resumeData.setExperiences(experience);
             return this;
         }
 
@@ -257,5 +256,5 @@ public class ResumeData {
         public ResumeData build() {
             return resumeData;
         }
-    } 
+    }
 }

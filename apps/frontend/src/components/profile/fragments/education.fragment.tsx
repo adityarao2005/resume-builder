@@ -26,14 +26,14 @@ function EducationEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }:
     // Set start date
     const setStartDate = (date: string) => {
         const copy = [...education];
-        copy[index] = { ...copy[index], duration: { ...copy[index].duration, start: new Date(date) } };
+        copy[index] = { ...copy[index], duration: { ...copy[index].duration, start: date } };
         dispatch(setEducation(copy));
     }
 
     // Set end date
     const setEndDate = (date: string) => {
         const copy = [...education];
-        copy[index] = { ...copy[index], duration: { ...copy[index].duration, end: new Date(date) } };
+        copy[index] = { ...copy[index], duration: { ...copy[index].duration, end: date } };
         dispatch(setEducation(copy));
     }
 
@@ -97,7 +97,7 @@ function EducationEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }:
                 <input
                     className="input input-bordered w-full"
                     type="date"
-                    value={formatDate(entry.duration.start)} onChange={(source) => setStartDate(source.target.value)} />
+                    value={entry.duration.start} onChange={(source) => setStartDate(source.target.value)} />
             </Field>
             {
                 // Set end date input
@@ -107,7 +107,7 @@ function EducationEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }:
                 <input
                     className="input input-bordered w-full"
                     type="date"
-                    value={formatDate(entry.duration.end)} onChange={(source) => setEndDate(source.target.value)} />
+                    value={entry.duration.end} onChange={(source) => setEndDate(source.target.value)} />
             </Field>
             {
                 // Set address input
@@ -144,10 +144,10 @@ export default function EducationFragment() {
         copy.push({
             institution: '',
             qualification: '',
-            duration: { start: new Date(), end: new Date() },
+            duration: { start: formatDate(new Date()), end: formatDate(new Date()) },
             location: { city: '', country: 'ca' },
             courses: [],
-            description: { lines: [] }
+            description: []
         });
         dispatch(setEducation(copy));
     }

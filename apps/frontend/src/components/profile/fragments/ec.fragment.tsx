@@ -27,14 +27,14 @@ function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }
     // Set start date
     const setStartDate = (date: string) => {
         const copy = experiences ? [...experiences] : [];
-        copy[index] = { ...copy[index], duration: { ...copy[index].duration, start: new Date(date) } };
+        copy[index] = { ...copy[index], duration: { ...copy[index].duration, start: date } };
         dispatch(setExtraCurriculars(copy));
     }
 
     // Set end date
     const setEndDate = (date: string) => {
         const copy = experiences ? [...experiences] : [];
-        copy[index] = { ...copy[index], duration: { ...copy[index].duration, end: new Date(date) } };
+        copy[index] = { ...copy[index], duration: { ...copy[index].duration, end: date } };
         dispatch(setExtraCurriculars(copy));
     }
 
@@ -98,7 +98,7 @@ function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }
                 <input
                     className="input input-bordered w-full"
                     type="date"
-                    value={formatDate(entry.duration.start)} onChange={(source) => setStartDate(source.target.value)} />
+                    value={entry.duration.start} onChange={(source) => setStartDate(source.target.value)} />
             </Field>
             {
                 // End date input
@@ -108,7 +108,7 @@ function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }
                 <input
                     className="input input-bordered w-full"
                     type="date"
-                    value={formatDate(entry.duration.end)} onChange={(source) => setEndDate(source.target.value)} />
+                    value={entry.duration.end} onChange={(source) => setEndDate(source.target.value)} />
             </Field>
             {
                 // Address input
@@ -142,8 +142,8 @@ export default function ECFragment() {
         copy.push({
             company: '',
             title: '',
-            description: { lines: [] },
-            duration: { start: new Date(), end: new Date() },
+            description: [],
+            duration: { start: formatDate(new Date()), end: formatDate(new Date()) },
             location: { city: '', country: 'ca' },
             skills: []
         });

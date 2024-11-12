@@ -5,6 +5,7 @@ import { Field, Button, Input } from "@headlessui/react";
 import Collapsable from "@/components/editor/collapsableContainer";
 import AddButton from "@/components/editor/addbutton";
 import Modal, { showModal } from "@/components/modal";
+import { useResumeDataSelector } from "@/state/resumeSelectors";
 
 // Skill editor props
 export interface ISkillsEditorProps {
@@ -78,7 +79,7 @@ export function SkillsEditor({ skills, setSkills }: ISkillsEditorProps) {
 }
 
 export default function SkillsFragment() {
-    const skills = useAppSelector((state) => state.resume.skills);
+    const skills = useResumeDataSelector((state) => state.skills);
     const dispatch = useAppDispatch();
 
     // Return the skills editor

@@ -5,10 +5,11 @@ import { setHighlights } from "@/state/resumeSlice";
 import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Fieldset } from "@headlessui/react";
 import Collapsable from "@/components/editor/collapsableContainer";
+import { useResumeDataSelector } from "@/state/resumeSelectors";
 
 
 export default function HoQFragment() {
-    const description = useAppSelector((state) => state.resume.highlights);
+    const description = useResumeDataSelector((state) => state.highlights);
     const dispatch = useAppDispatch();
 
     // Set the description

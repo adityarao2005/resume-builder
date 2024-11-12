@@ -5,13 +5,13 @@ public class Job {
     private String title;
     private String company;
     private Duration duration;
-    private Description description;
+    private String description;
 
     // Constructors, getters, and setters
     public Job() {
     }
 
-    public Job(String title, String company, Duration duration, Description description) {
+    public Job(String title, String company, Duration duration, String description) {
         this.title = title;
         this.company = company;
         this.duration = duration;
@@ -42,11 +42,11 @@ public class Job {
         this.duration = duration;
     }
 
-    public Description getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(Description description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -115,7 +115,7 @@ public class Job {
             return this;
         }
 
-        public JobBuilder withDescription(Description description) {
+        public JobBuilder withDescription(String description) {
             job.setDescription(description);
             return this;
         }

@@ -13,7 +13,7 @@ export function AddLineButton({ description, setDescription }: IDescriptionEdito
         <Field className="flex">
             <Button
                 className="btn bg-base-100 shadow-md flex-1"
-                onClick={() => setDescription({ lines: [...description.lines, ''] })}>
+                onClick={() => setDescription([...description, ''])}>
                 Add Line
             </Button>
         </Field>)
@@ -22,7 +22,7 @@ export function AddLineButton({ description, setDescription }: IDescriptionEdito
 // Lines view model
 export function Lines({ description, setDescription }: IDescriptionEditorProps) {
     // return line view model list
-    return description.lines.map((line, index) => (
+    return description.map((line, index) => (
         <Field key={index} className="flex flex-col">
             <Label className="font-bold">Line {index + 1}:</Label>
             {
@@ -33,17 +33,17 @@ export function Lines({ description, setDescription }: IDescriptionEditorProps) 
                     className="input input-bordered rounded-r-none flex-1"
                     value={line}
                     onChange={(source) => {
-                        const lines = [...description.lines];
+                        const lines = [...description];
                         lines[index] = source.target.value;
-                        setDescription({ lines });
+                        setDescription(lines);
                     }}
                     placeholder="Enter a line" />
                 <Button
                     className="btn input-bordered rounded-l-none bg-base-300"
                     onClick={() => {
-                        const lines = [...description.lines];
+                        const lines = [...description];
                         lines.splice(index, 1);
-                        setDescription({ lines });
+                        setDescription(lines);
                     }}>
                     X
                 </Button>

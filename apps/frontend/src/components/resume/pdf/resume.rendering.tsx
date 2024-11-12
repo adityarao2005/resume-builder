@@ -3,7 +3,6 @@ import { Document, Page, View, Text, Link } from "@react-pdf/renderer";
 import { styles } from "./resume.style";
 import { Components } from './resume.components';
 import { MediaIcon } from './resume.icons';
-import { defaultCountries, parseCountry } from 'react-international-phone';
 import { convertISOAddressToName } from "@/components/editor/addressEditor";
 
 // TODO: Replace the styles from resume.style.ts with the styles provided from the user
@@ -19,29 +18,11 @@ function Name({ name }: { name: string }) {
 
 // Contact information component of resume
 function ContactInfo({ contactInfo }: { contactInfo: Resume.IContactInfo }) {
-    const profiles = [...contactInfo.mediaProfiles.entries()].filter(([type, data]) => data.trim().length > 0);
+    const profiles = [...contactInfo.mediaProfiles];
     const addressName = contactInfo.address ? convertISOAddressToName(contactInfo.address) : '';
 
     return (
         <View style={styles.contactInfo}>
-            {
-                contactInfo.phone && contactInfo.phone.length > 0 &&
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    <MediaIcon type='Phone' />
-                    <Text>&nbsp; {contactInfo.phone} |&nbsp;</Text>
-                </View>
-            }
-
-            {
-                contactInfo.email && contactInfo.email.length > 0 &&
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    <MediaIcon type="Email" />
-                    <Text>&nbsp;
-                        <Link src={"mailto:" + contactInfo.email}>{contactInfo.email}</Link> | &nbsp;
-                    </Text>
-                </View>
-            }
-
             {
                 contactInfo.address &&
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -51,12 +32,12 @@ function ContactInfo({ contactInfo }: { contactInfo: Resume.IContactInfo }) {
             }
 
             {
-                profiles.map(([type, data], index, array) => (
-                    <View key={data} style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                        <MediaIcon type={type} />
+                profiles.map(({ platform, handle }, index, array) => (
+                    <View key={handle} style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                        <MediaIcon type={platform} />
 
                         <Text>&nbsp;
-                            <Components.PDFLink src={data} /> {index != array.length - 1 && "|"} &nbsp;
+                            <Components.PDFLink src={handle} /> {index != array.length - 1 && "|"} &nbsp;
                         </Text>
                     </View>
                 ))
@@ -68,7 +49,7 @@ function ContactInfo({ contactInfo }: { contactInfo: Resume.IContactInfo }) {
 function Highlights({ highlights }: { highlights: Common.IDescription }) {
     return (
         <Components.Section title="Highlights Of Qualification">
-            <Components.List type={"bullet"} items={highlights.lines} />
+            <Components.List type={"bullet"} items={highlights} />
         </Components.Section>
     )
 }
@@ -83,7 +64,7 @@ function EducationEntry({ entry }: { entry: Resume.IEducationEntry }) {
     // Create the list of items to be displayed
     const list = [];
     entry.courses.length > 0 && list.push("Relavent Courses: " + entry.courses.join(", "));
-    list.push(...entry.description.lines);
+    list.push(...entry.description);
 
     return (
         // 
@@ -95,7 +76,7 @@ function EducationEntry({ entry }: { entry: Resume.IEducationEntry }) {
                 </View>
                 <View style={styles.rightSection}>
                     <Text style={styles.text}>{entry.location.city}, {convertISOAddressToName(entry.location)}</Text>
-                    <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
+                    <Text style={styles.text}>{entry.duration.start} - {entry.duration.end}</Text>
                 </View>
             </View>
             <Components.List type={"bullet"} items={list} />
@@ -114,7 +95,6 @@ function Education({ education }: { education: Resume.IEducationEntry[] }) {
 
 // Experience entry component of resume
 function ExperienceEntry({ entry }: { entry: Resume.IExperience }) {
-    console.log(entry.location);
     return (<View wrap={false}>
         <View style={styles.splitSection}>
             <View style={styles.leftSection}>
@@ -123,10 +103,10 @@ function ExperienceEntry({ entry }: { entry: Resume.IExperience }) {
             </View>
             <View style={styles.rightSection}>
                 <Text style={styles.text}>{entry.location.city}, {convertISOAddressToName(entry.location)}</Text>
-                <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
+                <Text style={styles.text}>{entry.duration.start} - {entry.duration.end}</Text>
             </View>
         </View>
-        <Components.List type={"bullet"} items={entry.description.lines} />
+        <Components.List type={"bullet"} items={entry.description} />
     </View>)
 }
 
@@ -150,10 +130,10 @@ function Projects({ projects }: { projects: Resume.IProject[] }) {
                             <Text style={{ ...styles.text, fontWeight: 'bold' }}>{entry.title}</Text>
                         </View>
                         <View style={styles.rightSection}>
-                            <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
+                            <Text style={styles.text}>{entry.duration.start} - {entry.duration.end}</Text>
                         </View>
                     </View>
-                    <Components.List type={"bullet"} items={entry.description.lines} />
+                    <Components.List type={"bullet"} items={entry.description} />
                 </View>
             ))}
         </Components.Section>
@@ -203,7 +183,7 @@ function Awards({ awards }: { awards: Common.IAward[] }) {
                             <Text style={{ ...styles.text, fontWeight: 'bold' }}>{award.title}</Text>
                         </View>
                         <View style={styles.rightSection}>
-                            <Text style={styles.text}>{formatDate(award.date)}</Text>
+                            <Text style={styles.text}>{award.date}</Text>
                         </View>
                     </View>
                 ))}
@@ -221,13 +201,13 @@ function Hobbies({ hobbies }: { hobbies: string[] }) {
     )
 }
 
-export default function RenderResumeDocument({ document }: { document: Resume.ResumeDetails }) {
+export default function RenderResumeDocument({ document }: { document: Resume.ResumeData }) {
     return (
         <Document>
             <Page size="A4" style={styles.page}>
                 <Name name={document.name} />
                 <ContactInfo contactInfo={document.contactInfo} />
-                {document.highlights.lines.length > 0 && <Highlights highlights={document.highlights} />}
+                {document.highlights.length > 0 && <Highlights highlights={document.highlights} />}
                 {document.education.length > 0 && <Education education={document.education} />}
                 {document.experiences.length > 0 && <Experience experience={document.experiences} />}
                 {document.projects.length > 0 && <Projects projects={document.projects} />}

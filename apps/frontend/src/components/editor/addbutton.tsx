@@ -1,6 +1,7 @@
 import { Button, Field } from "@headlessui/react"
 
 // Add button props
+// Contains data, setData, sample, and title
 interface IAddButtonProps<T> {
     data: T[],
     setData: (data: T[]) => void,

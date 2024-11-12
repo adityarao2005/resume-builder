@@ -3,7 +3,6 @@ package com.resumebuilder.backend.models.profile;
 import java.util.List;
 
 import com.resumebuilder.backend.models.Builder;
-import com.resumebuilder.backend.models.Description;
 import com.resumebuilder.backend.models.Duration;
 import com.resumebuilder.backend.models.resume.Project;
 import com.resumebuilder.backend.models.resume.Skill;
@@ -15,7 +14,7 @@ public class ProfileProject extends Project {
     public ProfileProject() {
     }
 
-    public ProfileProject(String title, Duration duration, Description description, List<Skill> skills) {
+    public ProfileProject(String title, Duration duration, List<String> description, List<Skill> skills) {
         super(title, duration, description);
         this.skills = skills;
     }
@@ -70,7 +69,7 @@ public class ProfileProject extends Project {
             return this;
         }
 
-        public ProfileProjectBuilder withDescription(Description description) {
+        public ProfileProjectBuilder withDescription(List<String> description) {
             project.setDescription(description);
             return this;
         }

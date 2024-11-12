@@ -3,6 +3,7 @@ package com.resumebuilder.backend;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.time.LocalDate;
 import static java.time.Month.*;
 
@@ -12,27 +13,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.boot.web.server.MimeMappings.Mapping;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.resumebuilder.backend.BackendApplicationTestConfiguration.Identity;
-import com.resumebuilder.backend.WebSocketAuthenticationTests.Greeting;
 import com.resumebuilder.backend.controller.ResumeController.Ack;
 import com.resumebuilder.backend.models.Builder;
 import com.resumebuilder.backend.models.Address;
 import com.resumebuilder.backend.models.Award;
-import com.resumebuilder.backend.models.Description;
 import com.resumebuilder.backend.models.Duration;
 import com.resumebuilder.backend.models.Job;
 import com.resumebuilder.backend.models.Job.JobBuilder;
 import com.resumebuilder.backend.models.resume.ContactInfo;
 import com.resumebuilder.backend.models.resume.EducationEntry;
 import com.resumebuilder.backend.models.resume.Experience;
+import com.resumebuilder.backend.models.resume.MediaProfile;
 import com.resumebuilder.backend.models.resume.Project;
 import com.resumebuilder.backend.models.resume.Resume;
 import com.resumebuilder.backend.models.resume.ResumeData;
@@ -41,6 +38,8 @@ import com.resumebuilder.backend.models.resume.EducationEntry.EducationEntryBuil
 import com.resumebuilder.backend.models.resume.Experience.ExperienceBuilder;
 import com.resumebuilder.backend.models.resume.Project.ProjectBuilder;
 import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationReport;
+import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationFormat;
+import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationRequest;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Import(value = { BackendApplicationTestConfiguration.class, WebsocketTestConfiguration.class })
@@ -135,6 +134,16 @@ public class ResumeControllerTests {
         // Set job
         testJob(session, resume);
 
+        data.setName("John Doey Doe");
+        data.getContactInfo().setAddress(null);
+        data.getContactInfo().getMediaProfiles().add(new MediaProfile("Email", "joe.dohn@mail.com"));
+        var hobbies = new ArrayList<>(data.getHobbies());
+        hobbies.add("Hiking");
+        data.setHobbies(hobbies);
+
+        // Compile the resume
+        testCompile(session, resume);
+
         session.disconnect();
 
         Resume oo = getWorkingResume();
@@ -210,7 +219,7 @@ public class ResumeControllerTests {
         Resume[] resumes = response.getBody();
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
         assertThat(resumes).isNotNull();
-        assertThat(resumes.length).isEqualTo(4);
+        assertThat(resumes.length).isEqualTo(1);
     }
 
     private void testName3(StompWebClientSession session, ResumeData data, String name) {
@@ -230,18 +239,17 @@ public class ResumeControllerTests {
 
     private void testContactInfo(StompWebClientSession session, ResumeData data) {
         ContactInfo contactInfo = data.getContactInfo();
-        contactInfo.setEmail("john@doe.com");
-        contactInfo.setPhone("123-456-7890");
+        contactInfo.getMediaProfiles().add(new MediaProfile("Email", "john@doe.com"));
+        contactInfo.getMediaProfiles().add(new MediaProfile("Phone", "123-456-7890"));
         contactInfo.setAddress(new Address("Springfield", "IL"));
         // Check if everything worked out
         tryAck(session, contactInfo, "/app/resume/contact_info", "update/setContactInfo");
     }
 
     private void testHighlights(StompWebClientSession session, ResumeData data) {
-        Description highlights = data.getHighlights();
-        highlights.setLines(List.of("I am a software engineer", "I have experience in Java"));
         // Check if everything worked out
-        tryAck(session, highlights, "/app/resume/highlights", "update/setHighlights");
+        tryAck(session, List.of("I am a software engineer",
+                "I have experience in Java"), "/app/resume/highlights", "update/setHighlights");
     }
 
     private void testEducation(StompWebClientSession session, ResumeData data) {
@@ -254,7 +262,7 @@ public class ResumeControllerTests {
                 .withDuration(
                         Duration.from(LocalDate.of(2020, SEPTEMBER, 6), LocalDate.of(2024, APRIL, 30)))
                 .withDescription(
-                        Description.from("Graduated with honors"))
+                        List.of("Graduated with honors"))
                 .build();
         education.add(entry);
         // Check if everything worked out
@@ -262,13 +270,13 @@ public class ResumeControllerTests {
     }
 
     private void testExperience(StompWebClientSession session, ResumeData data) {
-        List<Experience> experiences = data.getExperience();
+        List<Experience> experiences = data.getExperiences();
         Experience experience = Builder.create(ExperienceBuilder.class)
                 .withCompany("Google")
                 .withTitle("Software Engineer")
                 .withLocation(Address.from("", "CA"))
                 .withDuration(Duration.from(LocalDate.of(2022, APRIL, 5), LocalDate.of(2023, APRIL, 5)))
-                .withDescription(Description.from("Worked on the search engine"))
+                .withDescription(List.of("Worked on the search engine"))
                 .build();
         experiences.add(experience);
         // Check if everything worked out
@@ -279,7 +287,7 @@ public class ResumeControllerTests {
         List<Project> projects = data.getProjects();
         Project project = Builder.create(ProjectBuilder.class)
                 .withTitle("Resume Builder")
-                .withDescription(Description.from("A resume builder"))
+                .withDescription(List.of("A resume builder"))
                 .withDuration(Duration.from(LocalDate.of(2021, JANUARY, 1), LocalDate.now()))
                 .build();
         projects.add(project);
@@ -294,7 +302,7 @@ public class ResumeControllerTests {
                 .withTitle("Software Engineer")
                 .withLocation(Address.from("", "CA"))
                 .withDuration(Duration.from(LocalDate.of(2022, APRIL, 5), LocalDate.of(2023, APRIL, 5)))
-                .withDescription(Description.from("Worked on the search engine"))
+                .withDescription(List.of("Worked on the search engine"))
                 .build();
         experiences.add(experience);
         // Check if everything worked out
@@ -331,7 +339,7 @@ public class ResumeControllerTests {
                 .withCompany("Google")
                 .withDuration(
                         Duration.from(LocalDate.of(2022, APRIL, 5), LocalDate.of(2023, APRIL, 5)))
-                .withDescription(Description.from("Worked on the search engine"))
+                .withDescription("Worked on the search engine")
                 .build();
         data.setJob(job);
         // Check if everything worked out
@@ -346,5 +354,16 @@ public class ResumeControllerTests {
         assertThat(ack.action()).isEqualTo(action);
         assertThat(ack.message()).isEqualTo("Operation successful");
 
+    }
+
+    private void testCompile(StompWebClientSession session, Resume data) {
+        ResumeCompilationRequest request = new ResumeCompilationRequest(data, ResumeCompilationFormat.PDF);
+        ResumeCompilationReport report = session.sendAndAwait("/app/resume/compile", request,
+                ResumeCompilationReport.class);
+
+        // Check if everything worked out
+        assertThat(report).isNotNull();
+        assertThat(report.error()).isFalse();
+        assertThat(report.data()).isEqualTo(data);
     }
 }

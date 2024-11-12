@@ -7,20 +7,18 @@ export namespace Common {
     }
 
     // Description interface
-    export interface IDescription {
-        lines: string[];
-    }
+    export type IDescription = string[];
 
     // Duration interface
     export interface IDuration {
-        start: Date;
-        end: Date;
+        start: string;
+        end: string;
     }
 
     // Award interface
     export interface IAward {
         title: string;
-        date: Date;
+        date: string;
         affiliatedTo?: string;
     }
 
@@ -29,7 +27,7 @@ export namespace Common {
         title: string;
         company: string;
         duration: IDuration;
-        description: IDescription;
+        description: string;
     }
 
 }
@@ -44,8 +42,12 @@ export namespace Resume {
     }
 
     // Experience interface
-    export interface IExperience extends Common.IJob {
+    export interface IExperience {
         location: Common.IAddress;
+        title: string;
+        company: string;
+        duration: Common.IDuration;
+        description: Common.IDescription;
     }
 
     // Project interface
@@ -66,14 +68,15 @@ export namespace Resume {
     }
 
     // Media profile type
-    export type MediaProfile = 'LinkedIn' | 'Github' | 'Website';
+    export interface IMediaProfile {
+        platform: string;
+        handle: string;
+    }
 
     // Contact information interface
     export interface IContactInfo {
-        email?: string;
-        phone?: string;
         address?: Common.IAddress;
-        mediaProfiles: Map<MediaProfile, string>; // e.g [["LinkedIn", "https://www.linkedin.com/in/username"]]
+        mediaProfiles: IMediaProfile[]; // e.g [["LinkedIn", "https://www.linkedin.com/in/username"]]
     }
 
     // Resume details interface
@@ -93,8 +96,10 @@ export namespace Resume {
     // Resume interface
     export interface Resume {
         // TODO: add a separate section for styling
-        versions: ResumeData[];
+        data: ResumeData;
         job: Common.IJob;
+        createdAt: string;
+        documentId?: string;
     }
 }
 

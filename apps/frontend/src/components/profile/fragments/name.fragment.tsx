@@ -4,9 +4,11 @@ import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Field, Input, Label } from "@headlessui/react";
 
 export default function Name() {
+    // Get name from the Redux store
     const name = useAppSelector((state) => state.profile.name);
     const dispatch = useAppDispatch();
 
+    // Set name in the Redux store
     const setNameState = (name: string) => {
         dispatch(setName(name));
     }
