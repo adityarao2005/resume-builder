@@ -82,3 +82,4 @@ class GeminiResumeGraderService(LangChainResumeGraderService):
         # The Gemini LLM model which is used to grade the resume
         super().__init__(model)
         
+        
