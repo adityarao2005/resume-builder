@@ -1,0 +1,337 @@
+{
+    "_id": {
+        "$oid": "672e8522b699a20e4f7fa166"
+    },
+    "userId": "MD5Tvv76BoQv4MVPSZfjaWk8T293",
+    "documentId": "87254aac-cf5f-466f-9972-4f38092a35fe",
+    "data": {
+        "name": "Josh Xue",
+        "contactInfo": {
+            "mediaProfiles": [
+                {
+                    "platform": "Website",
+                    "handle": "https://www.joshx.tech/"
+                },
+                {
+                    "platform": "Email",
+                    "handle": "xuej41@mcmaster.ca"
+                },
+                {
+                    "platform": "LinkedIn",
+                    "handle": "linkedin.com/in/joshua-xue"
+                },
+                {
+                    "platform": "GitHub",
+                    "handle": "github.com/xuej41"
+                },
+                {
+                    "platform": "Phone",
+                    "handle": "(416) 669-9803"
+                }
+            ]
+        },
+        "highlights": [],
+        "education": [
+            {
+                "institution": "McMaster University",
+                "qualification": "B.Eng. in Computer Engineering (Co-op)",
+                "location": {
+                    "city": "Hamilton",
+                    "country": "ca"
+                },
+                "courses": [],
+                "duration": {
+                    "start": {
+                        "$date": "2023-09-04T00:00:00Z"
+                    },
+                    "end": {
+                        "$date": "2028-04-28T00:00:00Z"
+                    }
+                },
+                "description": [
+                    "CPGA: 3.95/4.00 – Dean’s Honor List",
+                    "Did computer engineereing"
+                ]
+            }
+        ],
+        "experiences": [
+            {
+                "location": {
+                    "city": "Hamilton",
+                    "country": "ca"
+                },
+                "title": "Programming Team Executive",
+                "company": "McMaster Sumobot Club/Competition",
+                "duration": {
+                    "start": {
+                        "$date": "2023-11-06T00:00:00Z"
+                    },
+                    "end": {
+                        "$date": "2024-11-07T00:00:00Z"
+                    }
+                },
+                "description": [
+                    "Robotics competition where teams design and build robots fight against each other",
+                    "Host programming workshops to teach and train teams in Arduino/C++ for robot development",
+                    "Build entire robot using CAD, 3D print, Arduino microcontrollers and code for combat"
+                ]
+            },
+            {
+                "location": {
+                    "city": "Markham",
+                    "country": "ca"
+                },
+                "title": "Lifeguard and Swimming Instructor",
+                "company": "City of Markham",
+                "duration": {
+                    "start": {
+                        "$date": "2022-08-08T00:00:00Z"
+                    },
+                    "end": {
+                        "$date": "2024-09-09T00:00:00Z"
+                    }
+                },
+                "description": [
+                    "Certified lifeguard and instructor with Standard First Aid Training and CPR Level C",
+                    "Responded quickly and effectively to water emergencies, providing first aid and initiating rescue procedures when necessary",
+                    "Conducted swim lessons for individuals of all ages and skill levels and implemented lesson plans tailored to the needs and abilities of each student"
+                ]
+            },
+            {
+                "location": {
+                    "city": "Markham",
+                    "country": "ca"
+                },
+                "title": "Bike Mechanic",
+                "company": "Markham Cycles",
+                "duration": {
+                    "start": {
+                        "$date": "2022-05-09T00:00:00Z"
+                    },
+                    "end": {
+                        "$date": "2023-09-04T00:00:00Z"
+                    }
+                },
+                "description": [
+                    "Experienced in servicing, assembling, and repairing any component on a diverse range of bikes",
+                    "Rust removal, mechanical/hydraulic disc/rim brake service, flat tire repair, wheel truing, crank/bottom bracket service, derailleur adjustment, headset service",
+                    "Experience working on steel, aluminum, and carbon framesets"
+                ]
+            },
+            {
+                "location": {
+                    "city": "Markham",
+                    "country": "ca"
+                },
+                "title": "Cashier and Merchandiser",
+                "company": "Party City",
+                "duration": {
+                    "start": {
+                        "$date": "2021-07-05T00:00:00Z"
+                    },
+                    "end": {
+                        "$date": "2021-11-08T00:00:00Z"
+                    }
+                },
+                "description": [
+                    "Processed hundreds of transactions for customer purchases and returns, as well as online orders or exchanges",
+                    "Provided customer service by fulfilling customer orders and answering questions in store and over the phone in a timely, efficient manner"
+                ]
+            }
+        ],
+        "projects": [
+            {
+                "title": "Personal Portfolio Website",
+                "duration": {
+                    "start": {
+                        "$date": "2024-09-09T00:00:00Z"
+                    },
+                    "end": {
+                        "$date": "2024-09-09T00:00:00Z"
+                    }
+                },
+                "description": [
+                    "Developed a front-end web app displaying myself and my skill portfolio",
+                    "Built with HTML, CSS, Javascript"
+                ]
+            },
+            {
+                "title": "PlanetPal",
+                "duration": {
+                    "start": {
+                        "$date": "2024-11-05T00:00:00Z"
+                    },
+                    "end": {
+                        "$date": "2024-11-05T00:00:00Z"
+                    }
+                },
+                "description": [
+                    "TerraHacks hackathon project - Personal waste management assistant web app.",
+                    "Tech stack used - HTML, CSS, Javascript, React, Node.js, GPT-3.5. Deployed to Vercel."
+                ]
+            },
+            {
+                "title": "ATM Finder",
+                "duration": {
+                    "start": {
+                        "$date": "2024-11-05T00:00:00Z"
+                    },
+                    "end": {
+                        "$date": "2024-11-05T00:00:00Z"
+                    }
+                },
+                "description": [
+                    "YRHacks hackathon project - Shows the nearest ATMs and other amenities on a map.",
+                    "Tech stack used - Javascript, HTML, CSS, React."
+                ]
+            },
+            {
+                "title": "Cry of Fear on Arch Linux",
+                "duration": {
+                    "start": {
+                        "$date": "2024-11-05T00:00:00Z"
+                    },
+                    "end": {
+                        "$date": "2024-11-05T00:00:00Z"
+                    }
+                },
+                "description": [
+                    "YouTube video project - Running Cry of Fear on Arch Linux through Proton."
+                ]
+            },
+            {
+                "title": "Chroot using Live USB",
+                "duration": {
+                    "start": {
+                        "$date": "2024-11-05T00:00:00Z"
+                    },
+                    "end": {
+                        "$date": "2024-11-05T00:00:00Z"
+                    }
+                },
+                "description": [
+                    "YouTube video project - Using Arch's Chroot feature to fix bootloader and package issues through a live usb"
+                ]
+            }
+        ],
+        "extraCurriculars": [],
+        "skills": [
+            {
+                "name": "C",
+                "type": "Programming Languages"
+            },
+            {
+                "name": "C++",
+                "type": "Programming Languages"
+            },
+            {
+                "name": "Python",
+                "type": "Programming Languages"
+            },
+            {
+                "name": "JS",
+                "type": "Programming Languages"
+            },
+            {
+                "name": "HTML5",
+                "type": "Programming Languages"
+            },
+            {
+                "name": "CSS",
+                "type": "Programming Languages"
+            },
+            {
+                "name": "Ardunio",
+                "type": "Programming Languages"
+            },
+            {
+                "name": "Matlab",
+                "type": "Programming Languages"
+            },
+            {
+                "name": "Verilog",
+                "type": "Programming Languages"
+            },
+            {
+                "name": "Microsoft Office",
+                "type": "Tools"
+            },
+            {
+                "name": "Github",
+                "type": "Tools"
+            },
+            {
+                "name": "VS Code",
+                "type": "Tools"
+            },
+            {
+                "name": "Autodesk Inventor (CAD)",
+                "type": "Tools"
+            },
+            {
+                "name": "Granta",
+                "type": "Tools"
+            },
+            {
+                "name": "Davinci Resolve",
+                "type": "Tools"
+            },
+            {
+                "name": "Adobe Premier Pro",
+                "type": "Tools"
+            },
+            {
+                "name": "Audacity",
+                "type": "Tools"
+            },
+            {
+                "name": "Soccer",
+                "type": "Hobbies"
+            },
+            {
+                "name": "Skiing",
+                "type": "Hobbies"
+            },
+            {
+                "name": "Cycling",
+                "type": "Hobbies"
+            },
+            {
+                "name": "Running",
+                "type": "Hobbies"
+            },
+            {
+                "name": "3D Printers",
+                "type": "Hobbies"
+            },
+            {
+                "name": "Cloud Computing",
+                "type": "Hobbies"
+            },
+            {
+                "name": "Finance",
+                "type": "Hobbies"
+            }
+        ],
+        "awards": [],
+        "hobbies": []
+    },
+    "version": 7,
+    "createdAt": {
+        "$date": "2024-11-08T00:00:00Z"
+    },
+    "job": {
+        "title": "Hardware Engineer Intern",
+        "company": "Google",
+        "duration": {
+            "start": {
+                "$date": "2024-11-06T00:00:00Z"
+            },
+            "end": {
+                "$date": "2024-11-14T00:00:00Z"
+            }
+        },
+        "description": "Minimum qualifications: \nCurrently pursuing a Bachelor's or Master's degree in Mechanical Engineering, Computer Engineering, Computer Science, or a related technical field. Experience in Hardware System Integration, Signal and Power Integrity, System Validation, Wireless Communications, Product Design, Computer Architecture, Digital Design Verification, Digital Circuits, ASIC Physical Design, FPGAs, Embedded Systems, or Memory Systems. Preferred qualifications: Currently attending a degree program in the US and available to work full time for 12 weeks outside of university term time. In their penultimate academic year or returning to a degree program after completion of the internship. Experience working on consumer hardware projects. Experience with board layout (e.g., working with CAD/PCB design), Systems Integration, RF, Hardware Test, or Antenna. Experience with wireless communication interfaces and sensors. About the job: As a Hardware Engineering Intern, you will work on our core Consumer Hardware products. The teams you work with design, develop, and deploy next generation consumer hardware while ensuring that this equipment is reliable. You’ll work closely with engineers to improve our hardware to meet Google's standards of quality and reliability, and your work has the potential to impact many of Google users. Google is and always will be an engineering company. We hire people with a broad set of technical skills who are ready to address some of technology's greatest challenges and make an impact on millions, if not billions, of users. At Google, engineers not only revolutionize search, they routinely work on massive scalability and storage solutions, large-scale applications and entirely new platforms for developers around the world. From Google Ads to Chrome, Android to YouTube, Social to Local, Google engineers are changing the world one technological achievement after another. The US base salary range for this full-time position is $81,000-$106,000. Our salary ranges are determined by role, level, and location. The range displayed on each job posting reflects the minimum and maximum target salaries for the position across all US locations. Within the range, individual pay is determined by work location and additional factors, including job-related skills, experience, and relevant education or training. Your recruiter can share more about the specific salary range for your preferred location during the hiring process. Please note that the compensation details listed in US role postings reflect the base salary only, and do not include bonus, equity, or benefits. Learn more about benefits at Google. Responsibilities: Responsibilities may vary based on specific teams."
+    },
+    "_class": "com.resumebuilder.backend.models.resume.Resume"
+}

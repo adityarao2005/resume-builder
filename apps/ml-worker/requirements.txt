@@ -1,0 +1,6 @@
+google.generativeai
+langchain
+pydantic
+langchain_openai
+langchain-google-genai
+six

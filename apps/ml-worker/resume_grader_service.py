@@ -5,6 +5,8 @@ from typing import List
 from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate
 import json
 from langchain_google_genai import ChatGoogleGenerativeAI
+from resume_cleaning_service import clean_resume
+import secrets
 
 class ResumeGradingReport(BaseModel):
     '''    
@@ -48,7 +50,7 @@ class LangChainResumeGraderService(ResumeGraderService):
                 SystemMessagePromptTemplate.from_template(
                     "You are a hiring manager looking at resumes which are best suited for a job. \
                     The resume and job will be sent as a JSON object where the resume will be in the 'resume' \
-                    key and the job will be in the 'job' key. You are to give the score of the resume, the pros, the cons and the ways to improve it"
+                    key and the job will be in the 'job' key. You are to give the score of the resume out of 100, the pros, the cons and the ways to improve it"
                 ),
                 HumanMessagePromptTemplate.from_template("{input}"),
             ]
@@ -66,20 +68,38 @@ class GeminiResumeGraderService(LangChainResumeGraderService):
     '''
     This is a service which uses the Gemini LLM model to grade the resume.
     '''
-    
-    def __init__(self):
-        '''
-        Initializes the GeminiResumeGraderService with the Gemini LLM model.
-        '''
-        # The Gemini LLM model which is used to grade the resume
-        llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.7, verbose=True) 
-        self.__init__(llm)
         
-    def __init__(self, model: ChatGoogleGenerativeAI):
+    def __init__(self, model: ChatGoogleGenerativeAI = None):
         '''
         Initializes the GeminiResumeGraderService with the Gemini LLM model by passing in the model.
         '''
         # The Gemini LLM model which is used to grade the resume
+        if model is None:
+            model = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.7, verbose=True)
+        
         super().__init__(model)
         
+if __name__ == "__main__":
+    # The resume to be graded
+    with open("test_data/test_resume.json", "r") as f:
+        print("Grading the resume")
+        test_resume = f.read()
+    
+        # Load the json data and clean it
+        print("Cleaning the data")
+        json_data = json.loads(test_resume)
+        cleaned_data = clean_resume(json_data)
+        test_resume = json.dumps(cleaned_data)
         
+        # The GeminiResumeGraderService which is used to grade the resume
+        # The report of the resume
+        print("Activating the LLM model")
+        resume_grader = GeminiResumeGraderService()
+        print("Grading the resume")
+        report = resume_grader.grade_resume(test_resume)
+        
+        # Print the report
+        print("Score", report.score)
+        print("Pros", report.pros)
+        print("Cons", report.cons)
+        print("Improvements", report.improvements)
