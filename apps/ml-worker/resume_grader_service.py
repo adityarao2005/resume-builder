@@ -6,7 +6,6 @@ from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, Sy
 import json
 from langchain_google_genai import ChatGoogleGenerativeAI
 from resume_cleaning_service import clean_resume
-import secrets
 
 class ResumeGradingReport(BaseModel):
     '''    
@@ -80,6 +79,7 @@ class GeminiResumeGraderService(LangChainResumeGraderService):
         super().__init__(model)
         
 if __name__ == "__main__":
+    import app_secrets
     # The resume to be graded
     with open("test_data/test_resume.json", "r") as f:
         print("Grading the resume")
