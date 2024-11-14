@@ -1,6 +1,6 @@
 import json
 
-def clean_resume(resume_data: dict) -> dict:
+def clean_resume(resume_data: dict):
     # Clean the resume data here
     
     # Set name to "XXXXX XXXXX"
@@ -22,17 +22,22 @@ def clean_resume(resume_data: dict) -> dict:
         del resume_data['data']['contactInfo']['address']
     
     # delete all the keys that are not needed or might give away API and info
-    del resume_data['_id']
-    del resume_data['userId']
-    del resume_data['createdAt']
-    del resume_data['documentId']
-    del resume_data['_class']
-    del resume_data['version']
+    if 'id' in resume_data:
+        del resume_data['id']
+    if 'userId' in resume_data:
+        del resume_data['userId']
+    if 'createdAt' in resume_data:
+        del resume_data['createdAt']
+    if 'documentId' in resume_data:
+        del resume_data['documentId']
+    if '_class' in resume_data:
+        del resume_data['_class']
+    if 'version' in resume_data:
+        del resume_data['version']
     
     # Set the resume data to the cleaned data
     resume_data['resume'] = resume_data['data']
     del resume_data['data']
-    return resume_data
 
 if __name__ == '__main__':
     # The test the resume cleaning service
