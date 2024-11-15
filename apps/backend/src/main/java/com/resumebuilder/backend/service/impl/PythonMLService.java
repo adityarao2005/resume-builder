@@ -24,8 +24,9 @@ public class PythonMLService implements MLService {
         RestTemplate template = new RestTemplate();
 
         // Create the URL
-        String url = UriComponentsBuilder.fromHttpUrl(location).path("/score_resume").toUriString();
+        String url = UriComponentsBuilder.fromHttpUrl(location).path("/score_resume/").toUriString();
 
+        System.out.println("Sending request to " + url);
         // Send a POST request to the ML service
         ResponseEntity<MLResumeScoreResponse> response = template.postForEntity(url, resume,
                 MLResumeScoreResponse.class);
@@ -35,8 +36,10 @@ public class PythonMLService implements MLService {
             throw new RuntimeException("Failed to get resume score");
         }
 
+        MLResumeScoreResponse body = response.getBody();
+        System.out.println("Received response: " + body);
         // Return the response body
-        return response.getBody();
+        return body;
     }
 
     @Override

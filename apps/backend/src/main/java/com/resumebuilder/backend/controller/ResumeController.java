@@ -222,6 +222,11 @@ public class ResumeController {
     @SendToUser("/queue/resume/score")
     public MLResumeScoreResponse getScoreResponse() {
         Resume resume = resumeService.aquireResume();
-        return mlService.getResumeScore(resume);
+        try {
+            System.out.println("Began scoring resume");
+            return mlService.getResumeScore(resume);
+        } finally {
+            System.out.println("Completed scoring resume");
+        }
     }
 }
