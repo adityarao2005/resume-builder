@@ -1,10 +1,11 @@
+import { useDocument } from "@/app/app/resume/[id]/hooks";
 import { NavMenu } from "@/components/navbar.components"
 import { Button, Field, Fieldset, Select, Tab, TabGroup, TabList, Label, Switch } from "@headlessui/react"
-import { useState } from "react";
+import { compileResume } from "@/components/resume/compile";
 
 // toolbar component
 export default function ToolBar() {
-    const [autoCompile, setAutoCompile] = useState(true);
+    const { autoCompile, setAutoCompile } = useDocument();
     // TODO: Add switch field for enabling auto-compile (in non autocompile mode, the compile button should be enabled & the editing would not happen immediately which means some delay in the UI must occur from context to cache)
     return (<div className="navbar bg-base-100 drop-shadow">
         <TabGroup>
@@ -20,7 +21,7 @@ export default function ToolBar() {
                 <Fieldset className="h-full flex">
                     {!autoCompile &&
                         <Field>
-                            <Button className="btn btn-primary h-full">Compile</Button>
+                            <Button className="btn btn-primary h-full" onClick={compileResume}>Compile</Button>
                         </Field>
                     }
                     <Field className="h-full flex-1 flex flex-col align-middle">

@@ -43,7 +43,7 @@ function Sidebar() {
                 {
                     // sections of the resume to be editted
                 }
-                
+
                 <NameFragment />
                 <ContactInfoFragment />
                 <HoQFragment />
@@ -78,6 +78,7 @@ export default function ResumePage({ params }: { params: { id: string } }) {
     const { user } = useAuthContext();
     const router = useRouter();
     const [loaded, setLoaded] = useState<LoadingType>(LoadingState.LOADING);
+    const [autoCompile, setAutoCompile] = useState(true);
 
     if (!user) {
         router.push("/app/login");
@@ -124,15 +125,14 @@ export default function ResumePage({ params }: { params: { id: string } }) {
         )
     } else {
         return (<div className="flex flex-col flex-1">
-            <ToolBar />
-            {
-                // sidebar and main content
-            }
-
-            <DocumentProvider value={params}>
-
+            <DocumentProvider value={{ id: params.id, autoCompile, setAutoCompile }}>
                 <StompSessionProvider url={loaded} debug={STOMP => console.log({ STOMP })}
                     onConnect={() => console.log({ STOMP_CONNECT: 'TCP connection successfully established' })}>
+
+                    <ToolBar />
+                    {
+                        // sidebar and main content
+                    }
                     <div className="flex flex-row h-full flex-1">
                         <Sidebar />
                         <MainContent />
