@@ -1,10 +1,11 @@
 import { useDocument } from "@/app/app/resume/[id]/hooks";
 import { NavMenu } from "@/components/navbar.components"
 import { Button, Field, Fieldset, Select, Tab, TabGroup, TabList, Label, Switch } from "@headlessui/react"
-import { compileResume } from "@/components/resume/compile";
+//import { compileResume } from "@/components/resume/compile";
 import { useStompClient, useSubscription } from "react-stomp-hooks";
 import { useEffect, useState } from "react";
 import Modal, { showModal } from "../modal";
+import { useAppSelector } from "@/state/store";
 
 interface ResumeScore {
     score: number;
@@ -20,6 +21,7 @@ export default function ToolBar() {
     const { autoCompile, setAutoCompile } = useDocument();
     const client = useStompClient();
     const [score, setScore] = useState<ResumeScoreReport>(null);
+    const resumeState = useAppSelector((state) => state.resume);
 
     useSubscription("/user/queue/resume/score", (message) => {
         if (message.body) {
@@ -40,6 +42,19 @@ export default function ToolBar() {
             showModal("score_modal");
         }
     }, [score])
+
+    async function compileResume() {
+        client?.publish({
+            destination: `/app/resume/compile`,
+            body: JSON.stringify({
+                resume: resumeState,
+                format: "JSON"
+            }),
+            headers: {
+                "content-type": "application/json",
+            }
+        })
+    }
 
 
     return (<div className="navbar bg-base-100 drop-shadow">

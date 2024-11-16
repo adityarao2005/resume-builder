@@ -1,6 +1,30 @@
 services:
-  # TODO: Keep this for testing, later use Atlas
-  mongo:
-      image: mongo:latest
-      ports:
-          - "27017:27017"
+    # TODO: Keep this for testing, later use Atlas
+    mongo:
+        image: mongo:latest
+        ports:
+            - "27017:27017"
+# Look into orchestration soon
+#    mlworker:
+#        build:
+#            context: ./ml-worker
+#            dockerfile: Dockerfile
+#        ports:
+#            - "8000:8000"
+#    backend:
+#        build:
+#            context: ./backend
+#            dockerfile: Dockerfile
+#        ports:
+#            - "8080:8080"
+#        depends_on:
+#            - mongo
+#            - mlworker
+#    frontend:
+#        build:
+#            context: ./frontend
+#            dockerfile: Dockerfile
+#        ports:
+#            - "3000:3000"
+#        depends_on:
+#            - backend
