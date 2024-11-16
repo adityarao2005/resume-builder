@@ -1,11 +1,12 @@
 import { createContext, useContext } from "react";
 
-
 export interface IDocumentParams {
     id: string;
+    autoCompile: boolean;
+    setAutoCompile: (autoCompile: boolean) => void;
 }
 
-export const DocumentContext = createContext<IDocumentParams>({ id: "" });
+export const DocumentContext = createContext<IDocumentParams>({ id: "", autoCompile: true, setAutoCompile: () => { } });
 
 export function useDocument() {
     const context = useContext(DocumentContext);

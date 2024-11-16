@@ -2,8 +2,8 @@ from pydantic import BaseModel, Field, field_validator
 from datetime import datetime
 
 class Duration(BaseModel):
-    start: dict[str, str]
-    end: dict[str, str]
+    start: dict[str, str] | str
+    end: dict[str, str] | str
 
 class Location(BaseModel):
     city: str

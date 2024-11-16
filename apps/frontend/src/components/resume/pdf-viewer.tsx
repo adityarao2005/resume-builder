@@ -23,6 +23,7 @@ export default function ResumeViewer() {
     const [loaded, setLoaded] = useState(false);
     const ref = useRef<NodeJS.Timeout>();
     const client = useStompClient();
+    const { autoCompile } = useDocument();
 
     useSubscription("/user/queue/resume/report", (message) => {
         if (message.body) {
@@ -38,32 +39,35 @@ export default function ResumeViewer() {
     })
 
     // Add a delay/timeout to the state update to prevent iframe from reloading on every state change
-    // TODO: Change the idea of this when we manually compile this
+    // Or manually trigger the update
     useEffect(() => {
+
         if (ref.current) {
             clearTimeout(ref.current);
         }
 
-        ref.current = setTimeout(() => {
-            // Ensure that only if we made an edit will we publish the resume
-            // Make sure that this doesnt fire when the resume is loaded from the server
-            // Since the first call to this will be on load, we want to skip that
-            if (loaded) {
-                client?.publish({
-                    destination: `/app/resume/compile`,
-                    body: JSON.stringify({
-                        resume: resumeState,
-                        format: "JSON"
-                    }),
-                    headers: {
-                        "content-type": "application/json",
-                    }
-                })
-            } else {
-                setLoaded(true)
-            }
-        }, 1000)
-    }, [resumeState]);
+        if (autoCompile) {
+            ref.current = setTimeout(() => {
+                // Ensure that only if we made an edit will we publish the resume
+                // Make sure that this doesnt fire when the resume is loaded from the server
+                // Since the first call to this will be on load, we want to skip that
+                if (loaded) {
+                    client?.publish({
+                        destination: `/app/resume/compile`,
+                        body: JSON.stringify({
+                            resume: resumeState,
+                            format: "JSON"
+                        }),
+                        headers: {
+                            "content-type": "application/json",
+                        }
+                    })
+                } else {
+                    setLoaded(true)
+                }
+            }, 1000)
+        }
+    }, [resumeState, autoCompile]);
 
     useEffect(() => { }, [state])
 

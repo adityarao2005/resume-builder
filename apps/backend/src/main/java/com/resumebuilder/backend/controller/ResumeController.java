@@ -19,9 +19,11 @@ import com.resumebuilder.backend.models.resume.Experience;
 import com.resumebuilder.backend.models.resume.Project;
 import com.resumebuilder.backend.models.resume.Resume;
 import com.resumebuilder.backend.models.resume.Skill;
+import com.resumebuilder.backend.service.MLService;
 import com.resumebuilder.backend.service.ResumeCompilationService;
 import com.resumebuilder.backend.service.WebSocketIdentityService;
 import com.resumebuilder.backend.service.WebSocketResumeService;
+import com.resumebuilder.backend.service.MLService.MLResumeScoreResponse;
 import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationReport;
 import com.resumebuilder.backend.service.ResumeCompilationService.ResumeCompilationRequest;
 
@@ -42,6 +44,9 @@ public class ResumeController {
     // 3. WebSocketIdentityService to manage user identity
     @Autowired
     private WebSocketIdentityService identityService;
+
+    @Autowired
+    private MLService mlService;
 
     // 4. Logger for logging actions
     private final Logger logger = Logger.getLogger(ResumeController.class.getName());
@@ -211,5 +216,17 @@ public class ResumeController {
             return new ResumeCompilationReport(request.resume().getDocumentId(), true, "ERROR: " + e.getMessage());
         }
 
+    }
+
+    @MessageMapping("/resume/score")
+    @SendToUser("/queue/resume/score")
+    public MLResumeScoreResponse getScoreResponse() {
+        Resume resume = resumeService.aquireResume();
+        try {
+            System.out.println("Began scoring resume");
+            return mlService.getResumeScore(resume);
+        } finally {
+            System.out.println("Completed scoring resume");
+        }
     }
 }

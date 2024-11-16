@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from resume_data import Resume
 from resume_grader_service import ResumeGradingReport, GeminiResumeGraderService
 from resume_cleaning_service import clean_resume
@@ -23,5 +23,13 @@ async def create_item(resume: Resume) -> ResumeGradingReport:
     clean_resume(resume_dict)
     # Grade the resume
     return resume_grader_service.grade_resume(resume_dict)
+    
+# The route to score the resume
+@app.post("/score_resume_mock/")
+async def create_item(request: Request) -> ResumeGradingReport:
+    # Convert the resume to a dictionary
+    resume = await request.json()
+    print(resume)
+    return ResumeGradingReport(cons=[], pros=[], score=0.5, summary="Mocked summary")
     
     

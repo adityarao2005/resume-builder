@@ -28,3 +28,12 @@ TODO: Left over stuff to do:
 4. Think about moving from react-pdf (cuz its kinda been buggy and wont work with custom styles) to LaTeX or HTML2PDF or a custom node service
 5. Decide whether to plan and implement custom styling first or the ML grader and resume generator or the profile page first
    5.1. Order of preference: ML grader (so i actually have a python service going), profile page setter + resume generator with AI, custom styling
+
+
+Run commands
+```bash
+/resume-builder/apps> docker compose up
+/resume-builder/apps/ml-worker> fastapi dev app.py
+/resume-builder/apps/backend> mvn spring-boot:run
+/resume-builder/apps/frontend> npm run dev
+```
