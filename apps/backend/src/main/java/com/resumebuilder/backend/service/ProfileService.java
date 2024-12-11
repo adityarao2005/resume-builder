@@ -1,6 +1,7 @@
 package com.resumebuilder.backend.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,15 @@ public class ProfileService {
     private ProfileRepository profileRepository;
 
     public Profile getProfileByUserId(String userId) {
-        Profile profile = profileRepository.findByUserId(userId);
+        Optional<Profile> profileOptional = profileRepository.findById(userId);
+        Profile profile;
 
-        if (profile == null) {
+        if (profileOptional.isEmpty()) {
             profile = Builder.create(ProfileBuilder.class)
-                    .withUserId(userId)
+                    .withId(userId)
                     .withContactInfo(new ContactInfo(null, List.of()))
                     .withEducation(List.of())
-                    .withExperience(List.of())
+                    .withExperiences(List.of())
                     .withExtraCurriculars(List.of())
                     .withHobbies(List.of())
                     .withName("")
@@ -33,13 +35,15 @@ public class ProfileService {
                     .withProjects(List.of())
                     .build();
             profile = profileRepository.save(profile);
+        } else {
+            profile = profileOptional.get();
         }
 
         return profile;
     }
 
     public Profile updateProfile(String userId, Profile profile) {
-        profile.setUserId(userId);
+        profile.setId(userId);
         return profileRepository.save(profile);
     }
 }

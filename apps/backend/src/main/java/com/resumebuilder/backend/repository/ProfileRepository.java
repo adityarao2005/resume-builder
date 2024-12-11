@@ -8,5 +8,4 @@ import com.resumebuilder.backend.models.profile.Profile;
 @Repository
 public interface ProfileRepository extends MongoRepository<Profile, String> {
     // Custom query methods can be defined here
-    Profile findByUserId(String userId);
 }

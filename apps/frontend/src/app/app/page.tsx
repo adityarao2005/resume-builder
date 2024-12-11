@@ -73,9 +73,10 @@ export default function Page() {
             if (response.ok) {
                 const data: Resume.Resume[] = await response.json();
                 const dataEntries = data.map((entry) => {
+                    const desc = `${entry.data.name}\'s Resume for ${entry.job.title} at ${entry.job.company} during ${entry.job.duration.start} to ${entry.job.duration.end}. ${entry.job.description.substring(0, 50)}${((entry.job.description.length > 50) ? '...' : '')}`;
                     return {
                         job: {
-                            summary: entry.job.description,
+                            summary: desc,
                             title: entry.job.title,
                             description: entry.job.description
                         },
