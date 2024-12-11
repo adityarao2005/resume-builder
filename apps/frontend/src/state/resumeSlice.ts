@@ -28,7 +28,7 @@ export const initialState: namespace.Resume = {
     job: {
         title: '',
         company: '',
-        description: [],
+        description: '',
         duration: {
             start: formatDate(new Date()),
             end: formatDate(new Date())
