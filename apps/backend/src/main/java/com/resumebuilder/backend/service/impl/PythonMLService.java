@@ -42,10 +42,35 @@ public class PythonMLService implements MLService {
         return body;
     }
 
+    record MLResumeGeneratorRequest(Profile profile, Job job) {
+    }
+
     @Override
     public Resume generateResume(Profile profile, Job job) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateResume'");
+        // Create a rest template
+        RestTemplate template = new RestTemplate();
+
+        // Create the URL
+        String url = UriComponentsBuilder.fromHttpUrl(location).path("/generate_resume/").toUriString();
+
+        System.out.println("Sending request to " + url);
+
+        // Create the request object
+        MLResumeGeneratorRequest request = new MLResumeGeneratorRequest(profile, job);
+
+        // Send a POST request to the ML service
+        ResponseEntity<Resume> response = template.postForEntity(url, request,
+                Resume.class);
+
+        // Check if the response is an error
+        if (response.getStatusCode().isError()) {
+            throw new RuntimeException("Failed to get resume score");
+        }
+
+        Resume body = response.getBody();
+        System.out.println("Received response: " + body);
+        // Return the response body
+        return body;
     }
 
 }

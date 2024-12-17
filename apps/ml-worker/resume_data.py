@@ -67,3 +67,19 @@ class Resume(BaseModel):
     job: Job
     data: ResumeData
 
+class ProfileExperience(Experience):
+    skill: list[Skill]
+    
+class ProfileProject(Project):
+    skill: list[Skill]
+    
+class Profile(BaseModel):
+    name: str
+    contactInfo: ContactInfo
+    education: list[Education]
+    experiences: list[ProfileExperience]
+    projects: list[ProfileProject]
+    extraCurriculars: list[ProfileExperience]
+    otherSkills: list[Skill]
+    otherAwards: list[Award]
+    hobbies: list[str]
