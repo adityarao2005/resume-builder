@@ -6,6 +6,8 @@ import { Resume } from "@/models/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+// TODO: Replace this very very weird glue code that i made in a rush with manager.tsx
+
 export interface IResumeEntry {
     job: {
         summary: string;

@@ -6,11 +6,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation'
 import { formatDate } from "@/components/formatDate"
 import { IResumeEntry } from "@/app/app/page";
-import { Common, Resume } from "@/models/types";
 import { useAuthContext } from "@/components/context/AuthContext";
-import { setExperiences } from "@/state/profileSlice";
 
-function ResumeEntry(props: IResumeEntry) {
+function ResumeEntry({ props }: { props: IResumeEntry }) {
+
     return (
         <div className="card bg-base-100 w-full max-w-xs shrink-0 shadow-2xl m-2">
             <figure className="bg-base-300">
@@ -21,6 +20,9 @@ function ResumeEntry(props: IResumeEntry) {
                 <p>{props.job.summary}</p>
                 <div className="card-actions justify-end">
                     {props.skills.map((skill, index) => <div key={index} className="badge badge-outline">{skill}</div>)}
+                </div>
+                <div>
+                    {props.documentId}
                 </div>
             </div>
         </div>
@@ -364,7 +366,7 @@ export default function DashboardContent({ resumeEntries }: { resumeEntries: IRe
                 <TabStopper text={`Sort by: ${sortProps.by} (${sortProps.order})`} action={() => sort({ order: 'ascending', by: 'title' })} />
             </div>
             <div className="flex flex-wrap p-4">
-                {entries.map((entry, index) => <ResumeEntry key={index} {...entry} />)}
+                {entries.map((entry, index) => <ResumeEntry key={index} props={entry} />)}
             </div>
         </div>
     </div>);
