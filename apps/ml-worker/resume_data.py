@@ -68,10 +68,10 @@ class Resume(BaseModel):
     data: ResumeData
 
 class ProfileExperience(Experience):
-    skill: list[Skill]
+    skills: list[Skill]
     
 class ProfileProject(Project):
-    skill: list[Skill]
+    skills: list[Skill]
     
 class Profile(BaseModel):
     name: str

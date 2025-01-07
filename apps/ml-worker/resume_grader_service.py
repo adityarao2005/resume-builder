@@ -55,13 +55,13 @@ class LangChainResumeGraderService(ResumeGraderService):
             ]
         )
     
-    def grade_resume(self, resume: dict) -> ResumeGradingReport:
+    async def grade_resume(self, resume: dict) -> ResumeGradingReport:
         # Convert the resume to a json string
         resume_json = json.dumps(resume)
         # Get the messages from the chat template
         messages = self.chat_template.format_prompt(input=resume_json).to_messages()
         # Invoke the model with the messages
-        return self.model.invoke(messages)
+        return await self.model.ainvoke(messages)
     
 class GeminiResumeGraderService(LangChainResumeGraderService):
     '''
