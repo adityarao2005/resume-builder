@@ -36,9 +36,11 @@ export interface SearchingProps {
 
 export class ResumeManager {
     // Entries that are fetched from the server
-    private entries: IResumeEntry[];
+    entries: IResumeEntry[];
     // Viewable entries based on sort, filter, and search
-    private _view: IResumeEntry[];
+    readonly view: IResumeEntry[];
+    // Set view
+    private setView: (view: IResumeEntry[]) => void;
     // JWT token
     idToken: string;
 
@@ -47,59 +49,14 @@ export class ResumeManager {
     private filterProps?: FilterModalProps;
     private searchProps?: SearchingProps;
 
-    // Getter for view object
-    get view() {
-        return this._view;
-    }
-
-    constructor() {
-        this.entries = [];
-        this._view = [];
+    constructor(entries: IResumeEntry[], view: IResumeEntry[], setView: (view: IResumeEntry[]) => void) {
+        this.entries = entries;
+        this.view = view;
+        this.setView = setView;
         this.idToken = "";
+
     }
 
-    async init(idToken: string) {
-        this.idToken = idToken;
-        await this.fetchEntries();
-    }
-
-    async fetchEntries() {
-        // Fetch resume entries from server
-        const response = await fetch("/api/resume", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${this.idToken}`
-            }
-        });
-
-        // If failed then log error
-        if (!response.ok) {
-            console.error("Failed to fetch resume entries");
-            return;
-        }
-
-        // Parse response and map to IResumeEntry
-        const data: Resume.Resume[] = await response.json();
-        // Map data to IResumeEntry
-        this.entries = data.map((entry) => {
-            // Set the summary
-            const summary = `${entry.data.name}\'s Resume for ${entry.job.title} at ${entry.job.company} during ${entry.job.duration.start} to ${entry.job.duration.end}. ${entry.job.description.substring(0, 50)}${((entry.job.description.length > 50) ? '...' : '')}`;
-            return {
-                job: {
-                    summary,
-                    title: entry.job.title,
-                    description: entry.job.description
-                },
-                skills: entry.data.skills.map((skill) => skill.name),
-                createdAt: new Date(entry.createdAt),
-                documentId: entry.documentId
-            };
-        });
-
-        // Apply filters and generate view
-        this.generateView();
-    }
 
     async deleteEntry(documentId: string) {
         // Delete entry from server
@@ -126,6 +83,8 @@ export class ResumeManager {
         // Start with all entries 
         let entries = this.entries;
 
+        console.log(entries)
+
         // Apply search
         if (this.searchProps) {
             // Get the search value
@@ -138,7 +97,7 @@ export class ResumeManager {
                     entry.job.description.toLowerCase().includes(searchValue.toLowerCase()) ||
                     entry.skills.map((e) =>
                         e.toLowerCase().includes(searchValue.toLowerCase())
-                    ).reduce((a, b) => a || b)
+                    ).reduce((a, b) => a || b, false)
                 )
         }
 
@@ -175,7 +134,7 @@ export class ResumeManager {
         }
 
         // Set the view
-        this._view = entries;
+        this.setView(entries);
 
     }
 
@@ -195,26 +154,87 @@ export class ResumeManager {
     }
 }
 
-export const ResumeManagerContext = createContext<ResumeManager>(new ResumeManager());
+// export interface IResumeManagerParams {
+//     view: IResumeEntry[];
+//     setView: (view: IResumeEntry[]) => void;
+//     entries: IResumeEntry[];
+//     setEntries: (entries: IResumeEntry[]) => void;
+// }
+
+// export class ResumeManager {
+//     readonly view: IResumeEntry[];
+//     private setView: (view: IResumeEntry[]) => void;
+//     private entries: IResumeEntry[];
+//     private setEntries: (entries: IResumeEntry[]) => void;
+
+//     constructor(params: IResumeManagerParams) {
+//         this.view = params.view;
+//         this.setView = params.setView;
+//         this.entries = params.entries;
+//         this.setEntries = params.setEntries;
+//     }
+
+//     async init(idToken: string) {
+
+//     }
+// }
+
+export const ResumeManagerContext = createContext<ResumeManager>(new ResumeManager([], [], () => { }));
 export const useResumeManager = () => useContext(ResumeManagerContext);
 
 export function ResumeManagerProvider({ children }: PropsWithChildren<{}>) {
-    const [manager] = useState(new ResumeManager());
+    const [entries, setEntries] = useState<IResumeEntry[]>([]);
+    const [view, setView] = useState<IResumeEntry[]>([]);
     const { user } = useAuthContext();
+    const manager = new ResumeManager(entries, view, setView);
 
     // Initialize the manager
     useEffect(() => {
+        manager.entries = entries;
+        manager.generateView();
+    }, [entries])
+
+    useEffect(() => {
         // Initialize the manager with the user token
         async function init() {
-            
-            if (user) {
-                const token = await user.getIdToken();
-                await manager.init(token);
+
+            const idToken = await user?.getIdToken();
+            // Fetch resume entries from server
+            const response = await fetch("/api/resume", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${idToken}`
+                }
+            });
+
+            // If failed then log error
+            if (!response.ok) {
+                console.error("Failed to fetch resume entries");
+                return;
             }
+
+            // Parse response and map to IResumeEntry
+            const data: Resume.Resume[] = await response.json();
+            // Map data to IResumeEntry
+            setEntries(data.map((entry) => {
+                // Set the summary
+                const summary = `${entry.data.name}\'s Resume for ${entry.job.title} at ${entry.job.company} during ${entry.job.duration.start} to ${entry.job.duration.end}. ${entry.job.description.substring(0, 50)}${((entry.job.description.length > 50) ? '...' : '')}`;
+                return {
+                    job: {
+                        summary,
+                        title: entry.job.title,
+                        description: entry.job.description
+                    },
+                    skills: entry.data.skills.map((skill) => skill.name),
+                    createdAt: new Date(entry.createdAt),
+                    documentId: entry.documentId
+                };
+            }));
         }
 
         init();
-    }, [manager])
+    }, [])
 
     return (<ResumeManagerContext.Provider value={manager}>
         {children}

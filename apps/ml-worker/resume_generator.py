@@ -18,7 +18,7 @@ class ResumeEntryData:
     data: ProfileExperience | ProfileProject
     score: float = 0.0
 
-class ResumeCreationOptions:
+class ResumeCreationOptions(BaseModel):
     '''
     The options for creating a resume
     '''

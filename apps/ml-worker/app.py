@@ -4,6 +4,7 @@ from resume_grader_service import ResumeGradingReport, GeminiResumeGraderService
 from resume_cleaning_service import clean_resume
 from resume_generator import LangChainStrategyResumeGeneratorService, Profile, Job, ResumeCreationOptions, BaseModel
 from langchain_google_genai import ChatGoogleGenerativeAI
+import app_secrets
 
 # The FastAPI app
 app = FastAPI()
