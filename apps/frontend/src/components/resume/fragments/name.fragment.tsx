@@ -2,7 +2,7 @@
 import { useAppDispatch, useAppSelector } from "@/state/store";
 import { setName } from "@/state/resumeSlice";
 import Collapsable from "@/components/editor/collapsableContainer";
-import { useResumeDataSelector } from "@/state/resumeSelectors";
+import { useResumeDataSelector } from "@/state/hooks";
 import { useEffect, useState } from "react";
 
 export default function NameFragment() {

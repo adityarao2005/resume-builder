@@ -10,7 +10,7 @@ import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsab
 import { formatDate } from "@/components/formatDate";
 import { IDragAndDrop, useDragAndDrop } from "@/components/dnd";
 import Editor from "@/components/editor/editor";
-import { useResumeDataSelector } from "@/state/resumeSelectors";
+import { useResumeDataSelector } from "@/state/hooks";
 
 function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: { entry: Resume.IExperience, index: number } & IDragAndDrop) {
     const experiences = useResumeDataSelector((state) => state.experiences);

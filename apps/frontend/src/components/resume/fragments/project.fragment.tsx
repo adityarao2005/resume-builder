@@ -9,7 +9,7 @@ import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsab
 import { formatDate } from "@/components/formatDate";
 import { IDragAndDrop, useDragAndDrop } from "@/components/dnd";
 import Editor from "@/components/editor/editor";
-import { useResumeDataSelector } from "@/state/resumeSelectors";
+import { useResumeDataSelector } from "@/state/hooks";
 
 function ProjectsEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: { entry: Resume.IProject, index: number } & IDragAndDrop) {
     const projects = useResumeDataSelector((state) => state.projects);

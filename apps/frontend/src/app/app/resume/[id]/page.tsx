@@ -6,10 +6,9 @@ import ResumeViewer from "@/components/resume/pdf-viewer"
 import { updateResume, setName } from "@/state/resumeSlice";
 import { useAppDispatch } from "@/state/store";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { StompSessionProvider, useStompClient, useSubscription } from 'react-stomp-hooks';
 import { DocumentProvider, useDocument } from "./hooks";
-
 
 function Sidebar() {
     const client = useStompClient();
@@ -79,6 +78,7 @@ export default function ResumePage({ params }: { params: { id: string } }) {
     const router = useRouter();
     const [loaded, setLoaded] = useState<LoadingType>(LoadingState.LOADING);
     const [autoCompile, setAutoCompile] = useState(true);
+    const { id } = params
 
     if (!user) {
         router.push("/app/login");
@@ -88,7 +88,7 @@ export default function ResumePage({ params }: { params: { id: string } }) {
     useEffect(() => {
         async function registerResume() {
             const token = await user?.getIdToken();
-            const response = await fetch("/api/resume/exists/" + params.id, {
+            const response = await fetch("/api/resume/exists/" + id, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -125,7 +125,7 @@ export default function ResumePage({ params }: { params: { id: string } }) {
         )
     } else {
         return (<div className="flex flex-col flex-1">
-            <DocumentProvider value={{ id: params.id, autoCompile, setAutoCompile }}>
+            <DocumentProvider value={{ id: id, autoCompile, setAutoCompile }}>
                 <StompSessionProvider url={loaded} debug={STOMP => console.log({ STOMP })}
                     onConnect={() => console.log({ STOMP_CONNECT: 'TCP connection successfully established' })}>
 
