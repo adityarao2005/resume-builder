@@ -330,12 +330,12 @@ function Content() {
                 {searchValue.length > 0 && <TabStopper text={searchValue} action={() => setSearchValue("")} />}
                 {filterProps.before &&
                     <TabStopper
-                        text={`Before: ${formatDate(filterProps.before)}`}
+                        text={`Before: ${filterProps.before}`}
                         action={() => setFilterProps({ ...filterProps, before: undefined })} />
                 }
                 {filterProps.after &&
                     <TabStopper
-                        text={`After: ${formatDate(filterProps.after)}`}
+                        text={`After: ${filterProps.after}`}
                         action={() => setFilterProps({ ...filterProps, after: undefined })} />
                 }
                 {
