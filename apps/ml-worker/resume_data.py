@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Field, field_validator
-from datetime import datetime
 
 class Duration(BaseModel):
     start: dict[str, str] | str
