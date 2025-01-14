@@ -2,6 +2,7 @@ import { CollapsableField } from "@/components/editor/collapsableContainer";
 import { setName } from "@/state/profileSlice";
 import { useAppDispatch, useAppSelector } from "@/state/store";
 import { Field, Input, Label } from "@headlessui/react";
+import { useEffect } from "react"
 
 export default function Name() {
     // Get name from the Redux store
@@ -12,6 +13,10 @@ export default function Name() {
     const setNameState = (name: string) => {
         dispatch(setName(name));
     }
+
+    useEffect(() => {
+        console.log("Name: " + name);
+    }, [name])
 
     return (
         <CollapsableField title="Name">

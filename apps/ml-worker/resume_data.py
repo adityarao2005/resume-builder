@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Field, field_validator
-from datetime import datetime
 
 class Duration(BaseModel):
     start: dict[str, str] | str
@@ -67,3 +66,19 @@ class Resume(BaseModel):
     job: Job
     data: ResumeData
 
+class ProfileExperience(Experience):
+    skills: list[Skill]
+    
+class ProfileProject(Project):
+    skills: list[Skill]
+    
+class Profile(BaseModel):
+    name: str
+    contactInfo: ContactInfo
+    education: list[Education]
+    experiences: list[ProfileExperience]
+    projects: list[ProfileProject]
+    extraCurriculars: list[ProfileExperience]
+    otherSkills: list[Skill]
+    otherAwards: list[Award]
+    hobbies: list[str]

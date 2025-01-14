@@ -5,7 +5,7 @@ import { Field, Button, Input } from "@headlessui/react";
 import Collapsable from "@/components/editor/collapsableContainer";
 import AddButton from "@/components/editor/addbutton";
 import Modal, { showModal } from "@/components/modal";
-import { useResumeDataSelector } from "@/state/resumeSelectors";
+import { useResumeDataSelector } from "@/state/hooks";
 import { formatDate } from "@/components/formatDate";
 
 // Award editor props

@@ -5,7 +5,7 @@ import { setContactInfo } from "@/state/resumeSlice";
 import { Resume, Common } from "@/models/types";
 import AddressEditor from "@/components/editor/addressEditor";
 import Collapsable from "@/components/editor/collapsableContainer";
-import { useResumeDataSelector } from "@/state/resumeSelectors";
+import { useResumeDataSelector } from "@/state/hooks";
 import MediaProfilesEditor from "@/components/editor/mediaProfilesEditor";
 
 export default function ContactInfoFragment() {
@@ -23,7 +23,7 @@ export default function ContactInfoFragment() {
                 {
                     // Media profiles editor
                 }
-                
+
                 <MediaProfilesEditor mediaProfiles={contactInfo.mediaProfiles} setMediaProfiles={(mediaProfiles) => dispatch(setContactInfo({ ...contactInfo, mediaProfiles }))} />
                 {
                     // Address input

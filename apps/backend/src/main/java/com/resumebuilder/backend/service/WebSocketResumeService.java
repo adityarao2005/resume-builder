@@ -60,7 +60,8 @@ public class WebSocketResumeService {
         Resume resume = new Resume(prevVersion);
         resume.setVersion(resume.getVersion() + 1);
         resume.setCreatedAt(LocalDate.now());
-        resume.setId(null);
+        // XXX: This is for testing purposes only, remove once done and find an alternative or optimization
+        // resume.setId(null);
 
         this.version = resumeService.saveOrUpdateResume(resume);
         return version;

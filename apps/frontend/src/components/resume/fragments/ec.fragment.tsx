@@ -10,7 +10,7 @@ import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsab
 import { formatDate } from "@/components/formatDate";
 import { IDragAndDrop, useDragAndDrop } from "@/components/dnd";
 import Editor from "@/components/editor/editor";
-import { useResumeDataSelector } from "@/state/resumeSelectors";
+import { useResumeDataSelector } from "@/state/hooks";
 
 // Extra Curriculars Entry Fragment
 function ExtraCurricularFragment({ entry, index, dragEnd, dragEnter, dragStart }:

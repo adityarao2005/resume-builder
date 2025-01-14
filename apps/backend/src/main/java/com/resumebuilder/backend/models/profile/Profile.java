@@ -15,11 +15,10 @@ import com.resumebuilder.backend.models.resume.Skill;
 public class Profile {
     @Id
     private String id;
-    private String userId;
     private String name;
     private ContactInfo contactInfo;
     private List<EducationEntry> education;
-    private List<ProfileExperience> experience;
+    private List<ProfileExperience> experiences;
     private List<ProfileProject> projects;
     private List<ProfileExperience> extraCurriculars;
     private List<Skill> otherSkills;
@@ -30,16 +29,15 @@ public class Profile {
     public Profile() {
     }
 
-    public Profile(String id, String userId, String name, ContactInfo contactInfo, List<EducationEntry> education,
-            List<ProfileExperience> experience, List<ProfileProject> projects,
+    public Profile(String id, String name, ContactInfo contactInfo, List<EducationEntry> education,
+            List<ProfileExperience> experiences, List<ProfileProject> projects,
             List<ProfileExperience> extraCurriculars, List<Skill> otherSkills, List<Award> otherAwards,
             List<String> hobbies) {
         this.id = id;
-        this.userId = userId;
         this.name = name;
         this.contactInfo = contactInfo;
         this.education = education;
-        this.experience = experience;
+        this.experiences = experiences;
         this.projects = projects;
         this.extraCurriculars = extraCurriculars;
         this.otherSkills = otherSkills;
@@ -79,12 +77,12 @@ public class Profile {
         this.education = education;
     }
 
-    public List<ProfileExperience> getExperience() {
-        return experience;
+    public List<ProfileExperience> getExperiences() {
+        return experiences;
     }
 
-    public void setExperience(List<ProfileExperience> experience) {
-        this.experience = experience;
+    public void setExperiences(List<ProfileExperience> experiences) {
+        this.experiences = experiences;
     }
 
     public List<ProfileProject> getProjects() {
@@ -127,24 +125,15 @@ public class Profile {
         this.hobbies = hobbies;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((userId == null) ? 0 : userId.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((contactInfo == null) ? 0 : contactInfo.hashCode());
         result = prime * result + ((education == null) ? 0 : education.hashCode());
-        result = prime * result + ((experience == null) ? 0 : experience.hashCode());
+        result = prime * result + ((experiences == null) ? 0 : experiences.hashCode());
         result = prime * result + ((projects == null) ? 0 : projects.hashCode());
         result = prime * result + ((extraCurriculars == null) ? 0 : extraCurriculars.hashCode());
         result = prime * result + ((otherSkills == null) ? 0 : otherSkills.hashCode());
@@ -167,11 +156,6 @@ public class Profile {
                 return false;
         } else if (!id.equals(other.id))
             return false;
-        if (userId == null) {
-            if (other.userId != null)
-                return false;
-        } else if (!userId.equals(other.userId))
-            return false;
         if (name == null) {
             if (other.name != null)
                 return false;
@@ -187,10 +171,10 @@ public class Profile {
                 return false;
         } else if (!education.equals(other.education))
             return false;
-        if (experience == null) {
-            if (other.experience != null)
+        if (experiences == null) {
+            if (other.experiences != null)
                 return false;
-        } else if (!experience.equals(other.experience))
+        } else if (!experiences.equals(other.experiences))
             return false;
         if (projects == null) {
             if (other.projects != null)
@@ -232,11 +216,6 @@ public class Profile {
             return this;
         }
 
-        public ProfileBuilder withUserId(String userId) {
-            profile.setUserId(userId);
-            return this;
-        }
-
         public ProfileBuilder withName(String name) {
             profile.setName(name);
             return this;
@@ -252,8 +231,8 @@ public class Profile {
             return this;
         }
 
-        public ProfileBuilder withExperience(List<ProfileExperience> experience) {
-            profile.setExperience(experience);
+        public ProfileBuilder withExperiences(List<ProfileExperience> experience) {
+            profile.setExperiences(experience);
             return this;
         }
 

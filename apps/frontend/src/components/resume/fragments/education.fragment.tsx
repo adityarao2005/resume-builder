@@ -11,7 +11,7 @@ import Collapsable, { DraggableCollapsable } from "@/components/editor/collapsab
 import { formatDate } from "@/components/formatDate";
 import { IDragAndDrop, useDragAndDrop } from "@/components/dnd";
 import Editor from "@/components/editor/editor";
-import { useResumeDataSelector } from "@/state/resumeSelectors";
+import { useResumeDataSelector } from "@/state/hooks";
 
 function EducationEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }: { entry: Resume.IEducationEntry, index: number } & IDragAndDrop) {
     const education = useResumeDataSelector((state) => state.education);

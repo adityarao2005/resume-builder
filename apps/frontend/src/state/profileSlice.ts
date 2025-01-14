@@ -28,7 +28,15 @@ export const profileSlice = createSlice({
     reducers: {
         resetProfile: () => initialState,
         updateProfile: (state, action: PayloadAction<Profile.IProfile>) => {
-            return action.payload;
+            state.name = action.payload.name;
+            state.contactInfo = action.payload.contactInfo;
+            state.education = action.payload.education;
+            state.experiences = action.payload.experiences;
+            state.projects = action.payload.projects;
+            state.extraCurriculars = action.payload.extraCurriculars;
+            state.otherSkills = action.payload.otherSkills;
+            state.otherAwards = action.payload.otherAwards;
+            state.hobbies = action.payload.hobbies;
         },
         setName: (state, action: PayloadAction<string>) => {
             state.name = action.payload;
