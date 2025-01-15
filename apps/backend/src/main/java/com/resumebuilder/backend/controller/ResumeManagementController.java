@@ -7,7 +7,9 @@ import com.resumebuilder.backend.models.resume.Resume;
 import com.resumebuilder.backend.models.resume.ContactInfo.ContactInfoBuilder;
 import com.resumebuilder.backend.models.resume.ResumeData.ResumeDataBuilder;
 import com.resumebuilder.backend.service.IdentityService;
+import com.resumebuilder.backend.service.MLService;
 import com.resumebuilder.backend.service.ResumeService;
+import com.resumebuilder.backend.service.MLService.MLResumeGeneratorRequest;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -33,6 +35,9 @@ public class ResumeManagementController {
     @Autowired
     private IdentityService identityService;
 
+    @Autowired
+    private MLService mlService;
+
     // Endpoint to delete a resume by its ID
     @DeleteMapping("/resume/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -51,10 +56,10 @@ public class ResumeManagementController {
     @GetMapping("/resume/exists/{id}")
     public ResponseEntity<?> resumeExists(@PathVariable("id") String documentId) {
         // Check if a resume exists by ID
-        return service.getResumeHistory(documentId, identityService.getUserId()).isEmpty() ?
-                ResponseEntity.notFound().build() :
-                ResponseEntity.noContent().build();
-        
+        return service.getResumeHistory(documentId, identityService.getUserId()).isEmpty()
+                ? ResponseEntity.notFound().build()
+                : ResponseEntity.noContent().build();
+
     }
 
     // Endpoint to get the history of a resume by its ID
@@ -89,6 +94,15 @@ public class ResumeManagementController {
         entity.setCreatedAt(LocalDate.now());
         entity.setId(null);
         return service.saveOrUpdateResume(entity);
+    }
+
+    @PostMapping("/resumes/build")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Resume buildAIResume(@RequestBody MLResumeGeneratorRequest request) {
+        Resume resume = mlService.generateResume(request);
+        resume.setUserId(null);
+        resume.setCreatedAt(LocalDate.now());
+        return service.saveOrUpdateResume(resume);
     }
 
 }
