@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.resumebuilder.backend.models.Job;
-import com.resumebuilder.backend.models.profile.Profile;
 import com.resumebuilder.backend.models.resume.Resume;
 import com.resumebuilder.backend.service.MLService;
 
@@ -26,7 +24,6 @@ public class PythonMLService implements MLService {
         // Create the URL
         String url = UriComponentsBuilder.fromHttpUrl(location).path("/score_resume/").toUriString();
 
-        System.out.println("Sending request to " + url);
         // Send a POST request to the ML service
         ResponseEntity<MLResumeScoreResponse> response = template.postForEntity(url, resume,
                 MLResumeScoreResponse.class);
@@ -37,27 +34,17 @@ public class PythonMLService implements MLService {
         }
 
         MLResumeScoreResponse body = response.getBody();
-        System.out.println("Received response: " + body);
         // Return the response body
         return body;
     }
 
-    record MLResumeGeneratorRequest(Profile profile, Job job) {
-    }
-
     @Override
-    public Resume generateResume(Profile profile, Job job) {
+    public Resume generateResume(MLResumeGeneratorRequest request) {
         // Create a rest template
         RestTemplate template = new RestTemplate();
 
         // Create the URL
         String url = UriComponentsBuilder.fromHttpUrl(location).path("/generate_resume/").toUriString();
-
-        System.out.println("Sending request to " + url);
-
-        // Create the request object
-        MLResumeGeneratorRequest request = new MLResumeGeneratorRequest(profile, job);
-
         // Send a POST request to the ML service
         ResponseEntity<Resume> response = template.postForEntity(url, request,
                 Resume.class);
@@ -68,7 +55,6 @@ public class PythonMLService implements MLService {
         }
 
         Resume body = response.getBody();
-        System.out.println("Received response: " + body);
         // Return the response body
         return body;
     }

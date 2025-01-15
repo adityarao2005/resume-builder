@@ -28,24 +28,14 @@ async def create_item(resume: Resume) -> ResumeGradingReport:
     clean_resume(resume_dict)
     # Grade the resume
     return await resume_grader_service.grade_resume(resume_dict)
-    
-# The route to score the resume
-@app.post("/score_resume_mock/")
-async def create_item(request: Request) -> ResumeGradingReport:
-    # Convert the resume to a dictionary
-    resume = await request.json()
-    print(resume)
-    return ResumeGradingReport(cons=[], pros=[], score=0.5, summary="Mocked summary")
 
 class CreateResumeRequest(BaseModel):
     profile: Profile
     job: Job
     options: ResumeCreationOptions
 
-# TODO: Turn this into asyncio cuz this definitely will take a while under regular IO
-
 @app.post("/generate_resume/")
 async def create_item(request: CreateResumeRequest) -> Resume:
-    return resume_generator_service.generate_resume(request.profile, request.job, request.options)
+    return await resume_generator_service.generate_resume(request.profile, request.job, request.options)
     
     
