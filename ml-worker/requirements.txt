@@ -4,3 +4,5 @@ pydantic
 langchain_openai
 langchain-google-genai
 six
+spacy
+scikit-learn
