@@ -4,10 +4,11 @@ const nextConfig = {
         return [
             {
                 source: '/api/:path*',
-                destination: 'http://localhost:8080/:path*',
+                destination: `${process.env.BACKEND_PATH}/:path*`,
             },
         ];
-    }
+    },
+    output: process.env.OUTPUT_MODE
 };
 
 export default nextConfig;
