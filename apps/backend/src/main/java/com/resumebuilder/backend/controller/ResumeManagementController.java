@@ -3,13 +3,17 @@ package com.resumebuilder.backend.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.resumebuilder.backend.models.Builder;
+import com.resumebuilder.backend.models.Job;
+import com.resumebuilder.backend.models.profile.Profile;
 import com.resumebuilder.backend.models.resume.Resume;
 import com.resumebuilder.backend.models.resume.ContactInfo.ContactInfoBuilder;
 import com.resumebuilder.backend.models.resume.ResumeData.ResumeDataBuilder;
 import com.resumebuilder.backend.service.IdentityService;
 import com.resumebuilder.backend.service.MLService;
+import com.resumebuilder.backend.service.ProfileService;
 import com.resumebuilder.backend.service.ResumeService;
 import com.resumebuilder.backend.service.MLService.MLResumeGeneratorRequest;
+import com.resumebuilder.backend.service.MLService.ResumeCreationOptions;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -37,6 +41,9 @@ public class ResumeManagementController {
 
     @Autowired
     private MLService mlService;
+
+    @Autowired
+    private ProfileService profileService;
 
     // Endpoint to delete a resume by its ID
     @DeleteMapping("/resume/{id}")
@@ -96,10 +103,15 @@ public class ResumeManagementController {
         return service.saveOrUpdateResume(entity);
     }
 
+    public record ResumeGeneratorRequest(Job job, ResumeCreationOptions options) {
+    }
+
     @PostMapping("/resumes/build")
     @ResponseStatus(HttpStatus.CREATED)
-    public Resume buildAIResume(@RequestBody MLResumeGeneratorRequest request) {
-        Resume resume = mlService.generateResume(request);
+    public Resume buildAIResume(@RequestBody ResumeGeneratorRequest request) {
+        Profile profile = profileService.getProfileByUserId(identityService.getUserId());
+        Resume resume = mlService
+                .generateResume(new MLResumeGeneratorRequest(profile, request.job(), request.options()));
         resume.setUserId(null);
         resume.setCreatedAt(LocalDate.now());
         return service.saveOrUpdateResume(resume);
