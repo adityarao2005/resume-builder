@@ -10,6 +10,8 @@ COPY requirements.txt ./
 # Install dependencies
 RUN pip install -r requirements.txt
 
+RUN python -m spacy download en_core_web_sm
+
 # Copy the current directory contents into the container at /app
 COPY . .
 

@@ -3,21 +3,21 @@ services:
     mongo:
         image: mongo:latest
 # Look into orchestration soon
-#    mlworker:
-#        build:
-#            context: ./ml-worker
-#            dockerfile: Dockerfile
-#        ports:
-#            - "8000:8000"
+    mlworker:
+        build:
+            context: ./ml-worker
+            dockerfile: ../dockerfiles/mlworker.dev.dockerfile
+        ports:
+            - "8000:8000"
     backend:
         build:
             context: ./backend
-            dockerfile: ../dockerfiles/backend.dev.dockerfile
+            dockerfile: ../dockerfiles/backend.dockerfile
         ports:
             - "8080:8080"
         environment:
-            - MONGODB_URI=mongodb://mongo/backend
-            - PYTHON_ML_SERVICE_URI=http://localhost:8000
+            - MONGODB_URI=mongodb://mongo:27017/backend
+            - PYTHON_ML_SERVICE_URI=http://mlworker:8000
         depends_on:
             - mongo
 #           - mlworker
@@ -31,8 +31,8 @@ services:
             - ./frontend/.env
         environment:
             - BACKEND_PATH=http://backend:8080
-        #depends_on:
-        #    - backend
+        depends_on:
+           - backend
         volumes:
             - ./frontend/src:/app/src
             - ./frontend/public:/app/public

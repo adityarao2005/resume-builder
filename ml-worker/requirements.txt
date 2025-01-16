@@ -3,6 +3,7 @@ langchain
 pydantic
 langchain_openai
 langchain-google-genai
+fastapi[standard]
 six
 spacy
 scikit-learn
