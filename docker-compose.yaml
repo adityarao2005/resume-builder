@@ -2,7 +2,10 @@ services:
     # TODO: Keep this for testing, later use Atlas
     mongo:
         image: mongo:latest
+        volumes:
+            - ./data/db:/data/db
 # Look into orchestration soon
+# bind mount the mongodb path
     mlworker:
         build:
             context: ./ml-worker
@@ -20,7 +23,7 @@ services:
             - PYTHON_ML_SERVICE_URI=http://mlworker:8000
         depends_on:
             - mongo
-#           - mlworker
+            - mlworker
     frontend:
         build:
             context: ./frontend

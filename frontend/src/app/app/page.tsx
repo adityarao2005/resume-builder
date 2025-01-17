@@ -5,14 +5,17 @@ import Modal, { showModal } from "@/components/modal";
 import { FilterModalProps, IResumeEntry, SortBy, SortModalProps, SortOrder } from "@/models/resume-manager";
 import SearchBar from "@/components/resume/SearchBar";
 import TabStopper from "@/components/resume/TabStopper";
-import { Field, Fieldset, Label, Select, Textarea, Input, Button } from "@headlessui/react";
+import { Field, Fieldset, Label, Select, Textarea, Input, Button, Switch, Checkbox } from "@headlessui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useResumeManager } from "@/state/hooks";
 import { AppDispatch, useAppDispatch } from "@/state/store";
 import { setEntries, setFilterProps, setIdToken, setSearchProps, setSortProps } from "@/state/resumeManagerSlice";
-import { Resume } from "@/models/types";
+import { Common, Resume } from "@/models/types";
+import { FilterModal, SortModal } from "@/components/resume/SnS";
+import Pagination, { Pages } from "@/components/pagination";
+import { useFormState, useFormStatus } from "react-dom";
 
 
 async function fetchEntries(token: string, dispatch: AppDispatch, resumeManager: ReturnType<typeof useResumeManager>) {
@@ -91,111 +94,17 @@ function ResumeEntry({ props }: { props: IResumeEntry }) {
 }
 
 
-function FilterModal({ filterProps, setFilterProps }: { filterProps: FilterModalProps, setFilterProps: (props: FilterModalProps) => void }) {
-    const [searchValue, setSearchValue] = useState("");
-
-    const addSkill = () => {
-        const list = [...filterProps.skills];
-        list.push(searchValue);
-        setSearchValue("");
-        setFilterProps({ ...filterProps, skills: list });
-    }
-
-    const removeSkill = (index: number) => {
-        const list = [...filterProps.skills];
-        list.splice(index, 1)
-        setFilterProps({ ...filterProps, skills: list });
-    }
-
-    const setBeforeState = (before?: string) => {
-        setFilterProps({ ...filterProps, before });
-    }
-
-    const setAfterState = (after?: string) => {
-        setFilterProps({ ...filterProps, after });
-    }
-
-    return (<Modal name="filter_modal" title="Filter">
-        <Fieldset className="space-y-1">
-            <Field>
-                <Label className="font-bold">Before Creation:&nbsp;</Label>
-                <Input className="input input-bordered" type="date" value={filterProps.before ? filterProps.before : ''}
-                    onChange={(e) => setBeforeState(e.target.value)} />
-                <Button className="btn btn-primary rounded-l-none" onClick={() => setBeforeState()}>Reset</Button>
-            </Field>
-            <Field>
-                <Label className="font-bold">After Creation:&nbsp;</Label>
-                <Input className="input input-bordered" type="date" value={filterProps.after ? filterProps.after : ''}
-                    onChange={(e) => setAfterState(e.target.value)} />
-                <Button className="btn btn-primary rounded-l-none" onClick={() => setAfterState()}>Reset</Button>
-            </Field>
-            <Field>
-                <Label className="font-bold">Skills:&nbsp;</Label>
-                <Input className="input input-bordered rounded-r-none" type="text" value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)} />
-                <Button className="btn btn-primary rounded-l-none" onClick={addSkill}>Add Skill</Button>
-            </Field>
-            <div className="w-full flex flex-row p-4 space-x-2">
-                {
-                    filterProps.skills.map((skill, index) => {
-                        return <TabStopper key={index} text={skill} action={() => removeSkill(index)} />
-                    })
-                }
-            </div>
-        </Fieldset>
-    </Modal>)
-}
-
-function SortModal({ sortProps, setSortProps }: { sortProps: SortModalProps, setSortProps: (props: SortModalProps) => void }) {
-    const [sortBy, setSortBy] = useState<SortBy>("title");
-    const [sortOrder, setSortOrder] = useState<SortOrder>("ascending");
-
-    const setSortByState = (by: SortBy) => {
-        setSortBy(by);
-        setSortProps({ ...sortProps, by });
-    }
-
-    const setSortOrderState = (order: SortOrder) => {
-        setSortOrder(order);
-        setSortProps({ ...sortProps, order });
-    }
-
-    return (<Modal name="sort_modal" title="Sort">
-        <Fieldset className="space-y-1">
-            <Field>
-                <Label className="font-bold">By: &nbsp;</Label>
-                <Select name="sort-by" className="select select-bordered w-full max-w-xs"
-                    aria-label="Sort by select"
-                    value={sortBy}
-                    onChange={e => setSortByState(e.target.value as SortBy)}>
-                    <option value="title">Title</option>
-                    <option value="createdAt">Created At</option>
-                </Select>
-            </Field>
-            <Field>
-                <Label className="font-bold">Order: &nbsp;</Label>
-                <Select name="sort-order" className="select select-bordered w-full max-w-xs"
-                    aria-label="Sort order select"
-                    value={sortOrder}
-                    onChange={e => setSortOrderState(e.target.value as SortOrder)}>
-                    <option value="ascending">Ascending</option>
-                    <option value="descending">Descending</option>
-                </Select>
-            </Field>
-        </Fieldset>
-    </Modal >)
-}
-
-function CreateModal() {
+function CreateFromScratch() {
     const { user } = useAuthContext();
     const router = useRouter();
-    const [title, setTitle] = useState("");
-    const [company, setCompany] = useState("");
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
-    const [description, setDescription] = useState("");
 
-    async function createScratch() {
+
+    async function onSubmit(formData: FormData) {
+        const title = formData.get("title") as string;
+        const company = formData.get("company") as string;
+        const startDate = formData.get("startDate") as string;
+        const endDate = formData.get("endDate") as string;
+        const description = formData.get("description") as string;
 
         const job = {
             title,
@@ -237,45 +146,360 @@ function CreateModal() {
         if (response.ok) {
             router.push('/app/resume/' + documentId)
         } else {
-            console.log("Something went wrong")
+            alert("Something went wrong")
         }
     }
 
     return (
-        <Modal name="create_modal" title="Create Resume">
-            <div className="flex w-full flex-col">
+        <Modal name="create_scratch_modal" title="Create Resume">
+            <form action={onSubmit} className="flex w-full flex-col">
                 <div className="pb-2">
                     <h2 className="text-md font-bold">Enter the job details</h2>
                     <Fieldset className="space-y-1">
                         <Field className="flex flex-row">
                             <Label className="font-bold">Title:&nbsp;</Label>
-                            <Input className="input input-bordered flex-1" type="text" value={title} onChange={e => setTitle(e.target.value)} />
+                            <Input className="input input-bordered flex-1" type="text" name="title" />
                         </Field>
                         <Field className="flex flex-row">
                             <Label className="font-bold">Company:&nbsp;</Label>
-                            <Input className="input input-bordered flex-1" type="text" value={company} onChange={e => setCompany(e.target.value)} />
+                            <Input className="input input-bordered flex-1" type="text" name="company" />
                         </Field>
                         <Field className="flex flex-row">
                             <Label className="font-bold">Start Date:&nbsp;</Label>
-                            <Input className="input input-bordered flex-1" type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
+                            <Input className="input input-bordered flex-1" type="date" name="startDate" />
                         </Field>
                         <Field className="flex flex-row">
                             <Label className="font-bold">End Date:&nbsp;</Label>
-                            <Input className="input input-bordered flex-1" type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
+                            <Input className="input input-bordered flex-1" type="date" name="endDate" />
                         </Field>
                         <Field className="flex flex-col">
                             <Label className="font-bold">Description:&nbsp;</Label>
-                            <Textarea className="input input-bordered h-20" value={description} onChange={e => setDescription(e.target.value)} />
+                            <Textarea className="input input-bordered h-20" name="description" />
                         </Field>
                     </Fieldset>
                 </div>
-                <div className="flex-row flex-1 flex">
-                    <div className="card bg-base-300 rounded-box grid h-32 flex-grow place-items-center">Create with AI</div>
-                    <div className="divider lg:divider-horizontal">OR</div>
-                    <div className="card bg-base-300 rounded-box grid h-32 flex-grow place-items-center cursor-pointer hover:bg-base-200" onClick={createScratch}>Create from scratch</div>
+                <div>
+                    <Button type="submit" className="btn btn-primary cursor-pointer">Submit</Button>
                 </div>
-            </div>
+            </form>
         </Modal>
+    )
+}
+
+interface ResumeCreationStrategy {
+    pages: number
+    minExperiences: number
+    maxExperiences: number
+    minProjects: number
+    maxProjects: number
+    minExtraCurriculars: number
+    maxExtraCurriculars: number
+}
+
+interface ResumeCreationOptions {
+    addSkills: boolean
+    addHighlights: boolean
+    addAwards: boolean
+    addHobbies: boolean
+    minDescriptionLength: number
+    maxDescriptionLength: number
+    filterStrategy: ResumeCreationStrategy
+}
+
+interface ResumeCreationRequest {
+    job: Common.IJob
+    options: ResumeCreationOptions
+}
+
+interface FormStatus {
+    status: 'error' | 'ready' | 'idle'
+    message: ResumeCreationRequest | string[] | string
+}
+
+function onSubmit(previousState: FormStatus, formData: FormData): FormStatus {
+    // Job information
+    const title = formData.get("title") as string;
+    const company = formData.get("company") as string;
+    const startDate = formData.get("startDate") as string;
+    const endDate = formData.get("endDate") as string;
+    const description = formData.get("description") as string;
+
+    console.log(title, company, startDate, endDate, description);
+    if (!title || !company || !startDate || !endDate || !description) {
+        const errors = []
+        if (!title) errors.push("Title is required (Page 1)")
+        if (!company) errors.push("Company is required (Page 1)")
+        if (!startDate) errors.push("Start Date is required (Page 1)")
+        if (!endDate) errors.push("End Date is required (Page 1)")
+        if (!description) errors.push("Description is required (Page 1)")
+        return {
+            message: errors,
+            status: "error"
+        }
+    }
+
+    // AI information
+    const addSkills = formData.get("addSkills") === "on";
+    const addHighlights = formData.get("addHighlights") === "on";
+    const addAwards = formData.get("addAwards") === "on";
+    const addHobbies = formData.get("addHobbies") === "on";
+    const minDescriptionLength = parseInt(formData.get("minDescriptionLength") as string);
+    const maxDescriptionLength = parseInt(formData.get("maxDescriptionLength") as string);
+
+    if (minDescriptionLength > maxDescriptionLength) {
+        return {
+            message: "Min Description Length cannot be greater than Max Description Length",
+            status: "error"
+        }
+    }
+
+    // Page information
+    const pages = parseInt(formData.get("pages") as string);
+    const minExperiences = parseInt(formData.get("minExperiences") as string);
+    const maxExperiences = parseInt(formData.get("maxExperiences") as string);
+    const minProjects = parseInt(formData.get("minProjects") as string);
+    const maxProjects = parseInt(formData.get("maxProjects") as string);
+    const minExtraCurriculars = parseInt(formData.get("minExtraCurriculars") as string);
+    const maxExtraCurriculars = parseInt(formData.get("maxExtraCurriculars") as string);
+
+    return {
+        message: {
+            job: {
+                title,
+                company,
+                duration: {
+                    start: startDate,
+                    end: endDate
+                },
+                description
+            },
+            options: {
+                addSkills,
+                addHighlights,
+                addAwards,
+                addHobbies,
+                minDescriptionLength,
+                maxDescriptionLength,
+                filterStrategy: {
+                    pages,
+                    minExperiences,
+                    maxExperiences,
+                    minProjects,
+                    maxProjects,
+                    minExtraCurriculars,
+                    maxExtraCurriculars
+                }
+            }
+        },
+        status: "ready"
+    }
+}
+
+function CreateWithAI() {
+    const { user } = useAuthContext();
+    const router = useRouter();
+
+
+    const [state, formAction] = useFormState<FormStatus, FormData>(onSubmit, { status: 'idle', message: 'Ready' });
+
+    useEffect(() => {
+        async function makeRequest(request: ResumeCreationRequest) {
+            const token = await user?.getIdToken();
+            const response = await fetch("/api/resumes/build", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(request)
+            })
+            const documentId = (await response.json()).documentId;
+
+            if (response.ok) {
+                router.push('/app/resume/' + documentId)
+            } else {
+                alert("Something went wrong")
+            }
+        }
+
+        if (state.status === 'ready') {
+            makeRequest(state.message as ResumeCreationRequest);
+        }
+    }, [state])
+
+    return (
+        <Modal name="create_ai_modal" title="Build with AI">
+            <form action={formAction} className="flex w-full flex-col">
+                <Pagination pages={3}>
+                    <div>
+                        <h2 className="text-xl font-bold">Enter the job details</h2>
+                        <Fieldset className="space-y-1">
+                            <Field className="form-control">
+                                <div className="label">
+                                    <Label className="font-bold label-text">Title:&nbsp;</Label>
+                                    <span className="label-text-alt text-red-700 font-bold">Required</span>
+                                </div>
+                                <Input className="input input-bordered" type="text" placeholder="Enter the position title here" name="title" />
+                            </Field>
+
+                            <Field className="form-control">
+                                <div className="label">
+                                    <Label className="font-bold label-text">Company:&nbsp;</Label>
+                                    <span className="label-text-alt text-red-700 font-bold">Required</span>
+                                </div>
+                                <Input className="input input-bordered" type="text" placeholder="Enter the company title here" name="company" />
+                            </Field>
+
+                            <Field className="form-control">
+                                <div className="label">
+                                    <Label className="font-bold label-text">Start Date:&nbsp;</Label>
+                                    <span className="label-text-alt text-red-700 font-bold">Required</span>
+                                </div>
+                                <Input className="input input-bordered" type="date" name="startDate" />
+                            </Field>
+
+                            <Field className="form-control">
+                                <div className="label">
+                                    <Label className="font-bold label-text">End Date:&nbsp;</Label>
+                                    <span className="label-text-alt text-red-700 font-bold">Required</span>
+                                </div>
+                                <Input className="input input-bordered" type="date" name="endDate" />
+                            </Field>
+
+
+                            <Field className="form-control">
+                                <div className="label">
+                                    <Label className="font-bold label-text">Description:&nbsp;</Label>
+                                    <span className="label-text-alt text-red-700 font-bold">Required</span>
+                                </div>
+                                <Textarea className="input input-bordered h-20" name="description" />
+                            </Field>
+                        </Fieldset>
+                    </div>
+                    <div>
+                        <h2 className="text-xl font-bold">Enter some parameters about the job</h2>
+                        <Fieldset className="space-y-1">
+                            <div className="grid grid-cols-2">
+                                <Field className="flex flex-row py-1">
+                                    <Label>Add Skills:&nbsp;</Label>
+                                    <Switch className="toggle" name="addSkills" defaultChecked={true} />
+                                </Field>
+                                <Field className="flex flex-row py-1">
+                                    <Label>Add Highlights:&nbsp;</Label>
+                                    <Switch className="toggle" name="addHighlights" />
+                                </Field>
+                                <Field className="flex flex-row py-1">
+                                    <Label>Add Awards:&nbsp;</Label>
+                                    <Switch className="toggle" name="addAwards" />
+                                </Field>
+                                <Field className="flex flex-row py-1">
+                                    <Label>Add Hobbies:&nbsp;</Label>
+                                    <Switch className="toggle" name="addHobbies" />
+                                </Field>
+                            </div>
+                            <h3 className="text-md py-2 font-bold">Description information:</h3>
+                            <div className="space-y-1">
+                                <Field className="form-control">
+                                    <div className="label">
+                                        <Label className="font-bold label-text">Min Length:&nbsp;</Label>
+                                    </div>
+                                    <Input type="number" className="input input-bordered" name="minDescriptionLength" defaultValue={0} min={0} />
+                                </Field>
+                                <Field className="form-control">
+                                    <div className="label">
+                                        <Label className="font-bold label-text">Max Length:&nbsp;</Label>
+                                    </div>
+                                    <Input type="number" className="input input-bordered" name="maxDescriptionLength" defaultValue={5} min={0} />
+                                </Field>
+                            </div>
+
+                            <h3 className="text-md py-2 font-bold">Page information:</h3>
+                            <div className="space-y-1">
+
+                                <p>For any values which are unrestricted, keep -1.</p>
+
+                                <Field className="form-control">
+                                    <div className="label">
+                                        <Label className="font-bold label-text">Max Pages:&nbsp;</Label>
+                                    </div>
+                                    <Input type="number" className="input input-bordered" name="pages" defaultValue={-1} min={-1} />
+                                </Field>
+
+                                <Field className="form-control">
+                                    <div className="label">
+                                        <Label className="font-bold label-text">Min Experience:&nbsp;</Label>
+                                    </div>
+                                    <Input type="number" className="input input-bordered" name="minExperiences" defaultValue={-1} min={-1} />
+                                </Field>
+
+                                <Field className="form-control">
+                                    <div className="label">
+                                        <Label className="font-bold label-text">Max Experience:&nbsp;</Label>
+                                    </div>
+                                    <Input type="number" className="input input-bordered" name="maxExperiences" defaultValue={-1} min={-1} />
+                                </Field>
+
+                                <Field className="form-control">
+                                    <div className="label">
+                                        <Label className="font-bold label-text">Min Projects:&nbsp;</Label>
+                                    </div>
+                                    <Input type="number" className="input input-bordered" name="minProjects" defaultValue={-1} min={-1} />
+                                </Field>
+
+                                <Field className="form-control">
+                                    <div className="label">
+                                        <Label className="font-bold label-text">Max Projects:&nbsp;</Label>
+                                    </div>
+                                    <Input type="number" className="input input-bordered" name="maxProjects" defaultValue={-1} min={-1} />
+                                </Field>
+
+                                <Field className="form-control">
+                                    <div className="label">
+                                        <Label className="font-bold label-text">Min Extra Curriculars:&nbsp;</Label>
+                                    </div>
+                                    <Input type="number" className="input input-bordered" name="minExtraCurriculars" defaultValue={-1} min={-1} />
+                                </Field>
+
+                                <Field className="form-control">
+                                    <div className="label">
+                                        <Label className="font-bold label-text">Max Extra Curriculars:&nbsp;</Label>
+                                    </div>
+                                    <Input type="number" className="input input-bordered" name="maxExtraCurriculars" defaultValue={-1} min={-1} />
+                                </Field>
+
+                            </div>
+                        </Fieldset>
+                    </div>
+                    <div>
+                        <div>
+                            <h2 className="text-xl py-2 font-bold">Review and Submit:</h2>
+                            <p className="py-2">When you are ready to submit, hit the submit button.</p>
+                            {
+                                state.status === 'error' && (<div>
+
+                                    {(state.message as string[]).map((message, index) => <div key={index} className="alert alert-error my-2">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-6 w-6 shrink-0 stroke-current"
+                                            fill="none"
+                                            viewBox="0 0 24 24">
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <div>{message}</div>
+                                    </div>
+                                    )}
+                                </div>)
+                            }
+                            <Button type="submit" className="btn btn-primary cursor-pointer">Submit</Button>
+                        </div>
+                    </div>
+                </Pagination>
+            </form>
+        </Modal >
     )
 }
 
@@ -323,8 +547,11 @@ function Content() {
                 <Button className="btn btn-primary" onClick={() => showModal('sort_modal')}>Sort</Button>
                 <SortModal sortProps={resumeManager.sortProps} setSortProps={setSortProperties} />
 
-                <Button className="btn btn-primary" onClick={() => showModal('create_modal')}>Create</Button>
-                <CreateModal />
+                <Button className="btn btn-primary" onClick={() => showModal('create_scratch_modal')}>Create From Scratch</Button>
+                <CreateFromScratch />
+
+                <Button className="btn btn-primary" onClick={() => showModal('create_ai_modal')}>Create With AI</Button>
+                <CreateWithAI />
             </div>
             <div className="w-full flex flex-row p-4 space-x-2">
                 {searchValue.length > 0 && <TabStopper text={searchValue} action={() => setSearchValue("")} />}
