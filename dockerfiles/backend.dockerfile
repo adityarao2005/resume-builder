@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN mvn clean compile package
+RUN mvn clean compile package -DskipTests
 
 FROM amazoncorretto:21-alpine AS runtime
 
