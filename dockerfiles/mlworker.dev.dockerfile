@@ -16,4 +16,4 @@ RUN python -m spacy download en_core_web_sm
 COPY . .
 
 # Run the application
-CMD [ "fastapi", "dev", "app.py" ]
+CMD [ "fastapi", "dev", "app.py", "--host", "0.0.0.0"]

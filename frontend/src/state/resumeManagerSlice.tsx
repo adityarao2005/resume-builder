@@ -27,8 +27,6 @@ const compareStringDates = (dateStrA: string, dateStrB: string): number => {
 function generateView(state: ResumeManagerState) {
     let entries = state.entries;
 
-    console.log(entries)
-
     // Apply search
     if (state.searchProps) {
         // Get the search value

@@ -126,8 +126,7 @@ export default function ResumePage({ params }: { params: { id: string } }) {
     } else {
         return (<div className="flex flex-col flex-1">
             <DocumentProvider value={{ id: id, autoCompile, setAutoCompile }}>
-                <StompSessionProvider url={loaded} debug={STOMP => console.log({ STOMP })}
-                    onConnect={() => console.log({ STOMP_CONNECT: 'TCP connection successfully established' })}>
+                <StompSessionProvider url={loaded}>
 
                     <ToolBar />
                     {
