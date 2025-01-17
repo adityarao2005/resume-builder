@@ -1,5 +1,4 @@
 services:
-    # TODO: Keep this for testing, later use Atlas
     mongo:
         image: mongo:latest
         volumes:
