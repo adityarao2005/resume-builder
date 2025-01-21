@@ -103,7 +103,7 @@ function ProjectsEntryFragment(
                 {
                     // Skills input
                 }
-                <SkillsEditor skills={entry.skills} setSkills={setSkills} />
+                <SkillsEditor id={`project_${index}`} skills={entry.skills} setSkills={setSkills} />
             </Fieldset>
         </Editor>
     )

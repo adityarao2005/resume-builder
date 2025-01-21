@@ -12,6 +12,7 @@ class Job(BaseModel):
     title: str
     company: str
     description: str
+    duration: Duration
 
 class Education(BaseModel):
     qualification: str
@@ -19,6 +20,7 @@ class Education(BaseModel):
     duration: Duration
     location: Location
     description: list[str]
+    courses: list[str]
 
 class Experience(BaseModel):
     title: str

@@ -10,7 +10,8 @@ import { useResumeDataSelector } from "@/state/hooks";
 // Skill editor props
 export interface ISkillsEditorProps {
     skills: Resume.ISkill[],
-    setSkills: (description: Resume.ISkill[]) => void
+    setSkills: (description: Resume.ISkill[]) => void,
+    id?: string
 }
 
 // Skills view model
@@ -63,12 +64,14 @@ export function Skills({ skills, setSkills }: ISkillsEditorProps) {
 }
 
 // Skills editor
-export function SkillsEditor({ skills, setSkills }: ISkillsEditorProps) {
+export function SkillsEditor({ skills, setSkills, id }: ISkillsEditorProps) {
+    const name = id ? `skill_${id}` : "skill";
+
     return (
         <div>
-            <Button className="btn input-bordered w-full bg-base-300" onClick={() => showModal('skill')}>Open Skill Editor</Button>
+            <Button className="btn input-bordered w-full bg-base-300" onClick={() => showModal(name)}>Open Skill Editor</Button>
 
-            <Modal name="skill" title="Skills">
+            <Modal name={name} title="Skills">
                 <AddButton<Resume.ISkill> data={skills} setData={setSkills} title="Skill" sample={{ type: '', name: '' }} />
                 <div className="grid grid-cols-3">
                     <Skills skills={skills} setSkills={setSkills} />

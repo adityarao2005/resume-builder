@@ -112,7 +112,8 @@ public class ResumeManagementController {
         Profile profile = profileService.getProfileByUserId(identityService.getUserId());
         Resume resume = mlService
                 .generateResume(new MLResumeGeneratorRequest(profile, request.job(), request.options()));
-        resume.setUserId(null);
+        entity.setUserId(identityService.getUserId());
+        entity.setDocumentId(UUID.randomUUID().toString());
         resume.setCreatedAt(LocalDate.now());
         return service.saveOrUpdateResume(resume);
     }

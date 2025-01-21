@@ -126,7 +126,7 @@ function ExperienceEntryFragment({ entry, index, dragEnd, dragEnter, dragStart }
             {
                 // Skills input
             }
-            <SkillsEditor skills={entry.skills} setSkills={setSkills} />
+            <SkillsEditor id={`ex-${index}`} skills={entry.skills} setSkills={setSkills} />
         </Fieldset>
     </Editor>)
 }

@@ -8,6 +8,7 @@ from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, Sy
 from langchain_core.language_models.chat_models import BaseChatModel
 import spacy
 import asyncio
+from datetime import datetime
 
 PAGE_DESCRIPTION_LENGTH = 25
 
@@ -293,6 +294,7 @@ class ResumeGeneratorService:
         Returns:
             Resume: The generated resume
         """
+        current_year = datetime.now().year
         
         # Populate the resume data with the profile's name, contact info, and education
         resumeEntryData = self.get_resume_entries(profile)
@@ -302,9 +304,12 @@ class ResumeGeneratorService:
         
         # Go through each resume entry data and calculate the similarity score between the resume entry's description and skills and the job description
         for entry in resumeEntryData:
+            end_year = entry.data.duration.end.split("-")[0] == "Present" and current_year or entry.data.duration.end.split("-")[0]
+            recency_factor = int(end_year) / current_year
+            
             description_score = self.get_similarity_score('\n'.join(entry.data.description), job.description)
             skills_score = self.get_skill_score([skill.name for skill in entry.data.skills], extracted_skills)
-            entry.score = entry.type.value * (description_score + skills_score)
+            entry.score = entry.type.value * (description_score + skills_score) * recency_factor
         
         # Sort the resume entry data by the resume entry score
         resumeEntryData.sort(key=lambda x: x.score, reverse=True)
@@ -644,6 +649,7 @@ if __name__ == "__main__":
     job = Job(
         company="Nasdaq",
         title="Software Development Intern",
+        duration=Duration(start="2025-05-01", end="2025-08-31"),
         description="""
         About the job
 We're seeking a talented Software Development Intern to join our vibrant team.
