@@ -1,0 +1,42 @@
+# service
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    app: backend
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: LoadBalancer
+---
+# deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        # TODO: placeholder image - replace when actually deployed image to registry like dockerhub
+        image: backend:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MONGODB_URI
+          # TODO: replace with actual mongo cluster either on atlas or setup kubernetes file
+          value: mongo://mongo.default:8080/backend
+        - name: PYTHON_ML_SERVICE_URI
+          # cluster internal path or replace with actual IP
+          value: http://mlworker.default:8000

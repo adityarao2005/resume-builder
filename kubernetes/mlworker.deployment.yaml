@@ -1,0 +1,35 @@
+# service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlworker
+spec:
+  selector:
+    app: mlworker
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000
+  type: LoadBalancer
+---
+# deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlworker
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mlworker
+  template:
+    metadata:
+      labels:
+        app: mlworker
+    spec:
+      containers:
+      - name: mlworker
+        # TODO: placeholder image - replace when actually deployed image to registry like dockerhub
+        image: mlworker:latest
+        ports:
+        - containerPort: 8000
