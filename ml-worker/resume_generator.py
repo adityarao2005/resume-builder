@@ -336,6 +336,7 @@ class ResumeGeneratorService:
             hobbies=[],
         )
         
+        skills: set[Skill] = {}
         for entry in resumeEntryData:
             # populate the resume data with the profile's experiences, projects, and extra curriculars
             if entry.type == ResumeEntryType.EXPERIENCE:
@@ -347,10 +348,11 @@ class ResumeGeneratorService:
             
             # add skills
             if (options.addSkills):
-                data.skills += entry.data.skills
+                skills.update(entry.data.skills)
         
         if (options.addSkills):
-            data.skills += profile.otherSkills
+            skills.update(profile.otherSkills)
+            data.skills += list(skills)
         
         if (options.addHobbies):
             data.hobbies = profile.hobbies
