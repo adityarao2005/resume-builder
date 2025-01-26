@@ -231,8 +231,8 @@ class ResumeGeneratorService:
         intersection_preferred = set(skills).intersection(preferred_skills)
         
         # Calculate the required and preferred score
-        required_score = len(intersection_required) / len(required_skills)
-        preferred_score = len(intersection_preferred) / len(preferred_skills)
+        required_score = len(intersection_required) / len(required_skills) if len(required_skills) != 0 else 1
+        preferred_score = len(intersection_preferred) / len(preferred_skills) if len(preferred_skills) != 0 else 1
         
         # Return the weighted score
         return 0.6 * required_score + 0.4 * preferred_score
