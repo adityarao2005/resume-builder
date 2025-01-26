@@ -252,7 +252,7 @@ class ResumeGeneratorService:
                 The resume entry description will be in the "resume_entry_description" field.
                 The skills that the entry contains will be in the "resume_entry_skills" field.
                 You will output the job description. The job description should be minimum {options.minDescriptionLength} lines and maximum {options.maxDescriptionLength} lines.
-                Each line should be maximum 20 words and should be in the XYZ format.
+                Each line should be minimum 10 words and maximum 20 words and should be in the XYZ format.
                 """
             ),
             HumanMessagePromptTemplate.from_template("{input}"),
@@ -336,7 +336,7 @@ class ResumeGeneratorService:
             hobbies=[],
         )
         
-        skills: set[Skill] = {}
+        skills: set[Skill] = set([])
         for entry in resumeEntryData:
             # populate the resume data with the profile's experiences, projects, and extra curriculars
             if entry.type == ResumeEntryType.EXPERIENCE:
@@ -494,7 +494,8 @@ if __name__ == "__main__":
                 description=[
                     "4.00/4.00 CGPA - Dean’s Honor List",
                     "Relevant Courses: Digital Systems, OOP, Discrete Math, Intro to Software Development"
-                ]
+                ],
+                courses=[]
             )
         ],
         experiences=[

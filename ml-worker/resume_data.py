@@ -39,7 +39,7 @@ class Award(BaseModel):
     date: Duration
     affilatedTo: str | None = Field(default=None)
 
-class Skill(BaseModel):
+class Skill(BaseModel, frozen=True):
     name: str
     type: str
     proficiencyLevel: str | None = Field(default=None)
