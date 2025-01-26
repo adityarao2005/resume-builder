@@ -109,12 +109,21 @@ public class ResumeManagementController {
     @PostMapping("/resumes/build")
     @ResponseStatus(HttpStatus.CREATED)
     public Resume buildAIResume(@RequestBody ResumeGeneratorRequest request) {
+        // Get the profile of the current user
         Profile profile = profileService.getProfileByUserId(identityService.getUserId());
+        // Generate a resume using the ML service
         Resume resume = mlService
                 .generateResume(new MLResumeGeneratorRequest(profile, request.job(), request.options()));
+        // Set the profile data to the resume
         resume.setUserId(identityService.getUserId());
         resume.setDocumentId(UUID.randomUUID().toString());
         resume.setCreatedAt(LocalDate.now());
+        resume.setId(null);
+        // Set the profile data to the resume
+        resume.getData().setName(profile.getName());
+        resume.getData().setContactInfo(profile.getContactInfo());
+        resume.getData().setEducation(profile.getEducation());
+        // Save the resume
         return service.saveOrUpdateResume(resume);
     }
 
