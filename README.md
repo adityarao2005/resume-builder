@@ -28,7 +28,4 @@ To Fix:
 Run commands
 ```bash
 /resume-builder/apps> docker compose up
-/resume-builder/apps/ml-worker> fastapi dev app.py
-/resume-builder/apps/backend> mvn spring-boot:run
-/resume-builder/apps/frontend> npm run dev
 ```
