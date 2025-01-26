@@ -219,7 +219,7 @@ class ResumeGeneratorService:
         
         return resume_entries
     
-    ###
+    # Gets the skills score
     def get_skill_score(self, skills: list[str], skill_holder: SkillHolder) -> float:
         '''
         Returns the skill score between the skills and the job skills
@@ -252,6 +252,7 @@ class ResumeGeneratorService:
                 The resume entry description will be in the "resume_entry_description" field.
                 The skills that the entry contains will be in the "resume_entry_skills" field.
                 You will output the job description. The job description should be minimum {options.minDescriptionLength} lines and maximum {options.maxDescriptionLength} lines.
+                Each line should be maximum 20 words and should be in the XYZ format.
                 """
             ),
             HumanMessagePromptTemplate.from_template("{input}"),
