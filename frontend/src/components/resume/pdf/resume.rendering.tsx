@@ -55,8 +55,26 @@ function Highlights({ highlights }: { highlights: Common.IDescription }) {
 }
 
 // Format the date
-function formatDate(date: Date) {
-    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+function formatDate(date: string) {
+    const [year, month] = date.split('-');
+
+    // Convert the month to a string
+    switch (month) {
+        case '01': return `Jan ${year}`;
+        case '02': return `Feb ${year}`;
+        case '03': return `Mar ${year}`;
+        case '04': return `Apr ${year}`;
+        case '05': return `May ${year}`;
+        case '06': return `Jun ${year}`;
+        case '07': return `Jul ${year}`;
+        case '08': return `Aug ${year}`;
+        case '09': return `Sep ${year}`;
+        case '10': return `Oct ${year}`;
+        case '11': return `Nov ${year}`;
+        case '12': return `Dec ${year}`;
+    }
+
+    return `${month} ${year}`;
 }
 
 // Education entry component of resume
@@ -76,7 +94,7 @@ function EducationEntry({ entry }: { entry: Resume.IEducationEntry }) {
                 </View>
                 <View style={styles.rightSection}>
                     <Text style={styles.text}>{entry.location.city}, {convertISOAddressToName(entry.location)}</Text>
-                    <Text style={styles.text}>{entry.duration.start} - {entry.duration.end}</Text>
+                    <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
                 </View>
             </View>
             <Components.List type={"bullet"} items={list} />
@@ -103,7 +121,7 @@ function ExperienceEntry({ entry }: { entry: Resume.IExperience }) {
             </View>
             <View style={styles.rightSection}>
                 <Text style={styles.text}>{entry.location.city}, {convertISOAddressToName(entry.location)}</Text>
-                <Text style={styles.text}>{entry.duration.start} - {entry.duration.end}</Text>
+                <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
             </View>
         </View>
         <Components.List type={"bullet"} items={entry.description} />
@@ -130,7 +148,7 @@ function Projects({ projects }: { projects: Resume.IProject[] }) {
                             <Text style={{ ...styles.text, fontWeight: 'bold' }}>{entry.title}</Text>
                         </View>
                         <View style={styles.rightSection}>
-                            <Text style={styles.text}>{entry.duration.start} - {entry.duration.end}</Text>
+                            <Text style={styles.text}>{formatDate(entry.duration.start)} - {formatDate(entry.duration.end)}</Text>
                         </View>
                     </View>
                     <Components.List type={"bullet"} items={entry.description} />
