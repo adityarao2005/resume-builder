@@ -34,7 +34,7 @@ This project has been an incredible learning experience, especially while balanc
 
 🎥 **Demo Video:** 
 
-https://raw.githubusercontent.com/adityarao2005/resume-builder/master/demo.mp4
+https://github.com/user-attachments/assets/a15b986a-fabe-478a-a3d5-c7f9cc03a360
 
 # Running it
 
