@@ -45,5 +45,5 @@ albiet incomplete since I never needed to host this in a production setting.
 
 Run commands
 ```bash
-/resume-builder/apps> docker compose up
+docker compose up
 ```
