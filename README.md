@@ -33,6 +33,7 @@ Last year, while applying for summer co-op positions, I struggled with resume ve
 This project has been an incredible learning experience, especially while balancing university and co-op applications. I’m excited to hear your thoughts and see where this journey takes me!  
 
 🎥 **Demo Video:** 
+
 https://raw.githubusercontent.com/adityarao2005/resume-builder/master/demo.mp4
 
 # Running it
