@@ -4,7 +4,6 @@ from pydantic import BaseModel, Field
 from typing import List
 from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate
 import json
-from langchain_google_genai import ChatGoogleGenerativeAI
 from resume_cleaning_service import clean_resume
 
 class ResumeGradingReport(BaseModel):
@@ -63,23 +62,8 @@ class LangChainResumeGraderService(ResumeGraderService):
         # Invoke the model with the messages
         return await self.model.ainvoke(messages)
     
-class GeminiResumeGraderService(LangChainResumeGraderService):
-    '''
-    This is a service which uses the Gemini LLM model to grade the resume.
-    '''
-        
-    def __init__(self, model: ChatGoogleGenerativeAI = None):
-        '''
-        Initializes the GeminiResumeGraderService with the Gemini LLM model by passing in the model.
-        '''
-        # The Gemini LLM model which is used to grade the resume
-        if model is None:
-            model = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.7, verbose=True)
-        
-        super().__init__(model)
-        
 if __name__ == "__main__":
-    import app_secrets
+    from llm import model
     # The resume to be graded
     with open("test_data/test_resume.json", "r") as f:
         print("Grading the resume")
@@ -94,7 +78,7 @@ if __name__ == "__main__":
         # The GeminiResumeGraderService which is used to grade the resume
         # The report of the resume
         print("Activating the LLM model")
-        resume_grader = GeminiResumeGraderService()
+        resume_grader = LangChainResumeGraderService(model)
         print("Grading the resume")
         report = resume_grader.grade_resume(test_resume)
         

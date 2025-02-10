@@ -1,16 +1,14 @@
 from fastapi import FastAPI, Request
 from resume_data import Resume
-from resume_grader_service import ResumeGradingReport, GeminiResumeGraderService
+from resume_grader_service import ResumeGradingReport, LangChainResumeGraderService
 from resume_cleaning_service import clean_resume
 from resume_generator import LangChainStrategyResumeGeneratorService, Profile, Job, ResumeCreationOptions, BaseModel
-from langchain_google_genai import ChatGoogleGenerativeAI
-import app_secrets
+from llm import model
 
 # The FastAPI app
 app = FastAPI()
 # The GeminiResumeGraderService which is used to grade the resume
-model = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.7, verbose=True)
-resume_grader_service = GeminiResumeGraderService(model)
+resume_grader_service = LangChainResumeGraderService(model)
 resume_generator_service = LangChainStrategyResumeGeneratorService(model)
 
 
